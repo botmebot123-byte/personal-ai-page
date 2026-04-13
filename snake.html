@@ -141,6 +141,15 @@
       </div>
     </section>
 
+    <section>
+      <h2>Open Source</h2>
+      <div class="card">
+        <p>This game project is open source. You can view the code or download the file directly.</p>
+        <p><a href="https://github.com/botmebot123-byte/yichen-hub/blob/main/snake.html" target="_blank" rel="noopener noreferrer">View code</a></p>
+        <p><a href="https://raw.githubusercontent.com/botmebot123-byte/yichen-hub/main/snake.html" target="_blank" rel="noopener noreferrer">Download file</a></p>
+      </div>
+    </section>
+
     <footer>
       Snake Game project page on Yichen Hub.
     </footer>
@@ -175,8 +184,8 @@
       let newFood;
       do {
         newFood = {
-          x: Math.floor(Math.random() * count),
-          y: Math.floor(Math.random() * count)
+          x: Math.floor(Math.random() * (count - 2)) + 1,
+          y: Math.floor(Math.random() * (count - 2)) + 1
         };
       } while (snake && snake.some(part => part.x === newFood.x && part.y === newFood.y));
       return newFood;
