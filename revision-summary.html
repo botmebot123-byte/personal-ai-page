@@ -66,6 +66,30 @@
       background: #fbf7f1;
       color: #7c4f2d;
     }
+    .term {
+      color: #7c4f2d;
+      border-bottom: 1px dashed #b08968;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    #termPopup {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      max-width: 320px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #fffaf3;
+      border: 1px solid #d6c3aa;
+      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+      display: none;
+      z-index: 999;
+    }
+    #termPopup strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #7c4f2d;
+    }
   </style>
 </head>
 <body>
@@ -106,23 +130,24 @@
 
     <h2 id="bioTitle">Biology</h2>
     <div class="card"><h3>Biological Molecules</h3><p id="bio1">Main nutrients include carbohydrates, lipids, proteins, vitamins, minerals, and water.</p></div>
-    <div class="card"><h3>Digestive System</h3><p id="bio2">The alimentary canal includes the mouth, oesophagus, stomach, small intestine, large intestine, and anus.</p></div>
-    <div class="card"><h3>Defence Against Infectious Disease</h3><p id="bio3">White blood cells defend the body: lymphocytes produce antibodies, phagocytes engulf pathogens.</p></div>
+    <div class="card"><h3>Digestive System</h3><p id="bio2">The alimentary canal includes the mouth, <span class="term" data-term="digestion">digestion</span>, small intestine, large intestine, and anus.</p></div>
+    <div class="card"><h3>Defence Against Infectious Disease</h3><p id="bio3">White blood cells defend the body: lymphocytes produce antibodies, phagocytes engulf <span class="term" data-term="pathogen">pathogens</span> and help build <span class="term" data-term="immunity">immunity</span>.</p></div>
 
     <h2 id="chemTitle">Chemistry</h2>
     <div class="card"><h3>Atomic Structure</h3><p id="chem1">Atoms contain equal numbers of protons and electrons, so they are neutral.</p></div>
-    <div class="card"><h3>Ions and Ionic Compounds</h3><p id="chem2">Metals lose electrons to form cations, while non-metals gain electrons to form anions.</p></div>
-    <div class="card"><h3>Acids and Bases</h3><p id="chem3">Acids react with bases to form salt and water; an alkali is a soluble base.</p></div>
+    <div class="card"><h3>Ions and Ionic Compounds</h3><p id="chem2">Metals lose electrons to form <span class="term" data-term="ion">cations</span>, while non-metals gain electrons to form anions.</p></div>
+    <div class="card"><h3>Acids and Bases</h3><p id="chem3">Acids react with bases to form salt and water; an <span class="term" data-term="alkali">alkali</span> is a soluble base.</p></div>
 
     <h2 id="geoTitle">Geography</h2>
-    <div class="card"><h3>Tectonic Hazards</h3><p id="geo1">The Earth has four main layers and tectonic plates are responsible for earthquakes and volcanoes.</p></div>
+    <div class="card"><h3>Tectonic Hazards</h3><p id="geo1">The Earth has four main layers and <span class="term" data-term="tectonic plate">tectonic plates</span> are responsible for earthquakes and volcanoes.</p></div>
 
     <h2 id="mathTitle">Maths</h2>
     <div class="card"><h3 id="mathStructTitle">Key Maths Structure</h3><p id="mathStruct">Linear graphs, simultaneous equations, expansion and factorisation, quadratics, and algebraic fractions are the main revision areas here.</p></div>
     <div class="card"><h3>Linear Graphs and Simultaneous Equations</h3><p id="math1">Horizontal lines have equations y = c, vertical lines have equations x = a, and simultaneous equations can be solved by elimination, substitution, or graphical method.</p></div>
     <div class="card"><h3>Expansion and Special Products</h3><p id="math2">Use the distributive law to expand, combine like terms, and remember identities such as (a + b)^2, (a - b)^2, and a^2 - b^2.</p></div>
-    <div class="card"><h3>Quadratic Equations and Graphs</h3><p id="math3">Quadratic equations can be solved by factorisation and graphs have a turning point and a line of symmetry.</p></div>
-    <div class="card"><h3>Algebraic Fractions</h3><p id="math4">Factorise first, cancel common factors only, and use the LCM or LCD when adding or subtracting fractions.</p></div>
+    <div class="card"><h3>Quadratic Equations and Graphs</h3><p id="math3"><span class="term" data-term="quadratic">Quadratic</span> equations can be solved by <span class="term" data-term="factorisation">factorisation</span> and graphs have a turning point and a line of symmetry.</p></div>
+    <div class="card"><h3>Algebraic Fractions</h3><p id="math4">Factorise first, cancel common factors only, and use the LCM or LCD when adding or subtracting <span class="term" data-term="algebraic fraction">algebraic fractions</span>.</p></div>
+    <div id="termPopup"></div>
   </div>
 
   <script>
@@ -199,9 +224,73 @@
       localStorage.setItem('yh-lang', currentLang);
     }
 
+    const termDict = {
+      'digestion': {
+        en: 'the process of breaking down food into simpler substances that can be absorbed',
+        zh: '消化，把食物分解成可被吸收的小分子',
+        mix: '消化，breaking down food into absorbable substances'
+      },
+      'pathogen': {
+        en: 'a disease-causing microorganism',
+        zh: '病原体，会引起疾病的微生物',
+        mix: '病原体，disease-causing microorganism'
+      },
+      'immunity': {
+        en: 'the body’s ability to resist a particular infection or disease',
+        zh: '免疫力，身体抵抗特定感染或疾病的能力',
+        mix: '免疫力，the body’s ability to resist infection'
+      },
+      'ion': {
+        en: 'a charged particle formed when an atom gains or loses electrons',
+        zh: '离子，原子得到或失去电子后形成的带电粒子',
+        mix: '离子，charged particle formed by gaining or losing electrons'
+      },
+      'alkali': {
+        en: 'a soluble base that dissolves in water',
+        zh: '碱，能溶于水的碱性物质',
+        mix: '碱，soluble base in water'
+      },
+      'tectonic plate': {
+        en: 'a large section of the Earth’s lithosphere that moves slowly',
+        zh: '板块，地球岩石圈中缓慢移动的大块区域',
+        mix: '板块，large moving section of the lithosphere'
+      },
+      'quadratic': {
+        en: 'related to expressions or equations involving x squared',
+        zh: '二次的，和平方项有关的表达式或方程',
+        mix: '二次的，related to x squared'
+      },
+      'factorisation': {
+        en: 'rewriting an expression as a product of factors',
+        zh: '因式分解，把式子写成几个因式相乘的形式',
+        mix: '因式分解，rewriting as a product of factors'
+      },
+      'algebraic fraction': {
+        en: 'a fraction that contains algebraic expressions in the numerator or denominator',
+        zh: '代数分式，分子或分母含有代数式的分式',
+        mix: '代数分式，fraction with algebraic expressions'
+      }
+    };
+
+    const popup = document.getElementById('termPopup');
+    document.querySelectorAll('.term').forEach(el => {
+      el.addEventListener('click', () => {
+        const term = el.dataset.term;
+        const entry = termDict[term];
+        if (!entry) return;
+        popup.innerHTML = `<strong>${term}</strong>${entry[currentLang]}`;
+        popup.style.display = 'block';
+      });
+    });
+
+    popup.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
+
     langSelect.addEventListener('change', () => {
       currentLang = langSelect.value;
       applyLanguage();
+      popup.style.display = 'none';
     });
 
     applyLanguage();
