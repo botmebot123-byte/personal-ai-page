@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yichen Hub</title>
+  <link rel="icon" type="image/png" href="./assets/icon.png?v=2" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Book Antiqua", Palatino, "Palatino Linotype", serif;
+      background: #f7f4ee;
+      color: #1f2937;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    h1 {
+      margin-bottom: 10px;
+      font-size: 46px;
+    }
+    p {
+      line-height: 1.75;
+      font-size: 16px;
+    }
+    h2 {
+      margin-top: 34px;
+      font-size: 28px;
+      border-bottom: 1px solid #d6cfc3;
+      padding-bottom: 8px;
+    }
+    .hero {
+      margin-bottom: 20px;
+    }
+    .hero p {
+      color: #4b5563;
+      max-width: 760px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+    .panel, .item {
+      padding: 22px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 1px solid #ddd6c8;
+    }
+    .panel h3, .item strong {
+      margin-top: 0;
+      font-size: 22px;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .panel p, .item span {
+      color: #4b5563;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+      color: #5b4636;
+      background: #efe7da;
+    }
+    .links {
+      margin-top: 14px;
+    }
+    .btn, a {
+      color: #7c4f2d;
+      text-decoration: none;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 10px 14px;
+      border: 1px solid #d4c4ae;
+      border-radius: 10px;
+      background: #fbf7f1;
+      font-weight: 700;
+    }
+    .section {
+      margin-top: 34px;
+    }
+    .list {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    footer {
+      margin-top: 44px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Yichen Hub</h1>
+      <p>
+        A personal academic-style hub for my games, study materials, revision notes, and chat records. Built as a quiet working space rather than a flashy homepage.
+      </p>
+    </section>
+
+    <section>
+      <h2>Main Sections</h2>
+      <div class="grid">
+        <div class="panel">
+          <div class="tag">Games</div>
+          <h3>Games</h3>
+          <p>Project pages, browser game links, screenshots, updates, and release notes.</p>
+          <a class="btn" href="./games.html">Open games</a>
+        </div>
+
+        <div class="panel">
+          <div class="tag">Study</div>
+          <h3>Study Materials</h3>
+          <p>Notes, resources, revision topics, chat notes, and subject-based learning materials.</p>
+          <div class="links">
+            <p><a href="./notes.html">Open chat notes</a></p>
+            <p><a href="./revision-summary.html">Open revision summary</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Academic, simple, and built for personal use.
+    </footer>
+  </div>
+</body>
+</html>
