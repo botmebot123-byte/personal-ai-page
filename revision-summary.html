@@ -49,25 +49,51 @@
     ul {
       margin-top: 8px;
     }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    select {
+      font-family: inherit;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid #d4c4ae;
+      background: #fbf7f1;
+      color: #7c4f2d;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <a href="./index.html">← Back to home</a>
-    <h1>Revision Summary</h1>
-    <p>A combined revision summary for the current Biology, Chemistry, Geography, and Maths materials.</p>
+    <div class="topbar">
+      <a id="backLink" href="./index.html">← Back to home</a>
+      <select id="langSelect">
+        <option value="en">English</option>
+        <option value="zh">简体中文</option>
+        <option value="mix">Combine</option>
+      </select>
+    </div>
+
+    <h1 id="title">Revision Summary</h1>
+    <p id="subtitle">A combined revision summary for the current Biology, Chemistry, Geography, and Maths materials.</p>
+
     <div class="card">
-      <h3>How to use this page</h3>
+      <h3 id="useTitle">How to use this page</h3>
       <ul>
-        <li>Use Biology for living systems, digestion, molecules, and immunity.</li>
-        <li>Use Chemistry for atomic structure, ions, ionic compounds, and acids and bases.</li>
-        <li>Use Geography for tectonic hazards and Earth structure.</li>
-        <li>Use Maths for methods, formulas, graph skills, quadratics, and algebraic fractions.</li>
+        <li id="use1">Use Biology for living systems, digestion, molecules, and immunity.</li>
+        <li id="use2">Use Chemistry for atomic structure, ions, ionic compounds, and acids and bases.</li>
+        <li id="use3">Use Geography for tectonic hazards and Earth structure.</li>
+        <li id="use4">Use Maths for methods, formulas, graph skills, quadratics, and algebraic fractions.</li>
       </ul>
     </div>
 
     <div class="card">
-      <h3>Helpful reference links</h3>
+      <h3 id="linksTitle">Helpful reference links</h3>
       <ul>
         <li><a href="https://www.khanacademy.org/science/biology" target="_blank" rel="noopener noreferrer">Khan Academy Biology</a></li>
         <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li>
@@ -75,134 +101,110 @@
         <li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li>
         <li><a href="https://www.nationalgeographic.org/education/" target="_blank" rel="noopener noreferrer">National Geographic Education</a></li>
       </ul>
-      <p>These are reference links only, meant to support revision when you want a second explanation.</p>
+      <p id="linksDesc">These are reference links only, meant to support revision when you want a second explanation.</p>
     </div>
 
-    <h2>Biology</h2>
-    <div class="card">
-      <h3>Biological Molecules</h3>
-      <ul>
-        <li>Main nutrients include carbohydrates, lipids, proteins, vitamins, minerals, and water.</li>
-        <li>Carbohydrates, lipids, and proteins are complex organic molecules that often require digestion.</li>
-        <li>Common elements in living organisms are carbon, hydrogen, oxygen, and nitrogen.</li>
-        <li>Food is needed for energy, heat, growth, repair, and maintenance of a healthy body.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Digestive System</h3>
-      <ul>
-        <li>The alimentary canal includes the mouth, oesophagus, stomach, small intestine, large intestine, and anus.</li>
-        <li>Main stages of nutrition are ingestion, digestion, absorption, and egestion.</li>
-        <li>Physical digestion breaks food into smaller pieces; chemical digestion uses enzymes.</li>
-        <li>Salivary amylase digests starch into maltose.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Defence Against Infectious Disease</h3>
-      <ul>
-        <li>Red blood cells transport oxygen using haemoglobin.</li>
-        <li>White blood cells defend the body: lymphocytes produce antibodies, phagocytes engulf pathogens.</li>
-        <li>Platelets help in blood clotting, and plasma transports dissolved substances.</li>
-        <li>Vaccines help the body develop immunity against specific pathogens.</li>
-      </ul>
-    </div>
+    <h2 id="bioTitle">Biology</h2>
+    <div class="card"><h3>Biological Molecules</h3><p id="bio1">Main nutrients include carbohydrates, lipids, proteins, vitamins, minerals, and water.</p></div>
+    <div class="card"><h3>Digestive System</h3><p id="bio2">The alimentary canal includes the mouth, oesophagus, stomach, small intestine, large intestine, and anus.</p></div>
+    <div class="card"><h3>Defence Against Infectious Disease</h3><p id="bio3">White blood cells defend the body: lymphocytes produce antibodies, phagocytes engulf pathogens.</p></div>
 
-    <h2>Chemistry</h2>
-    <div class="card">
-      <h3>Atomic Structure</h3>
-      <ul>
-        <li>Atoms contain equal numbers of protons and electrons, so they are neutral.</li>
-        <li>Proton number is the number of protons in the nucleus.</li>
-        <li>Nucleon number is the total number of protons and neutrons.</li>
-        <li>Number of neutrons = nucleon number - proton number.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Ions and Ionic Compounds</h3>
-      <ul>
-        <li>An ion has unequal numbers of protons and electrons, so it has a charge.</li>
-        <li>Metals tend to lose electrons to form positive ions called cations.</li>
-        <li>Non-metals tend to gain electrons to form negative ions called anions.</li>
-        <li>Noble gases are stable and usually do not gain or lose electrons.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Acids and Bases</h3>
-      <ul>
-        <li>Acids react with bases to form salt and water.</li>
-        <li>A base is a metal oxide or metal hydroxide that reacts with an acid.</li>
-        <li>An alkali is a soluble base.</li>
-        <li>Metal + acid gives salt + hydrogen; carbonate + acid gives salt + water + carbon dioxide.</li>
-      </ul>
-    </div>
+    <h2 id="chemTitle">Chemistry</h2>
+    <div class="card"><h3>Atomic Structure</h3><p id="chem1">Atoms contain equal numbers of protons and electrons, so they are neutral.</p></div>
+    <div class="card"><h3>Ions and Ionic Compounds</h3><p id="chem2">Metals lose electrons to form cations, while non-metals gain electrons to form anions.</p></div>
+    <div class="card"><h3>Acids and Bases</h3><p id="chem3">Acids react with bases to form salt and water; an alkali is a soluble base.</p></div>
 
-    <h2>Geography</h2>
-    <div class="card">
-      <h3>Tectonic Hazards</h3>
-      <ul>
-        <li>The Earth has four main layers: inner core, outer core, mantle, and crust.</li>
-        <li>Tectonic plates are large sections of the lithosphere.</li>
-        <li>Volcanoes and earthquakes are linked to plate boundaries and tectonic movement.</li>
-        <li>Hazards include pyroclastic flows, lahars, seismic waves, and aftershocks.</li>
-      </ul>
-    </div>
+    <h2 id="geoTitle">Geography</h2>
+    <div class="card"><h3>Tectonic Hazards</h3><p id="geo1">The Earth has four main layers and tectonic plates are responsible for earthquakes and volcanoes.</p></div>
 
-    <h2>Maths</h2>
-    <div class="card">
-      <h3>Key Maths Structure</h3>
-      <ul>
-        <li>Linear graphs: horizontal lines, vertical lines, and straight-line equations.</li>
-        <li>Simultaneous equations: elimination, substitution, graphical method, and word problems.</li>
-        <li>Expansion and factorisation: distributive law, special products, and difference of two squares.</li>
-        <li>Quadratics: solving by factorisation, graphs, turning points, and word problems.</li>
-        <li>Algebraic fractions: simplification, multiplication, division, LCD, addition, and subtraction.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Linear Graphs and Simultaneous Equations</h3>
-      <ul>
-        <li>Horizontal lines have equations of the form y = c.</li>
-        <li>Vertical lines have equations of the form x = a.</li>
-        <li>Simultaneous equations can be solved by elimination, substitution, or graphical method.</li>
-        <li>In elimination, remove one variable first, then substitute back to find the other.</li>
-        <li>In substitution, express one variable in terms of the other, then substitute.</li>
-        <li>In graphical solving, the solution is the point of intersection of the two lines.</li>
-        <li>For word problems, define variables clearly, form two equations, solve, then conclude with units.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Expansion and Special Products</h3>
-      <ul>
-        <li>Use the distributive law to expand brackets.</li>
-        <li>Like terms can be combined only if they have the same variable part.</li>
-        <li>Special identities include (a + b)^2, (a - b)^2, and (a + b)(a - b).</li>
-        <li>Difference of two squares: a^2 - b^2 = (a + b)(a - b).</li>
-        <li>Always simplify fully after expansion or factorisation.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Quadratic Equations and Graphs</h3>
-      <ul>
-        <li>Quadratic equations can often be solved by factorisation and the zero product principle.</li>
-        <li>Do not divide away a variable factor, or you may lose a solution.</li>
-        <li>Quadratic graphs are curves with a turning point.</li>
-        <li>A minimum curve opens upwards and a maximum curve opens downwards.</li>
-        <li>The line of symmetry is a vertical line passing through the turning point.</li>
-        <li>Use a table of values to plot the graph accurately.</li>
-        <li>In quadratic word problems: define, form equation, solve, check, reject invalid roots if needed, and conclude.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Algebraic Fractions</h3>
-      <ul>
-        <li>To simplify algebraic fractions, factorise numerator and denominator first.</li>
-        <li>Cancel only common factors, not individual terms.</li>
-        <li>For multiplication, multiply across and simplify where possible.</li>
-        <li>For division, flip the second fraction and change division to multiplication.</li>
-        <li>For addition and subtraction, first find the LCM or LCD of the denominators.</li>
-        <li>Then rewrite each fraction with the common denominator before combining numerators.</li>
-      </ul>
-    </div>
+    <h2 id="mathTitle">Maths</h2>
+    <div class="card"><h3 id="mathStructTitle">Key Maths Structure</h3><p id="mathStruct">Linear graphs, simultaneous equations, expansion and factorisation, quadratics, and algebraic fractions are the main revision areas here.</p></div>
+    <div class="card"><h3>Linear Graphs and Simultaneous Equations</h3><p id="math1">Horizontal lines have equations y = c, vertical lines have equations x = a, and simultaneous equations can be solved by elimination, substitution, or graphical method.</p></div>
+    <div class="card"><h3>Expansion and Special Products</h3><p id="math2">Use the distributive law to expand, combine like terms, and remember identities such as (a + b)^2, (a - b)^2, and a^2 - b^2.</p></div>
+    <div class="card"><h3>Quadratic Equations and Graphs</h3><p id="math3">Quadratic equations can be solved by factorisation and graphs have a turning point and a line of symmetry.</p></div>
+    <div class="card"><h3>Algebraic Fractions</h3><p id="math4">Factorise first, cancel common factors only, and use the LCM or LCD when adding or subtracting fractions.</p></div>
   </div>
+
+  <script>
+    const copy = {
+      en: {
+        back: '← Back to home',
+        title: 'Revision Summary',
+        subtitle: 'A combined revision summary for the current Biology, Chemistry, Geography, and Maths materials.',
+        useTitle: 'How to use this page',
+        use1: 'Use Biology for living systems, digestion, molecules, and immunity.',
+        use2: 'Use Chemistry for atomic structure, ions, ionic compounds, and acids and bases.',
+        use3: 'Use Geography for tectonic hazards and Earth structure.',
+        use4: 'Use Maths for methods, formulas, graph skills, quadratics, and algebraic fractions.',
+        linksTitle: 'Helpful reference links',
+        linksDesc: 'These are reference links only, meant to support revision when you want a second explanation.',
+        bioTitle: 'Biology',
+        chemTitle: 'Chemistry',
+        geoTitle: 'Geography',
+        mathTitle: 'Maths',
+        mathStructTitle: 'Key Maths Structure',
+        mathStruct: 'Linear graphs, simultaneous equations, expansion and factorisation, quadratics, and algebraic fractions are the main revision areas here.',
+        bio1: 'Main nutrients include carbohydrates, lipids, proteins, vitamins, minerals, and water.',
+        bio2: 'The alimentary canal includes the mouth, oesophagus, stomach, small intestine, large intestine, and anus.',
+        bio3: 'White blood cells defend the body: lymphocytes produce antibodies, phagocytes engulf pathogens.',
+        chem1: 'Atoms contain equal numbers of protons and electrons, so they are neutral.',
+        chem2: 'Metals lose electrons to form cations, while non-metals gain electrons to form anions.',
+        chem3: 'Acids react with bases to form salt and water; an alkali is a soluble base.',
+        geo1: 'The Earth has four main layers and tectonic plates are responsible for earthquakes and volcanoes.',
+        math1: 'Horizontal lines have equations y = c, vertical lines have equations x = a, and simultaneous equations can be solved by elimination, substitution, or graphical method.',
+        math2: 'Use the distributive law to expand, combine like terms, and remember identities such as (a + b)^2, (a - b)^2, and a^2 - b^2.',
+        math3: 'Quadratic equations can be solved by factorisation and graphs have a turning point and a line of symmetry.',
+        math4: 'Factorise first, cancel common factors only, and use the LCM or LCD when adding or subtracting fractions.'
+      },
+      zh: {
+        back: '← 返回主页', title: '复习总结', subtitle: '这里整理了目前 Biology、Chemistry、Geography 和 Maths 的综合复习内容。',
+        useTitle: '如何使用本页', use1: 'Biology 主要看生命系统、消化、生物分子和免疫。', use2: 'Chemistry 主要看原子结构、离子、离子化合物以及酸和碱。', use3: 'Geography 主要看构造灾害和地球结构。', use4: 'Maths 主要看方法、公式、图像技巧、二次方程和代数分式。',
+        linksTitle: '参考链接', linksDesc: '这些只是参考资源，用来在你想看第二种讲解时辅助复习。',
+        bioTitle: '生物', chemTitle: '化学', geoTitle: '地理', mathTitle: '数学', mathStructTitle: '数学结构', mathStruct: '这里的重点包括线性图像、联立方程、展开与因式分解、二次部分和代数分式。',
+        bio1: '主要营养包括 carbohydrates、lipids、proteins、vitamins、minerals 和 water。', bio2: '消化道包括 mouth、oesophagus、stomach、small intestine、large intestine 和 anus。', bio3: '白细胞负责防御：lymphocytes 产生 antibodies，phagocytes 吞噬病原体。',
+        chem1: '原子中 proton 和 electron 数目相等，所以整体不带电。', chem2: '金属失去电子形成 cations，非金属得到电子形成 anions。', chem3: '酸和碱反应生成 salt 和 water；可溶性的 base 叫 alkali。',
+        geo1: '地球有四个主要层次，tectonic plates 与地震和火山有关。',
+        math1: '水平线方程是 y = c，竖直线方程是 x = a，联立方程可用 elimination、substitution 或 graphical method。',
+        math2: '用 distributive law 展开，合并 like terms，并记住 (a + b)^2、(a - b)^2 和 a^2 - b^2。',
+        math3: '二次方程可用 factorisation 解，图像有 turning point 和 line of symmetry。',
+        math4: '先 factorise，再约去 common factors；加减代数分式时用 LCM 或 LCD。'
+      },
+      mix: {
+        back: '← 返回主页', title: '复习总结 Revision Summary', subtitle: '这里整理了目前 Biology、Chemistry、Geography 和 Maths 的 combined revision 内容。',
+        useTitle: '如何使用本页 How to use this page', use1: 'Biology 主要看 living systems、digestion、molecules 和 immunity。', use2: 'Chemistry 主要看 atomic structure、ions、ionic compounds 以及 acids and bases。', use3: 'Geography 主要看 tectonic hazards 和 Earth structure。', use4: 'Maths 主要看 methods、formulas、graph skills、quadratics 和 algebraic fractions。',
+        linksTitle: '参考链接 Helpful reference links', linksDesc: '这些只是 reference links，用来在你想看第二种 explanation 时辅助 revision。',
+        bioTitle: '生物 Biology', chemTitle: '化学 Chemistry', geoTitle: '地理 Geography', mathTitle: '数学 Maths', mathStructTitle: '数学结构 Key Maths Structure', mathStruct: '重点包括 linear graphs、simultaneous equations、expansion and factorisation、quadratics 和 algebraic fractions。',
+        bio1: '主要营养包括 carbohydrates、lipids、proteins、vitamins、minerals 和 water。', bio2: '消化道包括 mouth、oesophagus、stomach、small intestine、large intestine 和 anus。', bio3: '白细胞负责 defence：lymphocytes 产生 antibodies，phagocytes 吞噬 pathogens。',
+        chem1: '原子中 proton 和 electron 数目相等，所以整体 neutral。', chem2: '金属失去 electrons 形成 cations，非金属得到 electrons 形成 anions。', chem3: '酸和碱反应生成 salt 和 water；可溶性的 base 叫 alkali。',
+        geo1: '地球有四个主要 layers，tectonic plates 与 earthquakes 和 volcanoes 有关。',
+        math1: '水平线方程是 y = c，竖直线方程是 x = a，联立方程可用 elimination、substitution 或 graphical method。',
+        math2: '用 distributive law 展开，合并 like terms，并记住 (a + b)^2、(a - b)^2 和 a^2 - b^2。',
+        math3: '二次方程可用 factorisation 解，graph 有 turning point 和 line of symmetry。',
+        math4: '先 factorise，再约去 common factors；加减代数分式时用 LCM 或 LCD。'
+      }
+    };
+
+    const ids = ['back','title','subtitle','useTitle','use1','use2','use3','use4','linksTitle','linksDesc','bioTitle','chemTitle','geoTitle','mathTitle','mathStructTitle','mathStruct','bio1','bio2','bio3','chem1','chem2','chem3','geo1','math1','math2','math3','math4'];
+    const langSelect = document.getElementById('langSelect');
+    let currentLang = localStorage.getItem('yh-lang') || 'en';
+
+    function applyLanguage() {
+      const t = copy[currentLang];
+      document.getElementById('backLink').textContent = t.back;
+      ids.slice(1).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = t[id];
+      });
+      langSelect.value = currentLang;
+      localStorage.setItem('yh-lang', currentLang);
+    }
+
+    langSelect.addEventListener('change', () => {
+      currentLang = langSelect.value;
+      applyLanguage();
+    });
+
+    applyLanguage();
+  </script>
 </body>
 </html>

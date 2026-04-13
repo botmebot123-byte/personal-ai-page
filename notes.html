@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -40,20 +40,88 @@
       color: #7c4f2d;
       text-decoration: none;
     }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    select {
+      font-family: inherit;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid #d4c4ae;
+      background: #fbf7f1;
+      color: #7c4f2d;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <a href="./index.html">← Back to home</a>
-    <h1>Chat Notes</h1>
-    <p>Summary notes from our chats, kept here so they can be reviewed on GitHub Pages.</p>
+    <div class="topbar">
+      <a id="backLink" href="./index.html">← Back to home</a>
+      <select id="langSelect">
+        <option value="en">English</option>
+        <option value="zh">简体中文</option>
+        <option value="mix">Combine</option>
+      </select>
+    </div>
+
+    <h1 id="title">Chat Notes</h1>
+    <p id="subtitle">Summary notes from our chats, kept here so they can be reviewed on GitHub Pages.</p>
 
     <div class="note">
       <div class="date">2026-04-13</div>
-      <p>
+      <p id="note1">
         Set up the personal AI page on GitHub Pages. The site now has a main landing page and can be expanded into a personal project hub. We also discussed a Singapore high-end Chinese restaurant concept, rough market size, investment, payback period, staffing, and location logic. Later, we adjusted maths answer formatting to be cleaner, use LCD terminology, and lean towards British English.
       </p>
     </div>
   </div>
+
+  <script>
+    const copy = {
+      en: {
+        back: '← Back to home',
+        title: 'Chat Notes',
+        subtitle: 'Summary notes from our chats, kept here so they can be reviewed on GitHub Pages.',
+        note1: 'Set up the personal AI page on GitHub Pages. The site now has a main landing page and can be expanded into a personal project hub. We also discussed a Singapore high-end Chinese restaurant concept, rough market size, investment, payback period, staffing, and location logic. Later, we adjusted maths answer formatting to be cleaner, use LCD terminology, and lean towards British English.'
+      },
+      zh: {
+        back: '← 返回主页',
+        title: '聊天笔记',
+        subtitle: '这里保存我们聊天内容的简短总结，方便以后在 GitHub Pages 上查看。',
+        note1: '搭建了个人 AI / 学习主页并部署到 GitHub Pages。网站逐步扩展成个人项目中心。还讨论了在新加坡开高端中式餐厅的市场、投入、回本、人力和选址逻辑。之后也调整了数学答案风格，例如使用 LCD 术语和更偏 British English 的表达。'
+      },
+      mix: {
+        back: '← 返回主页',
+        title: '聊天笔记 Chat Notes',
+        subtitle: '这里保存我们聊天内容的 summary，方便以后在 GitHub Pages 上查看。',
+        note1: '搭建了 personal AI / study hub 并部署到 GitHub Pages。网站逐步扩展成 personal project hub。还讨论了在新加坡开高端中式餐厅的 market、investment、payback、人力和选址逻辑。之后也调整了 maths answer 风格，例如使用 LCD 和更偏 British English 的表达。'
+      }
+    };
+
+    const langSelect = document.getElementById('langSelect');
+    let currentLang = localStorage.getItem('yh-lang') || 'en';
+
+    function applyLanguage() {
+      const t = copy[currentLang];
+      document.getElementById('backLink').textContent = t.back;
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('subtitle').textContent = t.subtitle;
+      document.getElementById('note1').textContent = t.note1;
+      langSelect.value = currentLang;
+      localStorage.setItem('yh-lang', currentLang);
+    }
+
+    langSelect.addEventListener('change', () => {
+      currentLang = langSelect.value;
+      applyLanguage();
+    });
+
+    applyLanguage();
+  </script>
 </body>
 </html>
