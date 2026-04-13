@@ -269,31 +269,87 @@
         en: 'a fraction that contains algebraic expressions in the numerator or denominator',
         zh: '代数分式，分子或分母含有代数式的分式',
         mix: '代数分式，fraction with algebraic expressions'
+      },
+      'carbohydrates': {
+        en: 'nutrients such as sugars and starch that provide energy',
+        zh: '碳水化合物，如糖和淀粉，主要提供能量',
+        mix: '碳水化合物，nutrients that mainly provide energy'
+      },
+      'lipids': {
+        en: 'fats and oils used for energy storage and cell structures',
+        zh: '脂类，包括脂肪和油，用于储能和构成细胞结构',
+        mix: '脂类，fats and oils for storage and structure'
+      },
+      'proteins': {
+        en: 'large biological molecules made of amino acids',
+        zh: '蛋白质，由氨基酸组成的大分子',
+        mix: '蛋白质，large molecules made of amino acids'
+      },
+      'cations': {
+        en: 'positively charged ions',
+        zh: '阳离子，带正电的离子',
+        mix: '阳离子，positively charged ions'
+      },
+      'anions': {
+        en: 'negatively charged ions',
+        zh: '阴离子，带负电的离子',
+        mix: '阴离子，negatively charged ions'
+      },
+      'distributive law': {
+        en: 'a rule used to expand brackets by multiplying each term inside',
+        zh: '分配律，把括号外的数乘到括号内每一项',
+        mix: '分配律，rule for expanding brackets term by term'
+      },
+      'line of symmetry': {
+        en: 'a line that divides a graph into two mirror halves',
+        zh: '对称轴，把图像分成左右镜像两半的直线',
+        mix: '对称轴，line dividing a graph into mirror halves'
+      },
+      'LCM': {
+        en: 'lowest common multiple',
+        zh: '最小公倍数',
+        mix: '最小公倍数，lowest common multiple'
+      },
+      'LCD': {
+        en: 'lowest common denominator',
+        zh: '最小公分母',
+        mix: '最小公分母，lowest common denominator'
       }
     };
 
     const popup = document.getElementById('termPopup');
-    document.querySelectorAll('.term').forEach(el => {
-      el.addEventListener('click', () => {
-        const term = el.dataset.term;
-        const entry = termDict[term];
-        if (!entry) return;
-        popup.innerHTML = `<strong>${term}</strong>${entry[currentLang]}`;
-        popup.style.display = 'block';
+
+    function bindTerms() {
+      document.querySelectorAll('.term').forEach(el => {
+        el.onclick = () => {
+          const term = el.dataset.term;
+          const entry = termDict[term];
+          if (!entry) return;
+          popup.innerHTML = `<strong>${term}</strong>${entry[currentLang]}`;
+          popup.style.display = 'block';
+        };
       });
-    });
+    }
 
     popup.addEventListener('click', () => {
       popup.style.display = 'none';
     });
 
+    document.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('term') && !popup.contains(e.target)) {
+        popup.style.display = 'none';
+      }
+    });
+
     langSelect.addEventListener('change', () => {
       currentLang = langSelect.value;
       applyLanguage();
+      bindTerms();
       popup.style.display = 'none';
     });
 
     applyLanguage();
+    bindTerms();
   </script>
 </body>
 </html>
