@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pomodoro Clock | Yichen Hub</title>
+  <link rel="icon" type="image/png" href="./assets/icon.png?v=2" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Book Antiqua", Palatino, "Palatino Linotype", serif;
+      background: #f7f4ee;
+      color: #1f2937;
+    }
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 44px;
+      margin-bottom: 10px;
+    }
+    p {
+      line-height: 1.7;
+      color: #4b5563;
+    }
+    .card {
+      margin-top: 24px;
+      padding: 28px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 1px solid #ddd6c8;
+    }
+    .timer {
+      font-size: 72px;
+      margin: 18px 0;
+      color: #7c4f2d;
+    }
+    .controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    button, a {
+      font-family: inherit;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid #d4c4ae;
+      background: #fbf7f1;
+      cursor: pointer;
+      color: #7c4f2d;
+      font-weight: 700;
+    }
+    a {
+      color: #7c4f2d;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="./index.html">← Back to home</a>
+    <h1>Pomodoro Clock</h1>
+    <p>A simple study timer for focus sessions and short breaks.</p>
+
+    <div class="card">
+      <div id="mode">Focus Session</div>
+      <div class="timer" id="timer">25:00</div>
+      <div class="controls">
+        <button id="start">Start</button>
+        <button id="pause">Pause</button>
+        <button id="reset">Reset</button>
+        <button id="switch">Switch Mode</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const timerEl = document.getElementById('timer');
+    const modeEl = document.getElementById('mode');
+    const startBtn = document.getElementById('start');
+    const pauseBtn = document.getElementById('pause');
+    const resetBtn = document.getElementById('reset');
+    const switchBtn = document.getElementById('switch');
+
+    let focusMode = true;
+    let totalSeconds = 25 * 60;
+    let timer = null;
+
+    function renderTime() {
+      const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+      const secs = String(totalSeconds % 60).padStart(2, '0');
+      timerEl.textContent = `${mins}:${secs}`;
+      modeEl.textContent = focusMode ? 'Focus Session' : 'Break Time';
+    }
+
+    function startTimer() {
+      if (timer) return;
+      timer = setInterval(() => {
+        if (totalSeconds > 0) {
+          totalSeconds--;
+          renderTime();
+        } else {
+          clearInterval(timer);
+          timer = null;
+          alert(focusMode ? 'Focus session complete. Time for a break.' : 'Break complete. Back to work.');
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timer);
+      timer = null;
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      totalSeconds = focusMode ? 25 * 60 : 5 * 60;
+      renderTime();
+    }
+
+    function switchMode() {
+      focusMode = !focusMode;
+      resetTimer();
+    }
+
+    startBtn.addEventListener('click', startTimer);
+    pauseBtn.addEventListener('click', pauseTimer);
+    resetBtn.addEventListener('click', resetTimer);
+    switchBtn.addEventListener('click', switchMode);
+
+    renderTime();
+  </script>
+</body>
+</html>
