@@ -254,6 +254,7 @@
       };
       const newDir = keyMap[e.key];
       if (!newDir) return;
+      e.preventDefault();
       if (newDir.x === -direction.x && newDir.y === -direction.y) return;
       nextDirection = newDir;
     });
