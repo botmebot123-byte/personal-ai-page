@@ -85,6 +85,23 @@
     ul {
       padding-left: 20px;
     }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    select {
+      font-family: inherit;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid #d4c4ae;
+      background: #fbf7f1;
+      color: #7c4f2d;
+    }
     footer {
       margin-top: 44px;
       text-align: center;
@@ -95,76 +112,178 @@
 </head>
 <body>
   <div class="wrap">
-    <a href="./games.html">← Back to games</a>
+    <div class="topbar">
+      <a id="backLink" href="./games.html">← Back to games</a>
+      <select id="langSelect">
+        <option value="en">English</option>
+        <option value="zh">简体中文</option>
+        <option value="mix">Combine</option>
+      </select>
+    </div>
 
     <section class="hero">
-      <h1>Snake Game</h1>
-      <p>
-        A simple browser snake game added as an early game project on Yichen Hub. It is lightweight, playable in the browser, and useful as a small coding demo.
-      </p>
+      <h1 id="title">Snake Game</h1>
+      <p id="subtitle">A simple browser snake game added as an early game project on Yichen Hub. It is lightweight, playable in the browser, and useful as a small coding demo.</p>
     </section>
 
     <div class="game-shell">
       <canvas id="game" width="400" height="400"></canvas>
       <div class="meta">
-        <span>Score: <span id="score">0</span></span>
-        <span id="status">Running</span>
+        <span id="scoreLabel">Score: <span id="score">0</span></span>
+        <span id="mode">Running</span>
       </div>
       <button class="btn" id="restart">Restart</button>
     </div>
 
     <section>
-      <h2>Project Description</h2>
+      <h2 id="descTitle">Project Description</h2>
       <div class="card">
-        <p>
-          This project demonstrates a basic browser game built with HTML, CSS, and JavaScript. The objective is to control the snake, collect food, and grow longer without crashing into the wall or into the snake’s own body.
-        </p>
+        <p id="descText">This project demonstrates a basic browser game built with HTML, CSS, and JavaScript. The objective is to control the snake, collect food, and grow longer without crashing into the wall or into the snake’s own body.</p>
       </div>
     </section>
 
     <section>
-      <h2>Controls</h2>
+      <h2 id="controlsTitle">Controls</h2>
       <div class="card">
         <ul>
-          <li>Use the arrow keys to move the snake.</li>
-          <li>Eat the red food to increase your score.</li>
-          <li>Avoid hitting the wall or yourself.</li>
+          <li id="c1">Use the arrow keys to move the snake.</li>
+          <li id="c2">Eat the red food to increase your score.</li>
+          <li id="c3">Avoid hitting the wall or yourself.</li>
         </ul>
       </div>
     </section>
 
     <section>
-      <h2>Version Info</h2>
+      <h2 id="versionTitle">Version Info</h2>
       <div class="card">
-        <p><strong>Version:</strong> 1.0</p>
-        <p><strong>Status:</strong> Playable prototype</p>
+        <p id="versionText"><strong>Version:</strong> 1.0</p>
+        <p id="statusText"><strong>Status:</strong> Playable prototype</p>
       </div>
     </section>
 
     <section>
-      <h2>Open Source</h2>
+      <h2 id="openTitle">Open Source</h2>
       <div class="card">
-        <p>This game project is open source. You can view the code or download the file directly.</p>
-        <p><a href="https://github.com/botmebot123-byte/yichen-hub/blob/main/snake.html" target="_blank" rel="noopener noreferrer">View code</a></p>
-        <p><a href="https://raw.githubusercontent.com/botmebot123-byte/yichen-hub/main/snake.html" target="_blank" rel="noopener noreferrer">Download file</a></p>
+        <p id="openText">This game project is open source. You can view the code or download the file directly.</p>
+        <p><a id="codeLink" href="https://github.com/botmebot123-byte/yichen-hub/blob/main/snake.html" target="_blank" rel="noopener noreferrer">View code</a></p>
+        <p><a id="downloadLink" href="https://raw.githubusercontent.com/botmebot123-byte/yichen-hub/main/snake.html" target="_blank" rel="noopener noreferrer">Download file</a></p>
       </div>
     </section>
 
-    <footer>
-      Snake Game project page on Yichen Hub.
-    </footer>
+    <footer id="footerText">Snake Game project page on Yichen Hub.</footer>
   </div>
 
   <script>
+    const copy = {
+      en: {
+        back: '← Back to games',
+        title: 'Snake Game',
+        subtitle: 'A simple browser snake game added as an early game project on Yichen Hub. It is lightweight, playable in the browser, and useful as a small coding demo.',
+        score: 'Score:',
+        running: 'Running',
+        restart: 'Restart',
+        descTitle: 'Project Description',
+        descText: 'This project demonstrates a basic browser game built with HTML, CSS, and JavaScript. The objective is to control the snake, collect food, and grow longer without crashing into the wall or into the snake’s own body.',
+        controlsTitle: 'Controls',
+        c1: 'Use the arrow keys to move the snake.',
+        c2: 'Eat the red food to increase your score.',
+        c3: 'Avoid hitting the wall or yourself.',
+        versionTitle: 'Version Info',
+        versionText: 'Version: 1.0',
+        statusText: 'Status: Playable prototype',
+        openTitle: 'Open Source',
+        openText: 'This game project is open source. You can view the code or download the file directly.',
+        codeLink: 'View code',
+        downloadLink: 'Download file',
+        footer: 'Snake Game project page on Yichen Hub.',
+        gameOver: 'Game Over'
+      },
+      zh: {
+        back: '← 返回游戏页',
+        title: '贪吃蛇',
+        subtitle: '一个简单的浏览器贪吃蛇游戏，作为 Yichen Hub 里的早期游戏项目。',
+        score: '分数：',
+        running: '进行中',
+        restart: '重新开始',
+        descTitle: '项目介绍',
+        descText: '这个项目展示了一个用 HTML、CSS 和 JavaScript 写成的基础浏览器游戏。玩家需要控制蛇吃到食物并变长，同时避免撞墙或撞到自己。',
+        controlsTitle: '操作方式',
+        c1: '使用方向键控制蛇移动。',
+        c2: '吃到红色食物后分数会增加。',
+        c3: '不要撞到墙壁或自己。',
+        versionTitle: '版本信息',
+        versionText: '版本：1.0',
+        statusText: '状态：可游玩的原型版本',
+        openTitle: '开源',
+        openText: '这个游戏项目是开源的。你可以查看代码，或直接下载文件。',
+        codeLink: '查看代码',
+        downloadLink: '下载文件',
+        footer: 'Yichen Hub 上的贪吃蛇项目页。',
+        gameOver: '游戏结束'
+      },
+      mix: {
+        back: '← 返回游戏页 Back to games',
+        title: '贪吃蛇 Snake Game',
+        subtitle: '一个简单的 browser snake game，作为 Yichen Hub 里的早期 game project。',
+        score: '分数 Score:',
+        running: '进行中 Running',
+        restart: '重新开始 Restart',
+        descTitle: '项目介绍 Project Description',
+        descText: '这个项目展示了一个用 HTML、CSS 和 JavaScript 写成的基础 browser game。玩家需要控制蛇吃到食物并变长，同时避免撞墙或撞到自己。',
+        controlsTitle: '操作方式 Controls',
+        c1: '使用 arrow keys 控制蛇移动。',
+        c2: '吃到红色 food 后分数会增加。',
+        c3: '不要撞到 wall 或自己。',
+        versionTitle: '版本信息 Version Info',
+        versionText: '版本 Version: 1.0',
+        statusText: '状态 Status: Playable prototype',
+        openTitle: '开源 Open Source',
+        openText: '这个 game project 是 open source 的。你可以查看代码，或直接下载文件。',
+        codeLink: '查看代码 View code',
+        downloadLink: '下载文件 Download file',
+        footer: 'Yichen Hub 上的 Snake Game project page。',
+        gameOver: '游戏结束 Game Over'
+      }
+    };
+
+    const timerEl = document.getElementById('score');
+    const scoreLabelEl = document.getElementById('scoreLabel');
+    const modeEl = document.getElementById('mode');
+    const restartBtn = document.getElementById('restart');
+    const langSelect = document.getElementById('langSelect');
+    let currentLang = localStorage.getItem('yh-lang') || 'en';
+
+    let snake, direction, nextDirection, food, score, gameTimer, gameOver;
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext('2d');
-    const scoreEl = document.getElementById('score');
-    const statusEl = document.getElementById('status');
-    const restartBtn = document.getElementById('restart');
-
     const size = 20;
     const count = canvas.width / size;
-    let snake, direction, nextDirection, food, score, timer, gameOver;
+
+    function applyLanguage() {
+      const t = copy[currentLang];
+      document.getElementById('backLink').textContent = t.back;
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('subtitle').textContent = t.subtitle;
+      scoreLabelEl.childNodes[0].textContent = t.score + ' ';
+      modeEl.textContent = gameOver ? t.gameOver : t.running;
+      restartBtn.textContent = t.restart;
+      document.getElementById('descTitle').textContent = t.descTitle;
+      document.getElementById('descText').textContent = t.descText;
+      document.getElementById('controlsTitle').textContent = t.controlsTitle;
+      document.getElementById('c1').textContent = t.c1;
+      document.getElementById('c2').textContent = t.c2;
+      document.getElementById('c3').textContent = t.c3;
+      document.getElementById('versionTitle').textContent = t.versionTitle;
+      document.getElementById('versionText').innerHTML = '<strong>' + t.versionText + '</strong>';
+      document.getElementById('statusText').innerHTML = '<strong>' + t.statusText + '</strong>';
+      document.getElementById('openTitle').textContent = t.openTitle;
+      document.getElementById('openText').textContent = t.openText;
+      document.getElementById('codeLink').textContent = t.codeLink;
+      document.getElementById('downloadLink').textContent = t.downloadLink;
+      document.getElementById('footerText').textContent = t.footer;
+      langSelect.value = currentLang;
+      localStorage.setItem('yh-lang', currentLang);
+    }
 
     function resetGame() {
       snake = [{ x: 10, y: 10 }];
@@ -173,10 +292,10 @@
       food = spawnFood();
       score = 0;
       gameOver = false;
-      scoreEl.textContent = score;
-      statusEl.textContent = 'Running';
-      clearInterval(timer);
-      timer = setInterval(update, 120);
+      timerEl.textContent = score;
+      modeEl.textContent = copy[currentLang].running;
+      clearInterval(gameTimer);
+      gameTimer = setInterval(update, 120);
       draw();
     }
 
@@ -194,27 +313,18 @@
     function update() {
       if (gameOver) return;
       direction = nextDirection;
-      const head = {
-        x: snake[0].x + direction.x,
-        y: snake[0].y + direction.y
-      };
-
-      if (
-        head.x < 0 || head.y < 0 ||
-        head.x >= count || head.y >= count ||
-        snake.some(part => part.x === head.x && part.y === head.y)
-      ) {
+      const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+      if (head.x < 0 || head.y < 0 || head.x >= count || head.y >= count || snake.some(part => part.x === head.x && part.y === head.y)) {
         gameOver = true;
-        statusEl.textContent = 'Game Over';
-        clearInterval(timer);
+        modeEl.textContent = copy[currentLang].gameOver;
+        clearInterval(gameTimer);
         draw();
         return;
       }
-
       snake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
         score += 1;
-        scoreEl.textContent = score;
+        timerEl.textContent = score;
         food = spawnFood();
       } else {
         snake.pop();
@@ -268,7 +378,13 @@
       nextDirection = newDir;
     });
 
+    langSelect.addEventListener('change', () => {
+      currentLang = langSelect.value;
+      applyLanguage();
+    });
+
     restartBtn.addEventListener('click', resetGame);
+    applyLanguage();
     resetGame();
   </script>
 </body>

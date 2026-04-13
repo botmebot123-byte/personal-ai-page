@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>游戏入口</title>
+  <title>Games | Yichen Hub</title>
   <link rel="icon" type="image/png" href="./assets/icon.png?v=2" />
   <style>
     body {
@@ -17,10 +17,18 @@
       margin: 0 auto;
       padding: 40px 20px 80px;
     }
-    a { color: #7c4f2d; text-decoration: none; }
-    .back { display: inline-block; margin-bottom: 20px; }
-    h1 { font-size: 42px; margin-bottom: 10px; }
-    p { color: #4b5563; }
+    a {
+      color: #7c4f2d;
+      text-decoration: none;
+    }
+    h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #4b5563;
+      line-height: 1.7;
+    }
     .card {
       margin-top: 20px;
       padding: 22px;
@@ -28,25 +36,112 @@
       background: #ffffff;
       border: 1px solid #ddd6c8;
     }
-    .card h2 { margin-top: 0; }
+    .card h2 {
+      margin-top: 0;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    select {
+      font-family: inherit;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid #d4c4ae;
+      background: #fbf7f1;
+      color: #7c4f2d;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <a class="back" href="./index.html">← 返回首页</a>
-    <h1>游戏入口</h1>
-    <p>这里放你的游戏发布页、试玩入口、更新日志和截图。</p>
+    <div class="topbar">
+      <a id="backLink" href="./index.html">← Back to home</a>
+      <select id="langSelect">
+        <option value="en">English</option>
+        <option value="zh">简体中文</option>
+        <option value="mix">Combine</option>
+      </select>
+    </div>
+
+    <h1 id="title">Games</h1>
+    <p id="subtitle">This section holds game project pages, playable demos, updates, and release notes.</p>
 
     <div class="card">
-      <h2>Snake Game</h2>
-      <p>A simple browser snake game built as an early project for the hub.</p>
-      <p><a href="./snake.html">Open Snake Game</a></p>
+      <h2 id="snakeTitle">Snake Game</h2>
+      <p id="snakeDesc">A simple browser snake game built as an early project for the hub.</p>
+      <p><a id="snakeLink" href="./snake.html">Open Snake Game</a></p>
     </div>
 
     <div class="card">
-      <h2>Future Game Project</h2>
-      <p>This section can be used later for upcoming game releases and prototypes.</p>
+      <h2 id="futureTitle">Future Game Project</h2>
+      <p id="futureDesc">This section can be used later for upcoming game releases and prototypes.</p>
     </div>
   </div>
+
+  <script>
+    const copy = {
+      en: {
+        back: '← Back to home',
+        title: 'Games',
+        subtitle: 'This section holds game project pages, playable demos, updates, and release notes.',
+        snakeTitle: 'Snake Game',
+        snakeDesc: 'A simple browser snake game built as an early project for the hub.',
+        snakeLink: 'Open Snake Game',
+        futureTitle: 'Future Game Project',
+        futureDesc: 'This section can be used later for upcoming game releases and prototypes.'
+      },
+      zh: {
+        back: '← 返回主页',
+        title: '游戏',
+        subtitle: '这里放游戏项目页面、可玩 demo、更新内容和发布说明。',
+        snakeTitle: '贪吃蛇',
+        snakeDesc: '一个简单的浏览器贪吃蛇游戏，作为这个主页里的早期项目。',
+        snakeLink: '打开贪吃蛇',
+        futureTitle: '未来游戏项目',
+        futureDesc: '这里以后可以放新的游戏发布和原型项目。'
+      },
+      mix: {
+        back: '← 返回主页',
+        title: '游戏 Games',
+        subtitle: '这里放 game project pages、playable demos、更新内容和 release notes。',
+        snakeTitle: '贪吃蛇 Snake Game',
+        snakeDesc: '一个简单的 browser snake game，作为这个 hub 里的早期项目。',
+        snakeLink: '打开贪吃蛇 Open Snake Game',
+        futureTitle: '未来游戏项目 Future Game Project',
+        futureDesc: '这里以后可以放新的 game releases 和 prototype projects。'
+      }
+    };
+
+    const ids = ['back','title','subtitle','snakeTitle','snakeDesc','snakeLink','futureTitle','futureDesc'];
+    const langSelect = document.getElementById('langSelect');
+    let currentLang = localStorage.getItem('yh-lang') || 'en';
+
+    function applyLanguage() {
+      const t = copy[currentLang];
+      document.getElementById('backLink').textContent = t.back;
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('subtitle').textContent = t.subtitle;
+      document.getElementById('snakeTitle').textContent = t.snakeTitle;
+      document.getElementById('snakeDesc').textContent = t.snakeDesc;
+      document.getElementById('snakeLink').textContent = t.snakeLink;
+      document.getElementById('futureTitle').textContent = t.futureTitle;
+      document.getElementById('futureDesc').textContent = t.futureDesc;
+      langSelect.value = currentLang;
+      localStorage.setItem('yh-lang', currentLang);
+    }
+
+    langSelect.addEventListener('change', () => {
+      currentLang = langSelect.value;
+      applyLanguage();
+    });
+
+    applyLanguage();
+  </script>
 </body>
 </html>
