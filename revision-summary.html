@@ -71,12 +71,13 @@
       border-bottom: 1px dashed #b08968;
       cursor: pointer;
       font-weight: 700;
+      white-space: nowrap;
     }
     #termPopup {
       position: fixed;
       right: 20px;
       bottom: 20px;
-      max-width: 320px;
+      max-width: 340px;
       padding: 14px 16px;
       border-radius: 12px;
       background: #fffaf3;
@@ -106,226 +107,291 @@
     <h1 id="title">Revision Summary</h1>
     <p id="subtitle">A combined revision summary for the current Biology, Chemistry, Geography, and Maths materials.</p>
 
-    <div class="card">
-      <h3 id="useTitle">How to use this page</h3>
-      <ul>
-        <li id="use1">Use Biology for living systems, digestion, molecules, and immunity.</li>
-        <li id="use2">Use Chemistry for atomic structure, ions, ionic compounds, and acids and bases.</li>
-        <li id="use3">Use Geography for tectonic hazards and Earth structure.</li>
-        <li id="use4">Use Maths for methods, formulas, graph skills, quadratics, and algebraic fractions.</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3 id="linksTitle">Helpful reference links</h3>
-      <ul>
-        <li><a href="https://www.khanacademy.org/science/biology" target="_blank" rel="noopener noreferrer">Khan Academy Biology</a></li>
-        <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li>
-        <li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li>
-        <li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li>
-        <li><a href="https://www.nationalgeographic.org/education/" target="_blank" rel="noopener noreferrer">National Geographic Education</a></li>
-      </ul>
-      <p id="linksDesc">These are reference links only, meant to support revision when you want a second explanation.</p>
-    </div>
+    <div class="card" id="useCard"></div>
+    <div class="card" id="linksCard"></div>
 
     <h2 id="bioTitle">Biology</h2>
-    <div class="card"><h3>Biological Molecules</h3><p id="bio1">Main nutrients include carbohydrates, lipids, proteins, vitamins, minerals, and water.</p></div>
-    <div class="card"><h3>Digestive System</h3><p id="bio2">The alimentary canal includes the mouth, <span class="term" data-term="digestion">digestion</span>, small intestine, large intestine, and anus.</p></div>
-    <div class="card"><h3>Defence Against Infectious Disease</h3><p id="bio3">White blood cells defend the body: lymphocytes produce antibodies, phagocytes engulf <span class="term" data-term="pathogen">pathogens</span> and help build <span class="term" data-term="immunity">immunity</span>.</p></div>
+    <div class="card" id="bioCard1"></div>
+    <div class="card" id="bioCard2"></div>
+    <div class="card" id="bioCard3"></div>
 
     <h2 id="chemTitle">Chemistry</h2>
-    <div class="card"><h3>Atomic Structure</h3><p id="chem1">Atoms contain equal numbers of protons and electrons, so they are neutral.</p></div>
-    <div class="card"><h3>Ions and Ionic Compounds</h3><p id="chem2">Metals lose electrons to form <span class="term" data-term="ion">cations</span>, while non-metals gain electrons to form anions.</p></div>
-    <div class="card"><h3>Acids and Bases</h3><p id="chem3">Acids react with bases to form salt and water; an <span class="term" data-term="alkali">alkali</span> is a soluble base.</p></div>
+    <div class="card" id="chemCard1"></div>
+    <div class="card" id="chemCard2"></div>
+    <div class="card" id="chemCard3"></div>
 
     <h2 id="geoTitle">Geography</h2>
-    <div class="card"><h3>Tectonic Hazards</h3><p id="geo1">The Earth has four main layers and <span class="term" data-term="tectonic plate">tectonic plates</span> are responsible for earthquakes and volcanoes.</p></div>
+    <div class="card" id="geoCard1"></div>
 
     <h2 id="mathTitle">Maths</h2>
-    <div class="card"><h3 id="mathStructTitle">Key Maths Structure</h3><p id="mathStruct">Linear graphs, simultaneous equations, expansion and factorisation, quadratics, and algebraic fractions are the main revision areas here.</p></div>
-    <div class="card"><h3>Linear Graphs and Simultaneous Equations</h3><p id="math1">Horizontal lines have equations y = c, vertical lines have equations x = a, and simultaneous equations can be solved by elimination, substitution, or graphical method.</p></div>
-    <div class="card"><h3>Expansion and Special Products</h3><p id="math2">Use the distributive law to expand, combine like terms, and remember identities such as (a + b)^2, (a - b)^2, and a^2 - b^2.</p></div>
-    <div class="card"><h3>Quadratic Equations and Graphs</h3><p id="math3"><span class="term" data-term="quadratic">Quadratic</span> equations can be solved by <span class="term" data-term="factorisation">factorisation</span> and graphs have a turning point and a line of symmetry.</p></div>
-    <div class="card"><h3>Algebraic Fractions</h3><p id="math4">Factorise first, cancel common factors only, and use the LCM or LCD when adding or subtracting <span class="term" data-term="algebraic fraction">algebraic fractions</span>.</p></div>
-    <div id="termPopup"></div>
+    <div class="card" id="mathCard0"></div>
+    <div class="card" id="mathCard1"></div>
+    <div class="card" id="mathCard2"></div>
+    <div class="card" id="mathCard3"></div>
+    <div class="card" id="mathCard4"></div>
   </div>
 
+  <div id="termPopup"></div>
+
   <script>
-    const copy = {
-      en: {
-        back: '← Back to home',
-        title: 'Revision Summary',
-        subtitle: 'A combined revision summary for the current Biology, Chemistry, Geography, and Maths materials.',
-        useTitle: 'How to use this page',
-        use1: 'Use Biology for living systems, digestion, molecules, and immunity.',
-        use2: 'Use Chemistry for atomic structure, ions, ionic compounds, and acids and bases.',
-        use3: 'Use Geography for tectonic hazards and Earth structure.',
-        use4: 'Use Maths for methods, formulas, graph skills, quadratics, and algebraic fractions.',
-        linksTitle: 'Helpful reference links',
-        linksDesc: 'These are reference links only, meant to support revision when you want a second explanation.',
-        bioTitle: 'Biology',
-        chemTitle: 'Chemistry',
-        geoTitle: 'Geography',
-        mathTitle: 'Maths',
-        mathStructTitle: 'Key Maths Structure',
-        mathStruct: 'Linear graphs, simultaneous equations, expansion and factorisation, quadratics, and algebraic fractions are the main revision areas here.',
-        bio1: 'Main nutrients include carbohydrates, lipids, proteins, vitamins, minerals, and water.',
-        bio2: 'The alimentary canal includes the mouth, oesophagus, stomach, small intestine, large intestine, and anus.',
-        bio3: 'White blood cells defend the body: lymphocytes produce antibodies, phagocytes engulf pathogens.',
-        chem1: 'Atoms contain equal numbers of protons and electrons, so they are neutral.',
-        chem2: 'Metals lose electrons to form cations, while non-metals gain electrons to form anions.',
-        chem3: 'Acids react with bases to form salt and water; an alkali is a soluble base.',
-        geo1: 'The Earth has four main layers and tectonic plates are responsible for earthquakes and volcanoes.',
-        math1: 'Horizontal lines have equations y = c, vertical lines have equations x = a, and simultaneous equations can be solved by elimination, substitution, or graphical method.',
-        math2: 'Use the distributive law to expand, combine like terms, and remember identities such as (a + b)^2, (a - b)^2, and a^2 - b^2.',
-        math3: 'Quadratic equations can be solved by factorisation and graphs have a turning point and a line of symmetry.',
-        math4: 'Factorise first, cancel common factors only, and use the LCM or LCD when adding or subtracting fractions.'
-      },
-      zh: {
-        back: '← 返回主页', title: '复习总结', subtitle: '这里整理了目前 Biology、Chemistry、Geography 和 Maths 的综合复习内容。',
-        useTitle: '如何使用本页', use1: 'Biology 主要看生命系统、消化、生物分子和免疫。', use2: 'Chemistry 主要看原子结构、离子、离子化合物以及酸和碱。', use3: 'Geography 主要看构造灾害和地球结构。', use4: 'Maths 主要看方法、公式、图像技巧、二次方程和代数分式。',
-        linksTitle: '参考链接', linksDesc: '这些只是参考资源，用来在你想看第二种讲解时辅助复习。',
-        bioTitle: '生物', chemTitle: '化学', geoTitle: '地理', mathTitle: '数学', mathStructTitle: '数学结构', mathStruct: '这里的重点包括线性图像、联立方程、展开与因式分解、二次部分和代数分式。',
-        bio1: '主要营养包括 carbohydrates、lipids、proteins、vitamins、minerals 和 water。', bio2: '消化道包括 mouth、oesophagus、stomach、small intestine、large intestine 和 anus。', bio3: '白细胞负责防御：lymphocytes 产生 antibodies，phagocytes 吞噬病原体。',
-        chem1: '原子中 proton 和 electron 数目相等，所以整体不带电。', chem2: '金属失去电子形成 cations，非金属得到电子形成 anions。', chem3: '酸和碱反应生成 salt 和 water；可溶性的 base 叫 alkali。',
-        geo1: '地球有四个主要层次，tectonic plates 与地震和火山有关。',
-        math1: '水平线方程是 y = c，竖直线方程是 x = a，联立方程可用 elimination、substitution 或 graphical method。',
-        math2: '用 distributive law 展开，合并 like terms，并记住 (a + b)^2、(a - b)^2 和 a^2 - b^2。',
-        math3: '二次方程可用 factorisation 解，图像有 turning point 和 line of symmetry。',
-        math4: '先 factorise，再约去 common factors；加减代数分式时用 LCM 或 LCD。'
-      },
-      mix: {
-        back: '← 返回主页', title: '复习总结 Revision Summary', subtitle: '这里整理了目前 Biology、Chemistry、Geography 和 Maths 的 combined revision 内容。',
-        useTitle: '如何使用本页 How to use this page', use1: 'Biology 主要看 living systems、digestion、molecules 和 immunity。', use2: 'Chemistry 主要看 atomic structure、ions、ionic compounds 以及 acids and bases。', use3: 'Geography 主要看 tectonic hazards 和 Earth structure。', use4: 'Maths 主要看 methods、formulas、graph skills、quadratics 和 algebraic fractions。',
-        linksTitle: '参考链接 Helpful reference links', linksDesc: '这些只是 reference links，用来在你想看第二种 explanation 时辅助 revision。',
-        bioTitle: '生物 Biology', chemTitle: '化学 Chemistry', geoTitle: '地理 Geography', mathTitle: '数学 Maths', mathStructTitle: '数学结构 Key Maths Structure', mathStruct: '重点包括 linear graphs、simultaneous equations、expansion and factorisation、quadratics 和 algebraic fractions。',
-        bio1: '主要营养包括 carbohydrates、lipids、proteins、vitamins、minerals 和 water。', bio2: '消化道包括 mouth、oesophagus、stomach、small intestine、large intestine 和 anus。', bio3: '白细胞负责 defence：lymphocytes 产生 antibodies，phagocytes 吞噬 pathogens。',
-        chem1: '原子中 proton 和 electron 数目相等，所以整体 neutral。', chem2: '金属失去 electrons 形成 cations，非金属得到 electrons 形成 anions。', chem3: '酸和碱反应生成 salt 和 water；可溶性的 base 叫 alkali。',
-        geo1: '地球有四个主要 layers，tectonic plates 与 earthquakes 和 volcanoes 有关。',
-        math1: '水平线方程是 y = c，竖直线方程是 x = a，联立方程可用 elimination、substitution 或 graphical method。',
-        math2: '用 distributive law 展开，合并 like terms，并记住 (a + b)^2、(a - b)^2 和 a^2 - b^2。',
-        math3: '二次方程可用 factorisation 解，graph 有 turning point 和 line of symmetry。',
-        math4: '先 factorise，再约去 common factors；加减代数分式时用 LCM 或 LCD。'
-      }
-    };
-
-    const ids = ['back','title','subtitle','useTitle','use1','use2','use3','use4','linksTitle','linksDesc','bioTitle','chemTitle','geoTitle','mathTitle','mathStructTitle','mathStruct','bio1','bio2','bio3','chem1','chem2','chem3','geo1','math1','math2','math3','math4'];
-    const langSelect = document.getElementById('langSelect');
-    let currentLang = localStorage.getItem('yh-lang') || 'en';
-
-    function applyLanguage() {
-      const t = copy[currentLang];
-      document.getElementById('backLink').textContent = t.back;
-      ids.slice(1).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = t[id];
-      });
-      langSelect.value = currentLang;
-      localStorage.setItem('yh-lang', currentLang);
-    }
-
-    const termDict = {
-      'digestion': {
+    const glossary = {
+      digestion: {
         en: 'the process of breaking down food into simpler substances that can be absorbed',
         zh: '消化，把食物分解成可被吸收的小分子',
         mix: '消化，breaking down food into absorbable substances'
       },
-      'pathogen': {
+      pathogen: {
         en: 'a disease-causing microorganism',
         zh: '病原体，会引起疾病的微生物',
         mix: '病原体，disease-causing microorganism'
       },
-      'immunity': {
+      immunity: {
         en: 'the body’s ability to resist a particular infection or disease',
         zh: '免疫力，身体抵抗特定感染或疾病的能力',
         mix: '免疫力，the body’s ability to resist infection'
       },
-      'ion': {
-        en: 'a charged particle formed when an atom gains or loses electrons',
-        zh: '离子，原子得到或失去电子后形成的带电粒子',
-        mix: '离子，charged particle formed by gaining or losing electrons'
-      },
-      'alkali': {
-        en: 'a soluble base that dissolves in water',
-        zh: '碱，能溶于水的碱性物质',
-        mix: '碱，soluble base in water'
-      },
-      'tectonic plate': {
-        en: 'a large section of the Earth’s lithosphere that moves slowly',
-        zh: '板块，地球岩石圈中缓慢移动的大块区域',
-        mix: '板块，large moving section of the lithosphere'
-      },
-      'quadratic': {
-        en: 'related to expressions or equations involving x squared',
-        zh: '二次的，和平方项有关的表达式或方程',
-        mix: '二次的，related to x squared'
-      },
-      'factorisation': {
-        en: 'rewriting an expression as a product of factors',
-        zh: '因式分解，把式子写成几个因式相乘的形式',
-        mix: '因式分解，rewriting as a product of factors'
-      },
-      'algebraic fraction': {
-        en: 'a fraction that contains algebraic expressions in the numerator or denominator',
-        zh: '代数分式，分子或分母含有代数式的分式',
-        mix: '代数分式，fraction with algebraic expressions'
-      },
-      'carbohydrates': {
-        en: 'nutrients such as sugars and starch that provide energy',
+      carbohydrates: {
+        en: 'nutrients such as sugars and starch that mainly provide energy',
         zh: '碳水化合物，如糖和淀粉，主要提供能量',
         mix: '碳水化合物，nutrients that mainly provide energy'
       },
-      'lipids': {
+      lipids: {
         en: 'fats and oils used for energy storage and cell structures',
         zh: '脂类，包括脂肪和油，用于储能和构成细胞结构',
         mix: '脂类，fats and oils for storage and structure'
       },
-      'proteins': {
+      proteins: {
         en: 'large biological molecules made of amino acids',
         zh: '蛋白质，由氨基酸组成的大分子',
         mix: '蛋白质，large molecules made of amino acids'
       },
-      'cations': {
+      ion: {
+        en: 'a charged particle formed when an atom gains or loses electrons',
+        zh: '离子，原子得到或失去电子后形成的带电粒子',
+        mix: '离子，charged particle formed by gaining or losing electrons'
+      },
+      cations: {
         en: 'positively charged ions',
         zh: '阳离子，带正电的离子',
         mix: '阳离子，positively charged ions'
       },
-      'anions': {
+      anions: {
         en: 'negatively charged ions',
         zh: '阴离子，带负电的离子',
         mix: '阴离子，negatively charged ions'
       },
-      'distributive law': {
+      alkali: {
+        en: 'a soluble base that dissolves in water',
+        zh: '碱，能溶于水的碱性物质',
+        mix: '碱，soluble base in water'
+      },
+      tectonicPlate: {
+        en: 'a large section of the Earth’s lithosphere that moves slowly',
+        zh: '板块，地球岩石圈中缓慢移动的大块区域',
+        mix: '板块，large moving section of the lithosphere'
+      },
+      quadratic: {
+        en: 'related to expressions or equations involving x squared',
+        zh: '二次的，和平方项有关的表达式或方程',
+        mix: '二次的，related to x squared'
+      },
+      factorisation: {
+        en: 'rewriting an expression as a product of factors',
+        zh: '因式分解，把式子写成几个因式相乘的形式',
+        mix: '因式分解，rewriting as a product of factors'
+      },
+      algebraicFractions: {
+        en: 'fractions containing algebraic expressions in the numerator or denominator',
+        zh: '代数分式，分子或分母含有代数式的分式',
+        mix: '代数分式，fractions with algebraic expressions'
+      },
+      distributiveLaw: {
         en: 'a rule used to expand brackets by multiplying each term inside',
         zh: '分配律，把括号外的数乘到括号内每一项',
         mix: '分配律，rule for expanding brackets term by term'
       },
-      'line of symmetry': {
+      lineOfSymmetry: {
         en: 'a line that divides a graph into two mirror halves',
         zh: '对称轴，把图像分成左右镜像两半的直线',
         mix: '对称轴，line dividing a graph into mirror halves'
       },
-      'LCM': {
+      LCM: {
         en: 'lowest common multiple',
         zh: '最小公倍数',
         mix: '最小公倍数，lowest common multiple'
       },
-      'LCD': {
+      LCD: {
         en: 'lowest common denominator',
         zh: '最小公分母',
         mix: '最小公分母，lowest common denominator'
       }
     };
 
+    const content = {
+      en: {
+        back: '← Back to home',
+        title: 'Revision Summary',
+        subtitle: 'A combined revision summary for the current Biology, Chemistry, Geography, and Maths materials.',
+        bioTitle: 'Biology',
+        chemTitle: 'Chemistry',
+        geoTitle: 'Geography',
+        mathTitle: 'Maths',
+        useCard: `
+          <h3>How to use this page</h3>
+          <ul>
+            <li>Use Biology for living systems, <span class="term" data-term="digestion">digestion</span>, molecules, and <span class="term" data-term="immunity">immunity</span>.</li>
+            <li>Use Chemistry for atomic structure, <span class="term" data-term="ion">ions</span>, ionic compounds, and acids and bases.</li>
+            <li>Use Geography for tectonic hazards and Earth structure.</li>
+            <li>Use Maths for methods, formulas, graph skills, <span class="term" data-term="quadratic">quadratics</span>, and <span class="term" data-term="algebraicFractions">algebraic fractions</span>.</li>
+          </ul>
+        `,
+        linksCard: `
+          <h3>Helpful reference links</h3>
+          <ul>
+            <li><a href="https://www.khanacademy.org/science/biology" target="_blank" rel="noopener noreferrer">Khan Academy Biology</a></li>
+            <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li>
+            <li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li>
+            <li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li>
+            <li><a href="https://www.nationalgeographic.org/education/" target="_blank" rel="noopener noreferrer">National Geographic Education</a></li>
+          </ul>
+          <p>These are reference links only, meant to support revision when you want a second explanation.</p>
+        `,
+        bioCard1: `<h3>Biological Molecules</h3><p>Main nutrients include <span class="term" data-term="carbohydrates">carbohydrates</span>, <span class="term" data-term="lipids">lipids</span>, <span class="term" data-term="proteins">proteins</span>, vitamins, minerals, and water.</p>`,
+        bioCard2: `<h3>Digestive System</h3><p>The alimentary canal includes the mouth, oesophagus, stomach, small intestine, large intestine, and anus. <span class="term" data-term="digestion">Digestion</span> is needed before large food molecules can be absorbed.</p>`,
+        bioCard3: `<h3>Defence Against Infectious Disease</h3><p>White blood cells defend the body: lymphocytes produce antibodies, phagocytes engulf <span class="term" data-term="pathogen">pathogens</span>, and together they help build <span class="term" data-term="immunity">immunity</span>.</p>`,
+        chemCard1: `<h3>Atomic Structure</h3><p>Atoms contain equal numbers of protons and electrons, so they are neutral.</p>`,
+        chemCard2: `<h3>Ions and Ionic Compounds</h3><p>Metals lose electrons to form <span class="term" data-term="cations">cations</span>, while non-metals gain electrons to form <span class="term" data-term="anions">anions</span>. Both are types of <span class="term" data-term="ion">ions</span>.</p>`,
+        chemCard3: `<h3>Acids and Bases</h3><p>Acids react with bases to form salt and water; an <span class="term" data-term="alkali">alkali</span> is a soluble base.</p>`,
+        geoCard1: `<h3>Tectonic Hazards</h3><p>The Earth has four main layers and <span class="term" data-term="tectonicPlate">tectonic plates</span> are responsible for earthquakes and volcanoes.</p>`,
+        mathCard0: `<h3>Key Maths Structure</h3><p>Main revision areas include linear graphs, simultaneous equations, expansion and <span class="term" data-term="factorisation">factorisation</span>, <span class="term" data-term="quadratic">quadratics</span>, and <span class="term" data-term="algebraicFractions">algebraic fractions</span>.</p>`,
+        mathCard1: `<h3>Linear Graphs and Simultaneous Equations</h3><p>Horizontal lines have equations y = c, vertical lines have equations x = a, and simultaneous equations can be solved by elimination, substitution, or graphical method.</p>`,
+        mathCard2: `<h3>Expansion and Special Products</h3><p>Use the <span class="term" data-term="distributiveLaw">distributive law</span> to expand, combine like terms, and remember identities such as (a + b)^2, (a - b)^2, and a^2 - b^2.</p>`,
+        mathCard3: `<h3>Quadratic Equations and Graphs</h3><p><span class="term" data-term="quadratic">Quadratic</span> equations can be solved by <span class="term" data-term="factorisation">factorisation</span>. Graphs have a turning point and a <span class="term" data-term="lineOfSymmetry">line of symmetry</span>.</p>`,
+        mathCard4: `<h3>Algebraic Fractions</h3><p><span class="term" data-term="factorisation">Factorisation</span> comes first. Use the <span class="term" data-term="LCM">LCM</span> or <span class="term" data-term="LCD">LCD</span> when adding or subtracting <span class="term" data-term="algebraicFractions">algebraic fractions</span>.</p>`
+      },
+      zh: {
+        back: '← 返回主页',
+        title: '复习总结',
+        subtitle: '这里整理了目前 Biology、Chemistry、Geography 和 Maths 的综合复习内容。',
+        bioTitle: '生物',
+        chemTitle: '化学',
+        geoTitle: '地理',
+        mathTitle: '数学',
+        useCard: `
+          <h3>如何使用本页</h3>
+          <ul>
+            <li>Biology 主要看生命系统、<span class="term" data-term="digestion">digestion</span>、分子和<span class="term" data-term="immunity">immunity</span>。</li>
+            <li>Chemistry 主要看原子结构、<span class="term" data-term="ion">ions</span>、离子化合物以及酸和碱。</li>
+            <li>Geography 主要看构造灾害和地球结构。</li>
+            <li>Maths 主要看方法、公式、图像技巧、<span class="term" data-term="quadratic">quadratics</span> 和<span class="term" data-term="algebraicFractions">algebraic fractions</span>。</li>
+          </ul>
+        `,
+        linksCard: `
+          <h3>参考链接</h3>
+          <ul>
+            <li><a href="https://www.khanacademy.org/science/biology" target="_blank" rel="noopener noreferrer">Khan Academy Biology</a></li>
+            <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li>
+            <li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li>
+            <li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li>
+            <li><a href="https://www.nationalgeographic.org/education/" target="_blank" rel="noopener noreferrer">National Geographic Education</a></li>
+          </ul>
+          <p>这些只是参考资源，用来在你想看第二种讲解时辅助复习。</p>
+        `,
+        bioCard1: `<h3>生物分子</h3><p>主要营养包括 <span class="term" data-term="carbohydrates">carbohydrates</span>、<span class="term" data-term="lipids">lipids</span>、<span class="term" data-term="proteins">proteins</span>、维生素、矿物质和水。</p>`,
+        bioCard2: `<h3>消化系统</h3><p>消化道包括 mouth、oesophagus、stomach、small intestine、large intestine 和 anus。大型食物分子要先经过 <span class="term" data-term="digestion">digestion</span> 才能被吸收。</p>`,
+        bioCard3: `<h3>传染病防御</h3><p>白细胞负责防御：lymphocytes 产生抗体，phagocytes 吞噬 <span class="term" data-term="pathogen">pathogens</span>，一起帮助建立 <span class="term" data-term="immunity">immunity</span>。</p>`,
+        chemCard1: `<h3>原子结构</h3><p>原子中 proton 和 electron 数目相等，所以整体不带电。</p>`,
+        chemCard2: `<h3>离子与离子化合物</h3><p>金属失去电子形成 <span class="term" data-term="cations">cations</span>，非金属得到电子形成 <span class="term" data-term="anions">anions</span>，它们都属于 <span class="term" data-term="ion">ions</span>。</p>`,
+        chemCard3: `<h3>酸和碱</h3><p>酸和碱反应生成 salt 和 water；<span class="term" data-term="alkali">alkali</span> 是可溶于水的碱。</p>`,
+        geoCard1: `<h3>构造灾害</h3><p>地球有四个主要层次，而 <span class="term" data-term="tectonicPlate">tectonic plates</span> 与地震和火山有关。</p>`,
+        mathCard0: `<h3>数学结构</h3><p>主要复习区域包括线性图像、联立方程、展开与<span class="term" data-term="factorisation">factorisation</span>、<span class="term" data-term="quadratic">quadratics</span> 和 <span class="term" data-term="algebraicFractions">algebraic fractions</span>。</p>`,
+        mathCard1: `<h3>线性图像和联立方程</h3><p>水平线方程是 y = c，竖直线方程是 x = a，联立方程可以用 elimination、substitution 或 graphical method。</p>`,
+        mathCard2: `<h3>展开与特殊乘积</h3><p>用 <span class="term" data-term="distributiveLaw">distributive law</span> 展开，合并 like terms，并记住 (a + b)^2、(a - b)^2 和 a^2 - b^2。</p>`,
+        mathCard3: `<h3>二次方程与图像</h3><p><span class="term" data-term="quadratic">Quadratic</span> 方程可用 <span class="term" data-term="factorisation">factorisation</span> 求解。图像有 turning point 和 <span class="term" data-term="lineOfSymmetry">line of symmetry</span>。</p>`,
+        mathCard4: `<h3>代数分式</h3><p>先做 <span class="term" data-term="factorisation">factorisation</span>。加减 <span class="term" data-term="algebraicFractions">algebraic fractions</span> 时用 <span class="term" data-term="LCM">LCM</span> 或 <span class="term" data-term="LCD">LCD</span>。</p>`
+      },
+      mix: {
+        back: '← 返回主页',
+        title: '复习总结 Revision Summary',
+        subtitle: '这里整理了目前 Biology、Chemistry、Geography 和 Maths 的 combined revision 内容。',
+        bioTitle: '生物 Biology',
+        chemTitle: '化学 Chemistry',
+        geoTitle: '地理 Geography',
+        mathTitle: '数学 Maths',
+        useCard: `
+          <h3>如何使用本页 How to use this page</h3>
+          <ul>
+            <li>Biology 主要看 living systems、<span class="term" data-term="digestion">digestion</span>、molecules 和 <span class="term" data-term="immunity">immunity</span>。</li>
+            <li>Chemistry 主要看 atomic structure、<span class="term" data-term="ion">ions</span>、ionic compounds 以及 acids and bases。</li>
+            <li>Geography 主要看 tectonic hazards 和 Earth structure。</li>
+            <li>Maths 主要看 methods、formulas、graph skills、<span class="term" data-term="quadratic">quadratics</span> 和 <span class="term" data-term="algebraicFractions">algebraic fractions</span>。</li>
+          </ul>
+        `,
+        linksCard: `
+          <h3>参考链接 Helpful reference links</h3>
+          <ul>
+            <li><a href="https://www.khanacademy.org/science/biology" target="_blank" rel="noopener noreferrer">Khan Academy Biology</a></li>
+            <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li>
+            <li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li>
+            <li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li>
+            <li><a href="https://www.nationalgeographic.org/education/" target="_blank" rel="noopener noreferrer">National Geographic Education</a></li>
+          </ul>
+          <p>这些只是 reference links，用来在你想看第二种 explanation 时辅助 revision。</p>
+        `,
+        bioCard1: `<h3>Biological Molecules</h3><p>主要营养包括 <span class="term" data-term="carbohydrates">carbohydrates</span>、<span class="term" data-term="lipids">lipids</span>、<span class="term" data-term="proteins">proteins</span>、vitamins、minerals 和 water。</p>`,
+        bioCard2: `<h3>Digestive System</h3><p>消化道包括 mouth、oesophagus、stomach、small intestine、large intestine 和 anus。大型食物分子要先经过 <span class="term" data-term="digestion">digestion</span> 才能被吸收。</p>`,
+        bioCard3: `<h3>Defence Against Infectious Disease</h3><p>白细胞负责 defence：lymphocytes 产生 antibodies，phagocytes 吞噬 <span class="term" data-term="pathogen">pathogens</span>，一起帮助建立 <span class="term" data-term="immunity">immunity</span>。</p>`,
+        chemCard1: `<h3>Atomic Structure</h3><p>原子中 proton 和 electron 数目相等，所以整体 neutral。</p>`,
+        chemCard2: `<h3>Ions and Ionic Compounds</h3><p>金属失去 electrons 形成 <span class="term" data-term="cations">cations</span>，非金属得到 electrons 形成 <span class="term" data-term="anions">anions</span>，它们都属于 <span class="term" data-term="ion">ions</span>。</p>`,
+        chemCard3: `<h3>Acids and Bases</h3><p>酸和碱反应生成 salt 和 water；<span class="term" data-term="alkali">alkali</span> 是 soluble base。</p>`,
+        geoCard1: `<h3>Tectonic Hazards</h3><p>地球有四个主要 layers，而 <span class="term" data-term="tectonicPlate">tectonic plates</span> 与 earthquakes 和 volcanoes 有关。</p>`,
+        mathCard0: `<h3>Key Maths Structure</h3><p>主要复习区域包括 linear graphs、simultaneous equations、expansion and <span class="term" data-term="factorisation">factorisation</span>、<span class="term" data-term="quadratic">quadratics</span> 和 <span class="term" data-term="algebraicFractions">algebraic fractions</span>。</p>`,
+        mathCard1: `<h3>Linear Graphs and Simultaneous Equations</h3><p>水平线方程是 y = c，竖直线方程是 x = a，联立方程可以用 elimination、substitution 或 graphical method。</p>`,
+        mathCard2: `<h3>Expansion and Special Products</h3><p>用 <span class="term" data-term="distributiveLaw">distributive law</span> 展开，合并 like terms，并记住 (a + b)^2、(a - b)^2 和 a^2 - b^2。</p>`,
+        mathCard3: `<h3>Quadratic Equations and Graphs</h3><p><span class="term" data-term="quadratic">Quadratic</span> 方程可用 <span class="term" data-term="factorisation">factorisation</span> 求解。graph 有 turning point 和 <span class="term" data-term="lineOfSymmetry">line of symmetry</span>。</p>`,
+        mathCard4: `<h3>Algebraic Fractions</h3><p>先做 <span class="term" data-term="factorisation">factorisation</span>。加减 <span class="term" data-term="algebraicFractions">algebraic fractions</span> 时用 <span class="term" data-term="LCM">LCM</span> 或 <span class="term" data-term="LCD">LCD</span>。</p>`
+      }
+    };
+
+    const langSelect = document.getElementById('langSelect');
     const popup = document.getElementById('termPopup');
+    let currentLang = localStorage.getItem('yh-lang') || 'en';
+
+    function renderPage() {
+      const t = content[currentLang];
+      document.getElementById('backLink').textContent = t.back;
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('subtitle').textContent = t.subtitle;
+      document.getElementById('bioTitle').textContent = t.bioTitle;
+      document.getElementById('chemTitle').textContent = t.chemTitle;
+      document.getElementById('geoTitle').textContent = t.geoTitle;
+      document.getElementById('mathTitle').textContent = t.mathTitle;
+      document.getElementById('useCard').innerHTML = t.useCard;
+      document.getElementById('linksCard').innerHTML = t.linksCard;
+      document.getElementById('bioCard1').innerHTML = t.bioCard1;
+      document.getElementById('bioCard2').innerHTML = t.bioCard2;
+      document.getElementById('bioCard3').innerHTML = t.bioCard3;
+      document.getElementById('chemCard1').innerHTML = t.chemCard1;
+      document.getElementById('chemCard2').innerHTML = t.chemCard2;
+      document.getElementById('chemCard3').innerHTML = t.chemCard3;
+      document.getElementById('geoCard1').innerHTML = t.geoCard1;
+      document.getElementById('mathCard0').innerHTML = t.mathCard0;
+      document.getElementById('mathCard1').innerHTML = t.mathCard1;
+      document.getElementById('mathCard2').innerHTML = t.mathCard2;
+      document.getElementById('mathCard3').innerHTML = t.mathCard3;
+      document.getElementById('mathCard4').innerHTML = t.mathCard4;
+      langSelect.value = currentLang;
+      localStorage.setItem('yh-lang', currentLang);
+      bindTerms();
+    }
 
     function bindTerms() {
       document.querySelectorAll('.term').forEach(el => {
         el.onclick = () => {
-          const term = el.dataset.term;
-          const entry = termDict[term];
+          const key = el.dataset.term;
+          const entry = glossary[key];
           if (!entry) return;
-          popup.innerHTML = `<strong>${term}</strong>${entry[currentLang]}`;
+          popup.innerHTML = `<strong>${el.textContent}</strong>${entry[currentLang]}`;
           popup.style.display = 'block';
         };
       });
@@ -343,13 +409,11 @@
 
     langSelect.addEventListener('change', () => {
       currentLang = langSelect.value;
-      applyLanguage();
-      bindTerms();
       popup.style.display = 'none';
+      renderPage();
     });
 
-    applyLanguage();
-    bindTerms();
+    renderPage();
   </script>
 </body>
 </html>
