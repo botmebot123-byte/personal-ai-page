@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yichen Hub</title>
+  <title>Snake Game | Yichen Hub</title>
   <link rel="icon" type="image/png" href="./assets/icon.png?v=2" />
   <style>
     body {
@@ -19,11 +19,7 @@
     }
     h1 {
       margin-bottom: 10px;
-      font-size: 46px;
-    }
-    p {
-      line-height: 1.75;
-      font-size: 16px;
+      font-size: 44px;
     }
     h2 {
       margin-top: 34px;
@@ -31,47 +27,46 @@
       border-bottom: 1px solid #d6cfc3;
       padding-bottom: 8px;
     }
+    p, li {
+      line-height: 1.75;
+      font-size: 16px;
+    }
     .hero {
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
     .hero p {
       color: #4b5563;
       max-width: 760px;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px;
-      margin-top: 24px;
-    }
-    .panel, .item {
+    .card {
+      margin-top: 18px;
       padding: 22px;
       border-radius: 16px;
       background: #ffffff;
       border: 1px solid #ddd6c8;
     }
-    .panel h3, .item strong {
-      margin-top: 0;
-      font-size: 22px;
-      display: block;
-      margin-bottom: 8px;
+    .game-shell {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 1px solid #ddd6c8;
+      text-align: center;
     }
-    .panel p, .item span {
-      color: #4b5563;
+    canvas {
+      background: #0f172a;
+      border: 3px solid #334155;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+      max-width: 100%;
     }
-    .tag {
-      display: inline-block;
-      font-size: 12px;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-      padding: 5px 10px;
-      border-radius: 999px;
-      margin-bottom: 12px;
-      color: #5b4636;
-      background: #efe7da;
-    }
-    .links {
-      margin-top: 14px;
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      margin: 12px auto 0;
+      width: 400px;
+      max-width: 90vw;
+      font-weight: 700;
     }
     .btn, a {
       color: #7c4f2d;
@@ -79,20 +74,16 @@
     }
     .btn {
       display: inline-block;
-      margin-top: 8px;
+      margin-top: 12px;
       padding: 10px 14px;
       border: 1px solid #d4c4ae;
       border-radius: 10px;
       background: #fbf7f1;
       font-weight: 700;
+      cursor: pointer;
     }
-    .section {
-      margin-top: 34px;
-    }
-    .list {
-      display: grid;
-      gap: 14px;
-      margin-top: 14px;
+    ul {
+      padding-left: 20px;
     }
     footer {
       margin-top: 44px;
@@ -104,38 +95,171 @@
 </head>
 <body>
   <div class="wrap">
+    <a href="./games.html">← Back to games</a>
+
     <section class="hero">
-      <h1>Yichen Hub</h1>
+      <h1>Snake Game</h1>
       <p>
-        A personal academic-style hub for my games, study materials, revision notes, and chat records. Built as a quiet working space rather than a flashy homepage.
+        A simple browser snake game added as an early game project on Yichen Hub. It is lightweight, playable in the browser, and useful as a small coding demo.
       </p>
     </section>
 
-    <section>
-      <h2>Main Sections</h2>
-      <div class="grid">
-        <div class="panel">
-          <div class="tag">Games</div>
-          <h3>Games</h3>
-          <p>Project pages, browser game links, screenshots, updates, and release notes.</p>
-          <a class="btn" href="./games.html">Open games</a>
-        </div>
+    <div class="game-shell">
+      <canvas id="game" width="400" height="400"></canvas>
+      <div class="meta">
+        <span>Score: <span id="score">0</span></span>
+        <span id="status">Running</span>
+      </div>
+      <button class="btn" id="restart">Restart</button>
+    </div>
 
-        <div class="panel">
-          <div class="tag">Study</div>
-          <h3>Study Materials</h3>
-          <p>Notes, resources, revision topics, chat notes, and subject-based learning materials.</p>
-          <div class="links">
-            <p><a href="./notes.html">Open chat notes</a></p>
-            <p><a href="./revision-summary.html">Open revision summary</a></p>
-          </div>
-        </div>
+    <section>
+      <h2>Project Description</h2>
+      <div class="card">
+        <p>
+          This project demonstrates a basic browser game built with HTML, CSS, and JavaScript. The objective is to control the snake, collect food, and grow longer without crashing into the wall or into the snake’s own body.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Controls</h2>
+      <div class="card">
+        <ul>
+          <li>Use the arrow keys to move the snake.</li>
+          <li>Eat the red food to increase your score.</li>
+          <li>Avoid hitting the wall or yourself.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Version Info</h2>
+      <div class="card">
+        <p><strong>Version:</strong> 1.0</p>
+        <p><strong>Status:</strong> Playable prototype</p>
       </div>
     </section>
 
     <footer>
-      Academic, simple, and built for personal use.
+      Snake Game project page on Yichen Hub.
     </footer>
   </div>
+
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+    const statusEl = document.getElementById('status');
+    const restartBtn = document.getElementById('restart');
+
+    const size = 20;
+    const count = canvas.width / size;
+    let snake, direction, nextDirection, food, score, timer, gameOver;
+
+    function resetGame() {
+      snake = [{ x: 10, y: 10 }];
+      direction = { x: 1, y: 0 };
+      nextDirection = { x: 1, y: 0 };
+      food = spawnFood();
+      score = 0;
+      gameOver = false;
+      scoreEl.textContent = score;
+      statusEl.textContent = 'Running';
+      clearInterval(timer);
+      timer = setInterval(update, 120);
+      draw();
+    }
+
+    function spawnFood() {
+      let newFood;
+      do {
+        newFood = {
+          x: Math.floor(Math.random() * count),
+          y: Math.floor(Math.random() * count)
+        };
+      } while (snake && snake.some(part => part.x === newFood.x && part.y === newFood.y));
+      return newFood;
+    }
+
+    function update() {
+      if (gameOver) return;
+      direction = nextDirection;
+      const head = {
+        x: snake[0].x + direction.x,
+        y: snake[0].y + direction.y
+      };
+
+      if (
+        head.x < 0 || head.y < 0 ||
+        head.x >= count || head.y >= count ||
+        snake.some(part => part.x === head.x && part.y === head.y)
+      ) {
+        gameOver = true;
+        statusEl.textContent = 'Game Over';
+        clearInterval(timer);
+        draw();
+        return;
+      }
+
+      snake.unshift(head);
+      if (head.x === food.x && head.y === food.y) {
+        score += 1;
+        scoreEl.textContent = score;
+        food = spawnFood();
+      } else {
+        snake.pop();
+      }
+      draw();
+    }
+
+    function drawCell(x, y, color, radius = 4) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.roundRect(x * size + 1, y * size + 1, size - 2, size - 2, radius);
+      ctx.fill();
+    }
+
+    function drawGrid() {
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= count; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * size, 0);
+        ctx.lineTo(i * size, canvas.height);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, i * size);
+        ctx.lineTo(canvas.width, i * size);
+        ctx.stroke();
+      }
+    }
+
+    function draw() {
+      drawGrid();
+      drawCell(food.x, food.y, '#ef4444', 999);
+      snake.forEach((part, index) => {
+        drawCell(part.x, part.y, index === 0 ? '#22c55e' : '#86efac');
+      });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      const keyMap = {
+        ArrowUp: { x: 0, y: -1 },
+        ArrowDown: { x: 0, y: 1 },
+        ArrowLeft: { x: -1, y: 0 },
+        ArrowRight: { x: 1, y: 0 }
+      };
+      const newDir = keyMap[e.key];
+      if (!newDir) return;
+      if (newDir.x === -direction.x && newDir.y === -direction.y) return;
+      nextDirection = newDir;
+    });
+
+    restartBtn.addEventListener('click', resetGame);
+    resetGame();
+  </script>
 </body>
 </html>
