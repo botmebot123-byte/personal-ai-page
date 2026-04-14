@@ -13,7 +13,7 @@
       color: #1f2937;
     }
     .wrap {
-      max-width: 900px;
+      max-width: 980px;
       margin: 0 auto;
       padding: 40px 20px 80px;
       text-align: center;
@@ -33,10 +33,38 @@
       background: #ffffff;
       border: 1px solid #ddd6c8;
     }
-    .timer {
-      font-size: 72px;
-      margin: 18px 0;
+    .flip-clock {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 22px 0;
+    }
+    .flip-unit {
+      width: 88px;
+      height: 108px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fffaf3 0%, #efe7da 100%);
+      border: 1px solid #d8cdbd;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 8px 24px rgba(0,0,0,.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      font-weight: 700;
       color: #7c4f2d;
+      position: relative;
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .flip-unit.flip {
+      transform: rotateX(12deg);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 12px 28px rgba(124,79,45,.16);
+    }
+    .colon {
+      font-size: 52px;
+      color: #7c4f2d;
+      font-weight: 700;
     }
     .controls {
       display: flex;
@@ -44,6 +72,14 @@
       justify-content: center;
       flex-wrap: wrap;
       margin-top: 14px;
+    }
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      font-weight: 700;
     }
     .topbar {
       display: flex;
@@ -66,12 +102,31 @@
       color: #7c4f2d;
       font-weight: 700;
     }
-    button {
-      cursor: pointer;
+    button { cursor: pointer; }
+    a { color: #7c4f2d; text-decoration: none; }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
     }
-    a {
-      color: #7c4f2d;
-      text-decoration: none;
+    .overlay-card {
+      width: min(420px, 100%);
+      background: #fffaf3;
+      border: 1px solid #d6c3aa;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,.18);
+    }
+    .sound-note {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #6b7280;
     }
   </style>
 </head>
@@ -90,78 +145,116 @@
     </div>
 
     <h1 id="title">Pomodoro Clock</h1>
-    <p id="subtitle">A simple study timer for focus sessions and short breaks.</p>
+    <p id="subtitle">A study timer with a flip-style display for focus sessions and short breaks.</p>
 
     <div class="card">
       <div id="mode">Focus Session</div>
-      <div class="timer" id="timer">25:00</div>
+      <div class="flip-clock">
+        <div class="flip-unit" id="minTens">2</div>
+        <div class="flip-unit" id="minOnes">5</div>
+        <div class="colon">:</div>
+        <div class="flip-unit" id="secTens">0</div>
+        <div class="flip-unit" id="secOnes">0</div>
+      </div>
       <div class="controls">
         <button id="start">Start</button>
         <button id="pause">Pause</button>
         <button id="reset">Reset</button>
         <button id="switch">Switch Mode</button>
       </div>
+      <div class="stats">
+        <span id="focusCount">Focus sessions: 0</span>
+        <span id="breakCount">Breaks: 0</span>
+      </div>
+      <div class="sound-note" id="soundNote">Soft sounds play for start, pause, switch, and finish.</div>
+    </div>
+  </div>
+
+  <div class="overlay" id="doneOverlay">
+    <div class="overlay-card">
+      <h2 id="doneTitle">Session Complete</h2>
+      <p id="doneText">Your timer has ended.</p>
+      <button id="closeOverlay">OK</button>
     </div>
   </div>
 
   <script>
     const copy = {
       en: {
-        back: '← Back to home',
-        language: 'Language',
-        title: 'Pomodoro Clock',
-        subtitle: 'A simple study timer for focus sessions and short breaks.',
-        focus: 'Focus Session',
-        break: 'Break Time',
-        start: 'Start',
-        pause: 'Pause',
-        reset: 'Reset',
-        switchMode: 'Switch Mode',
-        focusDone: 'Focus session complete. Time for a break.',
-        breakDone: 'Break complete. Back to work.'
+        back: '← Back to home', language: 'Language', title: 'Pomodoro Clock',
+        subtitle: 'A study timer with a flip-style display for focus sessions and short breaks.',
+        focus: 'Focus Session', break: 'Break Time', start: 'Start', pause: 'Pause', reset: 'Reset', switchMode: 'Switch Mode',
+        focusDone: 'Focus session complete. Time for a break.', breakDone: 'Break complete. Back to work.',
+        focusCount: 'Focus sessions:', breakCount: 'Breaks:', soundNote: 'Soft sounds play for start, pause, switch, and finish.',
+        doneTitle: 'Session Complete', doneText: 'Your timer has ended.', ok: 'OK'
       },
       zh: {
-        back: '← 返回主页',
-        language: '语言',
-        title: '番茄钟',
-        subtitle: '一个简单的学习计时器，用于专注时段和短暂休息。',
-        focus: '专注时间',
-        break: '休息时间',
-        start: '开始',
-        pause: '暂停',
-        reset: '重置',
-        switchMode: '切换模式',
-        focusDone: '专注时间结束，可以休息了。',
-        breakDone: '休息结束，回到学习。'
+        back: '← 返回主页', language: '语言', title: '番茄钟',
+        subtitle: '一个带翻页显示效果的学习计时器，用于专注时段和短暂休息。',
+        focus: '专注时间', break: '休息时间', start: '开始', pause: '暂停', reset: '重置', switchMode: '切换模式',
+        focusDone: '专注时间结束，可以休息了。', breakDone: '休息结束，回到学习。',
+        focusCount: '专注次数：', breakCount: '休息次数：', soundNote: '开始、暂停、切换和结束时会播放轻微音效。',
+        doneTitle: '计时完成', doneText: '你的计时已经结束。', ok: '好的'
       },
       mix: {
-        back: '← 返回主页',
-        language: '语言 / Language',
-        title: '番茄钟 Pomodoro Clock',
-        subtitle: '一个简单的 study timer，用于专注时段和短暂休息。',
-        focus: '专注时间 Focus Session',
-        break: '休息时间 Break Time',
-        start: '开始 Start',
-        pause: '暂停 Pause',
-        reset: '重置 Reset',
-        switchMode: '切换模式 Switch Mode',
-        focusDone: '专注时间结束，time for a break.',
-        breakDone: '休息结束，back to work.'
+        back: '← 返回主页', language: '语言 / Language', title: '番茄钟 Pomodoro Clock',
+        subtitle: '一个带 flip-style display 的 study timer，用于专注时段和短暂休息。',
+        focus: '专注时间 Focus Session', break: '休息时间 Break Time', start: '开始 Start', pause: '暂停 Pause', reset: '重置 Reset', switchMode: '切换模式 Switch Mode',
+        focusDone: '专注时间结束，time for a break.', breakDone: '休息结束，back to work.',
+        focusCount: '专注次数 Focus sessions:', breakCount: '休息次数 Breaks:', soundNote: '开始、暂停、切换和结束时会有轻微 sound effects。',
+        doneTitle: '计时完成 Session Complete', doneText: '你的 timer 已经结束。', ok: '好的 OK'
       }
     };
 
-    const timerEl = document.getElementById('timer');
+    const units = {
+      minTens: document.getElementById('minTens'),
+      minOnes: document.getElementById('minOnes'),
+      secTens: document.getElementById('secTens'),
+      secOnes: document.getElementById('secOnes')
+    };
     const modeEl = document.getElementById('mode');
     const startBtn = document.getElementById('start');
     const pauseBtn = document.getElementById('pause');
     const resetBtn = document.getElementById('reset');
     const switchBtn = document.getElementById('switch');
     const langSelect = document.getElementById('langSelect');
+    const doneOverlay = document.getElementById('doneOverlay');
+    const closeOverlay = document.getElementById('closeOverlay');
+    const focusCountEl = document.getElementById('focusCount');
+    const breakCountEl = document.getElementById('breakCount');
 
     let currentLang = localStorage.getItem('yh-lang') || 'en';
     let focusMode = true;
     let totalSeconds = 25 * 60;
     let timer = null;
+    let lastDisplay = '2500';
+    let audioCtx;
+    const stats = JSON.parse(localStorage.getItem('yh-pomodoro-stats') || '{"focus":0,"breaks":0}');
+
+    function playTone(type = 'tap') {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = type === 'done' ? 740 : type === 'switch' ? 520 : 360;
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.08, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + (type === 'done' ? 0.25 : 0.12));
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + (type === 'done' ? 0.25 : 0.12));
+      } catch (e) {}
+    }
+
+    function updateStats() {
+      const t = copy[currentLang];
+      focusCountEl.textContent = `${t.focusCount} ${stats.focus}`;
+      breakCountEl.textContent = `${t.breakCount} ${stats.breaks}`;
+      localStorage.setItem('yh-pomodoro-stats', JSON.stringify(stats));
+    }
 
     function applyLanguage() {
       const t = copy[currentLang];
@@ -174,27 +267,53 @@
       resetBtn.textContent = t.reset;
       switchBtn.textContent = t.switchMode;
       modeEl.textContent = focusMode ? t.focus : t.break;
+      document.getElementById('soundNote').textContent = t.soundNote;
+      document.getElementById('doneTitle').textContent = t.doneTitle;
+      document.getElementById('doneText').textContent = t.doneText;
+      closeOverlay.textContent = t.ok;
       langSelect.value = currentLang;
       localStorage.setItem('yh-lang', currentLang);
+      updateStats();
+    }
+
+    function setDigit(el, nextChar, prevChar) {
+      if (nextChar === prevChar) return;
+      el.classList.add('flip');
+      el.textContent = nextChar;
+      setTimeout(() => el.classList.remove('flip'), 180);
     }
 
     function renderTime() {
       const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
       const secs = String(totalSeconds % 60).padStart(2, '0');
-      timerEl.textContent = `${mins}:${secs}`;
+      const display = `${mins}${secs}`;
+      setDigit(units.minTens, display[0], lastDisplay[0]);
+      setDigit(units.minOnes, display[1], lastDisplay[1]);
+      setDigit(units.secTens, display[2], lastDisplay[2]);
+      setDigit(units.secOnes, display[3], lastDisplay[3]);
+      lastDisplay = display;
       modeEl.textContent = focusMode ? copy[currentLang].focus : copy[currentLang].break;
+    }
+
+    function finishSession() {
+      pauseTimer();
+      if (focusMode) stats.focus += 1;
+      else stats.breaks += 1;
+      updateStats();
+      playTone('done');
+      document.getElementById('doneText').textContent = focusMode ? copy[currentLang].focusDone : copy[currentLang].breakDone;
+      doneOverlay.style.display = 'flex';
     }
 
     function startTimer() {
       if (timer) return;
+      playTone('tap');
       timer = setInterval(() => {
         if (totalSeconds > 0) {
           totalSeconds--;
           renderTime();
         } else {
-          clearInterval(timer);
-          timer = null;
-          alert(focusMode ? copy[currentLang].focusDone : copy[currentLang].breakDone);
+          finishSession();
         }
       }, 1000);
     }
@@ -202,6 +321,7 @@
     function pauseTimer() {
       clearInterval(timer);
       timer = null;
+      playTone('tap');
     }
 
     function resetTimer() {
@@ -212,7 +332,9 @@
 
     function switchMode() {
       focusMode = !focusMode;
+      playTone('switch');
       resetTimer();
+      applyLanguage();
     }
 
     langSelect.addEventListener('change', () => {
@@ -225,6 +347,9 @@
     pauseBtn.addEventListener('click', pauseTimer);
     resetBtn.addEventListener('click', resetTimer);
     switchBtn.addEventListener('click', switchMode);
+    closeOverlay.addEventListener('click', () => {
+      doneOverlay.style.display = 'none';
+    });
 
     applyLanguage();
     renderTime();
