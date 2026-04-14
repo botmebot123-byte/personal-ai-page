@@ -52,6 +52,30 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
       max-width: 100%;
     }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .overlay-card {
+      width: min(420px, 100%);
+      background: #fffaf3;
+      border: 1px solid #d6c3aa;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    }
+    .overlay-card h2 {
+      margin-top: 0;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
     .meta {
       display: flex;
       justify-content: space-between;
@@ -163,6 +187,14 @@
     <footer id="footerText">Tank Battle project page on Yichen Hub.</footer>
   </div>
 
+  <div class="overlay" id="gameOverlay">
+    <div class="overlay-card">
+      <h2 id="overlayTitle">Game Over</h2>
+      <p id="overlayText">You ran out of lives. Click below to restart the game.</p>
+      <button class="btn" id="overlayRestart">Restart</button>
+    </div>
+  </div>
+
   <script>
     const copy = {
       en: {
@@ -170,7 +202,7 @@
         subtitle: 'A fuller browser tank game with walls, lives, enemy fire, explosions, and level progression.',
         score: 'Score:', enemies: 'Enemies left:', lives: 'Lives:', level: 'Level:',
         running: 'Running', won: 'Level Clear', lost: 'Game Over',
-        restart: 'Restart', controlsTitle: 'Controls',
+        restart: 'Restart', overlayTitle: 'Game Over', overlayText: 'You ran out of lives. Click below to restart the game.', controlsTitle: 'Controls',
         c1: 'Use arrow keys to move the tank.',
         c2: 'Press the space bar to fire.',
         c3: 'Bullets can destroy walls. Enemies can also fire back.',
@@ -184,7 +216,7 @@
         subtitle: '一个更完整的浏览器坦克游戏，加入了墙体、生命值、敌人开火、爆炸特效和关卡推进。',
         score: '分数：', enemies: '剩余敌人：', lives: '生命：', level: '关卡：',
         running: '进行中', won: '本关通过', lost: '游戏结束',
-        restart: '重新开始', controlsTitle: '操作方式',
+        restart: '重新开始', overlayTitle: '游戏结束', overlayText: '你的生命值已经耗尽。点击下面按钮重新开始游戏。', controlsTitle: '操作方式',
         c1: '使用方向键移动坦克。',
         c2: '按空格键发射子弹。',
         c3: '子弹可以打掉墙，敌人也会反击。',
@@ -198,7 +230,7 @@
         subtitle: '一个更完整的 browser tank game，加入了 walls、lives、enemy fire、explosions 和 level progression。',
         score: '分数 Score:', enemies: '剩余敌人 Enemies left:', lives: '生命 Lives:', level: '关卡 Level:',
         running: '进行中 Running', won: '本关通过 Level Clear', lost: '游戏结束 Game Over',
-        restart: '重新开始 Restart', controlsTitle: '操作方式 Controls',
+        restart: '重新开始 Restart', overlayTitle: '游戏结束 Game Over', overlayText: '你的生命值已经耗尽。点击下面按钮重新开始游戏。', controlsTitle: '操作方式 Controls',
         c1: '使用 arrow keys 移动坦克。',
         c2: '按 space bar 发射子弹。',
         c3: '子弹可以打掉 walls，敌人也会 fire back。',
@@ -221,6 +253,8 @@
     const levelLabelEl = document.getElementById('levelLabel');
     const modeEl = document.getElementById('mode');
     const restartBtn = document.getElementById('restart');
+    const overlay = document.getElementById('gameOverlay');
+    const overlayRestart = document.getElementById('overlayRestart');
     const langSelect = document.getElementById('langSelect');
     const keys = {};
     let currentLang = localStorage.getItem('yh-lang') || 'en';
@@ -234,17 +268,19 @@
     }
 
     function buildWalls(levelNum) {
-      const base = [
-        { x: 4, y: 4 }, { x: 5, y: 4 }, { x: 6, y: 4 },
-        { x: 11, y: 4 }, { x: 12, y: 4 }, { x: 13, y: 4 },
-        { x: 3, y: 8 }, { x: 4, y: 8 }, { x: 5, y: 8 },
-        { x: 12, y: 8 }, { x: 13, y: 8 }, { x: 14, y: 8 },
-        { x: 7, y: 11 }, { x: 8, y: 11 }, { x: 9, y: 11 }, { x: 10, y: 11 },
-        { x: 2, y: 14 }, { x: 3, y: 14 }, { x: 14, y: 14 }, { x: 15, y: 14 }
-      ];
-      if (levelNum >= 2) base.push({ x: 8, y: 6 }, { x: 9, y: 6 }, { x: 8, y: 7 }, { x: 9, y: 7 });
-      if (levelNum >= 3) base.push({ x: 1, y: 10 }, { x: 2, y: 10 }, { x: 15, y: 10 }, { x: 16, y: 10 });
-      return base;
+      const walls = [];
+      const protectedCells = new Set(['8,16', '8,15', '7,16', '9,16']);
+      const wallCount = 18 + levelNum * 6;
+      while (walls.length < wallCount) {
+        const x = Math.floor(Math.random() * board);
+        const y = Math.floor(Math.random() * (board - 4)) + 2;
+        const key = `${x},${y}`;
+        if (protectedCells.has(key)) continue;
+        if (walls.some(wall => wall.x === x && wall.y === y)) continue;
+        if ((x <= 2 && y <= 3) || (x >= 15 && y <= 3) || (x >= 7 && x <= 9 && y <= 2)) continue;
+        walls.push({ x, y });
+      }
+      return walls;
     }
 
     function buildEnemies(levelNum) {
@@ -273,6 +309,7 @@
       walls = buildWalls(level);
       enemies = buildEnemies(level);
       state = 'running';
+      overlay.style.display = 'none';
       Object.keys(keys).forEach(key => { keys[key] = false; });
       updateHud();
       draw();
@@ -311,7 +348,10 @@
       document.getElementById('codeLink').textContent = t.codeLink;
       document.getElementById('downloadLink').textContent = t.downloadLink;
       document.getElementById('footerText').textContent = t.footer;
+      document.getElementById('overlayTitle').textContent = t.overlayTitle;
+      document.getElementById('overlayText').textContent = t.overlayText;
       restartBtn.textContent = t.restart;
+      overlayRestart.textContent = t.restart;
       langSelect.value = currentLang;
       localStorage.setItem('yh-lang', currentLang);
       updateHud();
@@ -396,6 +436,7 @@
       lives -= 1;
       if (lives <= 0) {
         state = 'lost';
+        overlay.style.display = 'flex';
       } else {
         player = makeTank(8, 16, 'up', '#22c55e', true);
         playerBullets = [];
@@ -564,6 +605,7 @@
     });
 
     restartBtn.addEventListener('click', resetGame);
+    overlayRestart.addEventListener('click', resetGame);
 
     resetGame();
     applyLanguage();
