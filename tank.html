@@ -223,7 +223,8 @@
 
     const size = 40;
     const board = 13;
-    let player, bullets, enemyBullets, enemies, keys = {}, score, state, tick;
+    const keys = {};
+    let player, bullets, enemyBullets, enemies, score, state, tick;
 
     function makeTank(x, y, dir, color, isPlayer = false) {
       return { x, y, dir, color, isPlayer, cooldown: 0, moveTick: 0 };
@@ -238,7 +239,7 @@
         makeTank(6, 1, 'down', '#f97316'),
         makeTank(10, 1, 'down', '#eab308')
       ];
-      keys = {};
+      Object.keys(keys).forEach(key => { keys[key] = false; });
       score = 0;
       state = 'running';
       tick = 0;
@@ -425,7 +426,7 @@
 
     function draw() {
       drawGrid();
-      drawTank(player);
+      if (player) drawTank(player);
       enemies.forEach(drawTank);
       bullets.forEach(drawBullet);
       enemyBullets.forEach(drawBullet);
@@ -467,8 +468,8 @@
 
     restartBtn.addEventListener('click', resetGame);
 
-    applyLanguage();
     resetGame();
+    applyLanguage();
     loop();
   </script>
 </body>
