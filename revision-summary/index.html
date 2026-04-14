@@ -20,7 +20,23 @@
     .dash-box { padding: 18px; border-radius: 14px; background: #fcfaf6; border: 1px solid #e7dccb; }
     .dash-box ul { margin: 8px 0 0 18px; padding: 0; }
     .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 18px; margin-top: 18px; }
-    .mini-card { padding: 18px; border-radius: 14px; background: #fcfaf6; border: 1px solid #e7dccb; }
+    .mini-card { padding: 20px; border-radius: 14px; background: #fcfaf6; border: 1px solid #e7dccb; }
+    .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 22px; margin-top: 20px; }
+    .mini-card h3 { margin-bottom: 12px; }
+    .mini-card p { margin: 8px 0; }
+    .periodic-grid .alkali { background: #fde68a; }
+    .periodic-grid .alkaline { background: #fcd34d; }
+    .periodic-grid .transition { background: #bfdbfe; }
+    .periodic-grid .nonmetal { background: #bbf7d0; }
+    .periodic-grid .halogen { background: #fecaca; }
+    .periodic-grid .noble { background: #ddd6fe; }
+    .periodic-grid .metalloid { background: #fed7aa; }
+    .periodic-grid .post { background: #e5e7eb; }
+    .periodic-grid .lanthanide { background: #f9a8d4; }
+    .periodic-grid .actinide { background: #f5d0fe; }
+    .summary-card { margin-top: 14px; padding: 16px; border-radius: 12px; background: #fffaf3; border: 1px solid #e7dccb; }
+    .wrong-list { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+    .wrong-item { padding: 12px; border-radius: 10px; background: #fff; border: 1px solid #eadfce; }
     .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
     .controls-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; align-items: center; }
     .periodic-grid { display: grid; grid-template-columns: repeat(18, minmax(34px, 1fr)); gap: 6px; margin-top: 12px; }
@@ -285,6 +301,8 @@
         </div>
         <div class="progress-bar"><div id="quizProgressFill" class="progress-fill"></div></div>
         <p id="quizMeta"></p>
+        <div id="quizSummary" class="summary-card" style="display:none;"></div>
+        <div id="wrongList" class="wrong-list"></div>
         <p id="quizResult"></p>
       </div>
     </div>
@@ -482,6 +500,8 @@
     let wrongQuestions = [];
     const scoreState = JSON.parse(localStorage.getItem('yh-score-state') || '{\"correct\":0,\"wrong\":0,\"streak\":0}');
     const quizProgressFill = document.getElementById('quizProgressFill');
+    const quizSummaryEl = document.getElementById('quizSummary');
+    const wrongListEl = document.getElementById('wrongList');
 
     function bindTerms() {
       document.querySelectorAll('.term').forEach(el => {
@@ -521,6 +541,14 @@
       grid.innerHTML = '';
       document.getElementById('elementInfo').textContent = '请选择一个 element。';
       const map = new Map(elements.map(e => [e[0], e]));
+      const alkali = new Set(['Li','Na','K','Rb','Cs','Fr']);
+      const alkaline = new Set(['Be','Mg','Ca','Sr','Ba','Ra']);
+      const halogen = new Set(['F','Cl','Br','I','At','Ts']);
+      const noble = new Set(['He','Ne','Ar','Kr','Xe','Rn','Og']);
+      const metalloid = new Set(['B','Si','Ge','As','Sb','Te']);
+      const nonmetal = new Set(['H','C','N','O','P','S','Se']);
+      const lanthanide = new Set(['La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']);
+      const actinide = new Set(['Ac','Th','Pa','U','Np','Pu','Am','Cm','Bk','Cf','Es','Fm','Md','No','Lr']);
       periodicLayout.flat().forEach(cell => {
         if (!cell) {
           const spacer = document.createElement('div');
@@ -531,7 +559,17 @@
         }
         const key = cell.replace('*','');
         const btn = document.createElement('button');
-        btn.className = 'element';
+        let cls = 'post';
+        if (alkali.has(key)) cls = 'alkali';
+        else if (alkaline.has(key)) cls = 'alkaline';
+        else if (halogen.has(key)) cls = 'halogen';
+        else if (noble.has(key)) cls = 'noble';
+        else if (metalloid.has(key)) cls = 'metalloid';
+        else if (nonmetal.has(key)) cls = 'nonmetal';
+        else if (lanthanide.has(key)) cls = 'lanthanide';
+        else if (actinide.has(key)) cls = 'actinide';
+        else if (info && info[2] >= 21 && info[2] <= 30 || info && info[2] >= 39 && info[2] <= 48 || info && info[2] >= 72 && info[2] <= 80 || info && info[2] >= 104 && info[2] <= 112) cls = 'transition';
+        btn.className = `element ${cls}`;
         btn.textContent = cell;
         const info = map.get(key);
         btn.onclick = () => document.getElementById('elementInfo').textContent = info ? `${info[0]} | ${info[1]} | ${info[2]}` : `${cell} 系列占位`;
@@ -545,7 +583,17 @@
       document.getElementById('ionInfo').textContent = '请选择一个 ion。';
       ionList.forEach(([label, text]) => {
         const btn = document.createElement('button');
-        btn.className = 'element';
+        let cls = 'post';
+        if (alkali.has(key)) cls = 'alkali';
+        else if (alkaline.has(key)) cls = 'alkaline';
+        else if (halogen.has(key)) cls = 'halogen';
+        else if (noble.has(key)) cls = 'noble';
+        else if (metalloid.has(key)) cls = 'metalloid';
+        else if (nonmetal.has(key)) cls = 'nonmetal';
+        else if (lanthanide.has(key)) cls = 'lanthanide';
+        else if (actinide.has(key)) cls = 'actinide';
+        else if (info && info[2] >= 21 && info[2] <= 30 || info && info[2] >= 39 && info[2] <= 48 || info && info[2] >= 72 && info[2] <= 80 || info && info[2] >= 104 && info[2] <= 112) cls = 'transition';
+        btn.className = `element ${cls}`;
         btn.textContent = label;
         btn.onclick = () => document.getElementById('ionInfo').textContent = text;
         grid.appendChild(btn);
@@ -628,6 +676,9 @@
       currentQuiz = 0;
       document.getElementById('quizMeta').textContent = `题目数量 Questions: ${quizPool.length} | Subject: ${subject}`;
       quizProgressFill.style.width = '0%';
+      quizSummaryEl.style.display = 'none';
+      quizSummaryEl.innerHTML = '';
+      wrongListEl.innerHTML = '';
     }
 
     function renderQuiz() {
@@ -644,12 +695,21 @@
         const q = quizPool[currentQuiz % quizPool.length];
         if (btn.dataset.answer === q.c) {
           scoreState.correct += 1; scoreState.streak += 1; currentQuiz += 1;
-          document.getElementById('quizResult').textContent = currentQuiz >= quizPool.length ? '这一轮完成 Round complete.' : '答对了 Correct.';
-          if (currentQuiz >= quizPool.length) buildQuizPool(false);
+          if (currentQuiz >= quizPool.length) {
+            document.getElementById('quizResult').textContent = '这一轮完成 Round complete.';
+            const total = scoreState.correct + scoreState.wrong;
+            const accuracy = total ? Math.round((scoreState.correct / total) * 100) : 0;
+            quizSummaryEl.style.display = 'block';
+            quizSummaryEl.innerHTML = `<strong>Quiz Summary</strong><br>Correct: ${scoreState.correct}<br>Wrong: ${scoreState.wrong}<br>Accuracy: ${accuracy}%`;
+            wrongListEl.innerHTML = wrongQuestions.map((q, i) => `<div class="wrong-item">${i+1}. ${q.q}<br><small>Correct answer: ${q.c}</small></div>`).join('');
+            buildQuizPool(false);
+          } else {
+            document.getElementById('quizResult').textContent = '答对了 Correct.';
+          }
           renderQuiz();
         } else {
           scoreState.wrong += 1; scoreState.streak = 0;
-          wrongQuestions.push(q);
+          if (!wrongQuestions.includes(q)) wrongQuestions.push(q);
           document.getElementById('quizResult').textContent = '再试一次 Try again.';
         }
         updateScoreUI();
