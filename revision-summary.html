@@ -256,12 +256,31 @@
 
       <div class="mini-card">
         <h3>Quiz Mode</h3>
+        <div class="controls-row">
+          <label for="subjectFilter">Subject</label>
+          <select id="subjectFilter">
+            <option value="all">All</option>
+            <option value="biology">Biology</option>
+            <option value="chemistry">Chemistry</option>
+            <option value="geography">Geography</option>
+            <option value="maths">Maths</option>
+          </select>
+          <label for="quizSize">Mode</label>
+          <select id="quizSize">
+            <option value="10">10 questions</option>
+            <option value="20">20 questions</option>
+            <option value="30">30 questions</option>
+          </select>
+          <button id="restartQuiz">Restart</button>
+          <button id="redoWrong">Wrong only</button>
+        </div>
         <p id="quizQuestion"></p>
         <div class="boundary-group">
           <button class="quiz-btn quiz-answer" data-answer="A">A</button>
           <button class="quiz-btn quiz-answer" data-answer="B">B</button>
           <button class="quiz-btn quiz-answer" data-answer="C">C</button>
         </div>
+        <p id="quizMeta"></p>
         <p id="quizResult"></p>
       </div>
     </div>
@@ -298,7 +317,7 @@
       ['Tl','Thallium 铊',81],['Pb','Lead 铅',82],['Bi','Bismuth 铋',83],['Po','Polonium 钋',84],['At','Astatine 砹',85],['Rn','Radon 氡',86],['Fr','Francium 钫',87],['Ra','Radium 镭',88],['Ac','Actinium 锕',89],['Th','Thorium 钍',90],
       ['Pa','Protactinium 镤',91],['U','Uranium 铀',92],['Np','Neptunium 镎',93],['Pu','Plutonium 钚',94],['Am','Americium 镅',95],['Cm','Curium 锔',96],['Bk','Berkelium 锫',97],['Cf','Californium 锎',98],['Es','Einsteinium 锿',99],['Fm','Fermium 镄',100],
       ['Md','Mendelevium 钔',101],['No','Nobelium 锘',102],['Lr','Lawrencium 铹',103],['Rf','Rutherfordium 𬬻',104],['Db','Dubnium 𬭊',105],['Sg','Seaborgium 𬭳',106],['Bh','Bohrium 𬭛',107],['Hs','Hassium 𬭶',108],['Mt','Meitnerium 鿏',109],['Ds','Darmstadtium 𫟼',110],
-      ['Rg','Roentgenium 𬬭',111],['Cn','Copernicium 鿔',112],['Nh','Nihonium 鿭',113],['Fl','Flerovium 𫓧',114],['Mc','Moscovium 镆',115],['Lv','Livermorium 鿬',116],['Ts','Tennessine 117',117],['Og','Oganesson 鿫',118]
+      ['Rg','Roentgenium 𬬭',111],['Cn','Copernicium 鿔',112],['Nh','Nihonium 鿭',113],['Fl','Flerovium 𫓧',114],['Mc','Moscovium 镆',115],['Lv','Livermorium 鿬',116],['Ts','Tennessine 鿬?',117],['Og','Oganesson 鿫',118]
     ];
 
     const ionList = [
@@ -343,109 +362,109 @@
       metalOxide: 'Metal + oxygen → metal oxide'
     };
     const quizBank = [
-      { q: '哪个 organ mainly absorbs digested food?', a: ['Stomach 胃','Small intestine 小肠','Large intestine 大肠'], c: 'B' },
-      { q: 'chloride ion 的电荷是多少？', a: ['+1','-1','-2'], c: 'B' },
-      { q: 'At a constructive boundary，板块会……', a: ['move apart 分开','move together 靠近','slide only 只擦过'], c: 'A' },
-      { q: 'Which organ makes bile?', a: ['Liver 肝脏','Stomach 胃','Pancreas 胰脏'], c: 'A' },
-      { q: 'Large intestine 的主要作用是？', a: ['Absorb water 吸收水分','Pump blood 泵血','Produce urine 产生尿液'], c: 'A' },
-      { q: 'Saliva starts digestion of which food group?', a: ['Starch 淀粉','Fat 脂肪','Protein 蛋白质'], c: 'A' },
-      { q: 'Nucleus 的主要作用是？', a: ['Control cell activities 控制活动','Make blood 制血','Store oxygen 储氧'], c: 'A' },
-      { q: 'Mitochondria are the site of…', a: ['Aerobic respiration 有氧呼吸','Photosynthesis 光合作用','Digestion 消化'], c: 'A' },
-      { q: 'Ribosomes are used for…', a: ['Protein synthesis 蛋白质合成','Water absorption 吸水','Movement of plates 板块运动'], c: 'A' },
-      { q: 'Cell membrane controls…', a: ['Entry and exit 进出物质','Earth layers 地球层','Sound 声音'], c: 'A' },
-      { q: 'Cytoplasm is where many…', a: ['Chemical reactions 化学反应','Volcanoes 火山','Equations 方程'], c: 'A' },
-      { q: 'Which structure contains genetic material?', a: ['Nucleus 细胞核','Ribosome 核糖体','Membrane 细胞膜'], c: 'A' },
-      { q: 'Crust is…', a: ['Earth’s outer layer 地球最外层','Liquid iron 液态铁','The centre 中心'], c: 'A' },
-      { q: 'Outer core is mainly…', a: ['Liquid 液态','Solid 固态','Gas 气态'], c: 'A' },
-      { q: 'Inner core is…', a: ['Very hot and dense 极热且致密','Cold and soft 又冷又软','Only water 只有水'], c: 'A' },
-      { q: 'Mantle lies between…', a: ['Crust and core 地壳和地核之间','Sky and sea 天空和海洋','Cells and tissue 细胞和组织'], c: 'A' },
-      { q: 'Constructive boundaries often form…', a: ['New crust 新地壳','Only rivers 只有河流','Plant cells 植物细胞'], c: 'A' },
-      { q: 'Destructive boundaries can cause…', a: ['Volcanoes 火山','Rainbows 彩虹','Photosynthesis 光合作用'], c: 'A' },
-      { q: 'Conservative boundaries mainly cause…', a: ['Earthquakes 地震','New oceans 新海洋','Digestion 消化'], c: 'A' },
-      { q: 'Subduction happens at…', a: ['Destructive boundaries 消亡边界','Constructive boundaries 生长边界','Conservative boundaries 保守边界'], c: 'A' },
-      { q: 'What is the symbol for sodium?', a: ['Na','S','N'], c: 'A' },
-      { q: 'What is the symbol for potassium?', a: ['K','P','Po'], c: 'A' },
-      { q: 'What is the symbol for chlorine?', a: ['Cl','C','Cr'], c: 'A' },
-      { q: 'What charge does magnesium ion have?', a: ['2+','1+','2-'], c: 'A' },
-      { q: 'Oxide ion has charge…', a: ['2-','1-','3+'], c: 'A' },
-      { q: 'Sodium forms an ion with charge…', a: ['+1','+2','-1'], c: 'A' },
-      { q: 'Acid + base gives…', a: ['Salt + water','Salt + oxygen','Hydrogen + water'], c: 'A' },
-      { q: 'Metal + acid gives…', a: ['Salt + hydrogen','Salt + water','Only oxygen'], c: 'A' },
-      { q: 'Hydrocarbon combustion gives…', a: ['Carbon dioxide + water','Hydrogen + chlorine','Only water'], c: 'A' },
-      { q: 'Metal + oxygen forms…', a: ['Metal oxide','Metal acid','Metal water'], c: 'A' },
-      { q: 'Which line has positive gradient?', a: ['Rises left to right','Falls left to right','Flat only'], c: 'A' },
-      { q: 'y = mx + c 中 m 表示？', a: ['Gradient 斜率','Area 面积','Volume 体积'], c: 'A' },
-      { q: 'y = mx + c 中 c 表示？', a: ['Y-intercept 截距','Speed 速度','Mass 质量'], c: 'A' },
-      { q: 'If m is negative, the line will…', a: ['Go down 向下','Go up 向上','Stay curved 保持曲线'], c: 'A' },
-      { q: 'Quadratic graph usually has shape…', a: ['Parabola 抛物线','Circle 圆','Triangle 三角形'], c: 'A' },
-      { q: 'If a in ax² is positive, parabola opens…', a: ['Upwards 向上','Downwards 向下','Sideways 横向'], c: 'A' },
-      { q: 'If a in ax² is negative, parabola opens…', a: ['Downwards 向下','Upwards 向上','Into a line 变成直线'], c: 'A' },
-      { q: 'x² - 9 factorises to…', a: ['(x - 3)(x + 3)','(x - 9)(x + 1)','x(x - 9)'], c: 'A' },
-      { q: '3x + 6 factorises to…', a: ['3(x + 2)','6(x + 3)','3(x + 6)'], c: 'A' },
-      { q: 'x² + 5x + 6 factorises to…', a: ['(x + 2)(x + 3)','(x + 1)(x + 6)','(x + 3)²'], c: 'A' },
-      { q: 'LCD means…', a: ['Lowest common denominator','Largest circular diameter','Linear coordinate diagram'], c: 'A' },
-      { q: 'Ion means…', a: ['Charged particle 带电粒子','Neutral atom 中性原子','Living tissue 活组织'], c: 'A' },
-      { q: 'Tectonic plates are…', a: ['Large moving pieces of lithosphere','Small clouds in sky','Types of cells'], c: 'A' },
-      { q: 'Volcanoes often form at…', a: ['Plate boundaries 板块边界','Inside leaves 树叶里','Animal cells 动物细胞'], c: 'A' },
-      { q: 'Rectum is near the…', a: ['End of digestive tract 消化道末端','Top of skull 头骨顶部','Inside nucleus 细胞核里'], c: 'A' },
-      { q: 'Gallbladder stores…', a: ['Bile 胆汁','Blood 血液','Urine 尿液'], c: 'A' },
-      { q: 'Pancreas helps digestion by releasing…', a: ['Enzymes 酶','Bones 骨头','Hair 毛发'], c: 'A' },
-      { q: 'Appendix is attached to…', a: ['Large intestine 大肠','Liver 肝脏','Heart 心脏'], c: 'A' },
-      { q: 'Pharynx is in the…', a: ['Throat region 咽喉区域','Leg 腿','Hand 手'], c: 'A' },
-      { q: 'Esophagus connects mouth area to…', a: ['Stomach 胃','Large intestine 大肠','Anus 肛门'], c: 'A' },
-      { q: 'Small intestine is adapted for absorption because of…', a: ['Large surface area 表面积大','Metal walls 金属壁','Dry air 干燥空气'], c: 'A' },
-      { q: 'Which cell part is jelly-like?', a: ['Cytoplasm','Nucleus','Ribosome'], c: 'A' },
-      { q: 'Which cell part is tiny and makes proteins?', a: ['Ribosome','Membrane','Vacuole'], c: 'A' },
-      { q: 'Which organelle is bean-shaped in many diagrams?', a: ['Mitochondrion','Nucleus','Cell wall'], c: 'A' },
-      { q: 'Golgi body mainly modifies and packages…', a: ['Proteins 蛋白质','Mountains 山脉','Plate crust 地壳'], c: 'A' },
-      { q: 'Lysosome contains…', a: ['Digestive enzymes 消化酶','Chlorophyll 叶绿素','Magma 岩浆'], c: 'A' },
-      { q: 'Chloroplast is found in…', a: ['Plant cells 植物细胞','Animal cells 动物细胞','Both always 两者总有'], c: 'A' },
-      { q: 'Cell wall is found in…', a: ['Plant cells 植物细胞','Animal cells 动物细胞','Human stomach 人胃'], c: 'A' },
-      { q: 'Large central vacuole is typical in…', a: ['Plant cells 植物细胞','Animal cells 动物细胞','Rocks 岩石'], c: 'A' },
-      { q: 'Lithosphere includes…', a: ['Crust and uppermost mantle','Only inner core','Only atmosphere'], c: 'A' },
-      { q: 'Asthenosphere is…', a: ['Below the lithosphere 在岩石圈下方','Inside the nucleus 在细胞核里','Part of stomach 胃的一部分'], c: 'A' },
-      { q: 'Oceanic crust is usually…', a: ['Thinner than continental crust','Thicker than continental crust','Same as mantle'], c: 'A' },
-      { q: 'Which boundary has plates sliding past each other?', a: ['Conservative','Constructive','Destructive'], c: 'A' },
-      { q: 'Which boundary usually creates volcanoes by magma rising between plates?', a: ['Constructive','Conservative','None of them'], c: 'A' },
-      { q: 'Which boundary often involves an oceanic plate going under a continental plate?', a: ['Destructive','Constructive','Conservative'], c: 'A' },
-      { q: 'Gold has symbol…', a: ['Au','Ag','Gd'], c: 'A' },
-      { q: 'Silver has symbol…', a: ['Ag','Au','Si'], c: 'A' },
-      { q: 'Iron has symbol…', a: ['Fe','Ir','In'], c: 'A' },
-      { q: 'Calcium has symbol…', a: ['Ca','Cl','Cr'], c: 'A' },
-      { q: 'Argon is…', a: ['A noble gas 惰性气体','A metal 金属','An acid 酸'], c: 'A' },
-      { q: 'Neon is often grouped as…', a: ['Noble gas 惰性气体','Alkali metal 碱金属','Halogen 卤素'], c: 'A' },
-      { q: 'Chlorine belongs to…', a: ['Halogens 卤素','Noble gases 惰性气体','Transition metals 过渡金属'], c: 'A' },
-      { q: 'Sodium belongs to…', a: ['Alkali metals 碱金属','Halogens 卤素','Noble gases 惰性气体'], c: 'A' },
-      { q: 'Magnesium belongs to…', a: ['Group 2 metals 第二族金属','Noble gases 惰性气体','Halogens 卤素'], c: 'A' },
-      { q: 'An example of a negative ion is…', a: ['Cl-','Na+','Mg2+'], c: 'A' },
-      { q: 'An example of a positive ion is…', a: ['Na+','O2-','Cl-'], c: 'A' },
-      { q: 'Sulfate ion has charge…', a: ['2-','1-','2+'], c: 'A' },
-      { q: 'A soluble base is called…', a: ['Alkali','Acid','Oxide'], c: 'A' },
-      { q: 'Factorisation is rewriting an expression as…', a: ['A product of factors','A decimal only','A graph only'], c: 'A' },
-      { q: 'Difference of two squares pattern is…', a: ['a² - b²','a² + 2ab + b²','mx + c'], c: 'A' },
-      { q: 'A straight line graph has equation form…', a: ['y = mx + c','ax² + bx + c','A = πr²'], c: 'A' },
-      { q: 'A quadratic equation usually contains…', a: ['x²','Only x','No variables'], c: 'A' },
-      { q: 'If c in y = mx + c changes, the line moves…', a: ['Up or down 上下平移','Into a circle 变圆','Into a parabola 变抛物线'], c: 'A' },
-      { q: 'If |m| gets larger, the line becomes…', a: ['Steeper 更陡','Flatter 更平','Invisible 看不见'], c: 'A' },
-      { q: 'A parabola can have a turning point called…', a: ['Vertex 顶点','Membrane 膜','Crust 地壳'], c: 'A' },
-      { q: 'Biology studies…', a: ['Living things 生物','Only numbers 只有数字','Only rocks 只有石头'], c: 'A' },
-      { q: 'Chemistry studies…', a: ['Substances and reactions 物质与反应','Only maps 地图','Only poems 诗歌'], c: 'A' },
-      { q: 'Geography studies…', a: ['Earth and environments 地球与环境','Only cells 细胞','Only fractions 分数'], c: 'A' },
-      { q: 'Maths studies patterns like…', a: ['Graphs and equations 图像与方程','Only digestion 只有消化','Only volcanoes 只有火山'], c: 'A' },
-      { q: 'The final part of the digestive tract is…', a: ['Anus','Mouth','Liver'], c: 'A' },
-      { q: 'The organ after the esophagus is…', a: ['Stomach','Nucleus','Mantle'], c: 'A' },
-      { q: 'Which part absorbs most nutrients?', a: ['Small intestine','Large intestine','Rectum'], c: 'A' },
-      { q: 'Which layer of Earth is directly under the crust?', a: ['Mantle','Outer core','Inner core'], c: 'A' },
-      { q: 'Which Earth layer is liquid?', a: ['Outer core','Inner core','Crust'], c: 'A' },
-      { q: 'Which Earth layer is the centre?', a: ['Inner core','Mantle','Lithosphere'], c: 'A' },
-      { q: 'Which plate boundary usually has no volcanoes?', a: ['Conservative','Constructive','Destructive'], c: 'A' },
-      { q: 'Which process breaks down food chemically?', a: ['Digestion','Respiration','Erosion'], c: 'A' },
-      { q: 'Which organelle is often called the control centre?', a: ['Nucleus','Golgi body','Lysosome'], c: 'A' },
-      { q: 'Which chemistry topic often needs balancing symbols?', a: ['Equations','Cells','Maps'], c: 'A' },
-      { q: 'Which maths topic on this page lets you change a, b, c?', a: ['Quadratic graph','Periodic table','Digestive system'], c: 'A' },
-      { q: 'Which topic on this page tracks correct answers and streak?', a: ['Quiz mode','Only diagrams','Only timer'], c: 'A' },
-      { q: 'Which study tool shows short term review cards?', a: ['Flashcards','Mantle','Golgi body'], c: 'A' },
-      { q: 'What should you use if you want a focused study session?', a: ['Pomodoro clock','Plate boundary','Periodic table'], c: 'A' }
+      { subject: 'biology', q: '哪个 {organ} {mainly} absorbs digested food?', a: ['Stomach 胃','Small intestine 小肠','Large intestine 大肠'], c: 'B' },
+      { subject: 'chemistry', q: 'chloride ion 的{charge}是多少？', a: ['+1','-1','-2'], c: 'B' },
+      { subject: 'geography', q: 'At a constructive boundary，板块会……', a: ['move apart 分开','move together 靠近','slide only 只擦过'], c: 'A' },
+      { subject: 'biology', q: 'Which {organ} makes bile?', a: ['Liver 肝脏','Stomach 胃','Pancreas 胰脏'], c: 'A' },
+      { subject: 'biology', q: 'Large intestine 的主要作用是？', a: ['Absorb water 吸收水分','Pump blood 泵血','Produce urine 产生尿液'], c: 'A' },
+      { subject: 'chemistry', q: 'Saliva starts digestion of which food group?', a: ['Starch 淀粉','Fat 脂肪','Protein 蛋白质'], c: 'A' },
+      { subject: 'biology', q: 'Nucleus 的主要作用是？', a: ['Control cell activities 控制活动','Make blood 制血','Store oxygen 储氧'], c: 'A' },
+      { subject: 'biology', q: 'Mitochondria are the site of…', a: ['Aerobic respiration 有氧呼吸','Photosynthesis 光合作用','Digestion 消化'], c: 'A' },
+      { subject: 'biology', q: 'Ribosomes are used for…', a: ['Protein synthesis 蛋白质合成','Water absorption 吸水','Movement of plates 板块运动'], c: 'A' },
+      { subject: 'biology', q: 'Cell membrane controls…', a: ['Entry and exit 进出物质','Earth layers 地球层','Sound 声音'], c: 'A' },
+      { subject: 'biology', q: 'Cytoplasm is where many…', a: ['Chemical reactions 化学反应','Volcanoes 火山','Equations 方程'], c: 'A' },
+      { subject: 'biology', q: 'Which structure contains genetic material?', a: ['Nucleus 细胞核','Ribosome 核糖体','Membrane 细胞膜'], c: 'A' },
+      { subject: 'geography', q: 'Crust is…', a: ['Earth’s outer layer 地球最外层','Liquid iron 液态铁','The centre 中心'], c: 'A' },
+      { subject: 'geography', q: 'Outer core is mainly…', a: ['Liquid 液态','Solid 固态','Gas 气态'], c: 'A' },
+      { subject: 'geography', q: 'Inner core is…', a: ['Very hot and dense 极热且致密','Cold and soft 又冷又软','Only water 只有水'], c: 'A' },
+      { subject: 'geography', q: 'Mantle lies between…', a: ['Crust and core 地壳和地核之间','Sky and sea 天空和海洋','Cells and tissue 细胞和组织'], c: 'A' },
+      { subject: 'biology', q: 'Constructive boundaries often form…', a: ['New crust 新地壳','Only rivers 只有河流','Plant cells 植物细胞'], c: 'A' },
+      { subject: 'biology', q: 'Destructive boundaries can cause…', a: ['Volcanoes 火山','Rainbows 彩虹','Photosynthesis 光合作用'], c: 'A' },
+      { subject: 'biology', q: 'Conservative boundaries mainly cause…', a: ['Earthquakes 地震','New oceans 新海洋','Digestion 消化'], c: 'A' },
+      { subject: 'chemistry', q: 'Subduction happens at…', a: ['Destructive boundaries 消亡边界','Constructive boundaries 生长边界','Conservative boundaries 保守边界'], c: 'A' },
+      { subject: 'chemistry', q: 'What is the symbol for sodium?', a: ['Na','S','N'], c: 'A' },
+      { subject: 'biology', q: 'What is the symbol for potassium?', a: ['K','P','Po'], c: 'A' },
+      { subject: 'chemistry', q: 'What is the symbol for chlorine?', a: ['Cl','C','Cr'], c: 'A' },
+      { subject: 'chemistry', q: 'What charge does magnesium ion have?', a: ['2+','1+','2-'], c: 'A' },
+      { subject: 'chemistry', q: 'Oxide ion has charge…', a: ['2-','1-','3+'], c: 'A' },
+      { subject: 'chemistry', q: 'Sodium forms an ion with charge…', a: ['+1','+2','-1'], c: 'A' },
+      { subject: 'chemistry', q: 'Acid + base gives…', a: ['Salt + water','Salt + oxygen','Hydrogen + water'], c: 'A' },
+      { subject: 'chemistry', q: 'Metal + acid gives…', a: ['Salt + hydrogen','Salt + water','Only oxygen'], c: 'A' },
+      { subject: 'chemistry', q: 'Hydrocarbon combustion gives…', a: ['Carbon dioxide + water','Hydrogen + chlorine','Only water'], c: 'A' },
+      { subject: 'chemistry', q: 'Metal + oxygen forms…', a: ['Metal oxide','Metal acid','Metal water'], c: 'A' },
+      { subject: 'maths', q: 'Which line has positive gradient?', a: ['Rises left to right','Falls left to right','Flat only'], c: 'A' },
+      { subject: 'maths', q: 'y = mx + c 中 m 表示？', a: ['Gradient 斜率','Area 面积','Volume 体积'], c: 'A' },
+      { subject: 'maths', q: 'y = mx + c 中 c 表示？', a: ['Y-intercept 截距','Speed 速度','Mass 质量'], c: 'A' },
+      { subject: 'maths', q: 'If m is negative, the line will…', a: ['Go down 向下','Go up 向上','Stay curved 保持曲线'], c: 'A' },
+      { subject: 'maths', q: 'Quadratic graph usually has shape…', a: ['Parabola 抛物线','Circle 圆','Triangle 三角形'], c: 'A' },
+      { subject: 'maths', q: 'If a in ax² is positive, parabola opens…', a: ['Upwards 向上','Downwards 向下','Sideways 横向'], c: 'A' },
+      { subject: 'maths', q: 'If a in ax² is negative, parabola opens…', a: ['Downwards 向下','Upwards 向上','Into a line 变成直线'], c: 'A' },
+      { subject: 'maths', q: 'x² - 9 factorises to…', a: ['(x - 3)(x + 3)','(x - 9)(x + 1)','x(x - 9)'], c: 'A' },
+      { subject: 'maths', q: '3x + 6 factorises to…', a: ['3(x + 2)','6(x + 3)','3(x + 6)'], c: 'A' },
+      { subject: 'maths', q: 'x² + 5x + 6 factorises to…', a: ['(x + 2)(x + 3)','(x + 1)(x + 6)','(x + 3)²'], c: 'A' },
+      { subject: 'maths', q: 'LCD means…', a: ['Lowest common denominator','Largest circular diameter','Linear coordinate diagram'], c: 'A' },
+      { subject: 'chemistry', q: 'Ion means…', a: ['Charged particle 带电粒子','Neutral atom 中性原子','Living tissue 活组织'], c: 'A' },
+      { subject: 'geography', q: 'Tectonic plates are…', a: ['Large moving pieces of lithosphere','Small clouds in sky','Types of cells'], c: 'A' },
+      { subject: 'geography', q: 'Volcanoes often form at…', a: ['Plate boundaries 板块边界','Inside leaves 树叶里','Animal cells 动物细胞'], c: 'A' },
+      { subject: 'biology', q: 'Rectum is near the…', a: ['End of digestive tract 消化道末端','Top of skull 头骨顶部','Inside nucleus 细胞核里'], c: 'A' },
+      { subject: 'biology', q: 'Gallbladder stores…', a: ['Bile 胆汁','Blood 血液','Urine 尿液'], c: 'A' },
+      { subject: 'chemistry', q: 'Pancreas helps digestion by releasing…', a: ['Enzymes 酶','Bones 骨头','Hair 毛发'], c: 'A' },
+      { subject: 'biology', q: 'Appendix is attached to…', a: ['Large intestine 大肠','Liver 肝脏','Heart 心脏'], c: 'A' },
+      { subject: 'biology', q: 'Pharynx is in the…', a: ['Throat region 咽喉区域','Leg 腿','Hand 手'], c: 'A' },
+      { subject: 'biology', q: 'Esophagus connects mouth area to…', a: ['Stomach 胃','Large intestine 大肠','Anus 肛门'], c: 'A' },
+      { subject: 'chemistry', q: 'Small intestine is adapted for absorption because of…', a: ['Large surface area 表面积大','Metal walls 金属壁','Dry air 干燥空气'], c: 'A' },
+      { subject: 'biology', q: 'Which cell part is jelly-like?', a: ['Cytoplasm','Nucleus','Ribosome'], c: 'A' },
+      { subject: 'biology', q: 'Which cell part is tiny and makes proteins?', a: ['Ribosome','Membrane','Vacuole'], c: 'A' },
+      { subject: 'biology', q: 'Which organelle is bean-shaped in many diagrams?', a: ['Mitochondrion','Nucleus','Cell wall'], c: 'A' },
+      { subject: 'biology', q: 'Golgi body mainly modifies and packages…', a: ['Proteins 蛋白质','Mountains 山脉','Plate crust 地壳'], c: 'A' },
+      { subject: 'biology', q: 'Lysosome contains…', a: ['Digestive enzymes 消化酶','Chlorophyll 叶绿素','Magma 岩浆'], c: 'A' },
+      { subject: 'chemistry', q: 'Chloroplast is found in…', a: ['Plant cells 植物细胞','Animal cells 动物细胞','Both always 两者总有'], c: 'A' },
+      { subject: 'biology', q: 'Cell wall is found in…', a: ['Plant cells 植物细胞','Animal cells 动物细胞','Human stomach 人胃'], c: 'A' },
+      { subject: 'biology', q: 'Large central vacuole is typical in…', a: ['Plant cells 植物细胞','Animal cells 动物细胞','Rocks 岩石'], c: 'A' },
+      { subject: 'geography', q: 'Lithosphere includes…', a: ['Crust and uppermost mantle','Only inner core','Only atmosphere'], c: 'A' },
+      { subject: 'geography', q: 'Asthenosphere is…', a: ['Below the lithosphere 在岩石圈下方','Inside the nucleus 在细胞核里','Part of stomach 胃的一部分'], c: 'A' },
+      { subject: 'geography', q: 'Oceanic crust is usually…', a: ['Thinner than continental crust','Thicker than continental crust','Same as mantle'], c: 'A' },
+      { subject: 'geography', q: 'Which boundary has plates sliding past each other?', a: ['Conservative','Constructive','Destructive'], c: 'A' },
+      { subject: 'geography', q: 'Which boundary usually creates volcanoes by magma rising between plates?', a: ['Constructive','Conservative','None of them'], c: 'A' },
+      { subject: 'geography', q: 'Which boundary often involves an oceanic plate going under a continental plate?', a: ['Destructive','Constructive','Conservative'], c: 'A' },
+      { subject: 'chemistry', q: 'Gold has symbol…', a: ['Au','Ag','Gd'], c: 'A' },
+      { subject: 'chemistry', q: 'Silver has symbol…', a: ['Ag','Au','Si'], c: 'A' },
+      { subject: 'chemistry', q: 'Iron has symbol…', a: ['Fe','Ir','In'], c: 'A' },
+      { subject: 'chemistry', q: 'Calcium has symbol…', a: ['Ca','Cl','Cr'], c: 'A' },
+      { subject: 'chemistry', q: 'Argon is…', a: ['A noble gas 惰性气体','A metal 金属','An acid 酸'], c: 'A' },
+      { subject: 'chemistry', q: 'Neon is often grouped as…', a: ['Noble gas 惰性气体','Alkali metal 碱金属','Halogen 卤素'], c: 'A' },
+      { subject: 'chemistry', q: 'Chlorine belongs to…', a: ['Halogens 卤素','Noble gases 惰性气体','Transition metals 过渡金属'], c: 'A' },
+      { subject: 'chemistry', q: 'Sodium belongs to…', a: ['Alkali metals 碱金属','Halogens 卤素','Noble gases 惰性气体'], c: 'A' },
+      { subject: 'chemistry', q: 'Magnesium belongs to…', a: ['Group 2 metals 第二族金属','Noble gases 惰性气体','Halogens 卤素'], c: 'A' },
+      { subject: 'chemistry', q: 'An example of a negative ion is…', a: ['Cl-','Na+','Mg2+'], c: 'A' },
+      { subject: 'chemistry', q: 'An example of a positive ion is…', a: ['Na+','O2-','Cl-'], c: 'A' },
+      { subject: 'chemistry', q: 'Sulfate ion has charge…', a: ['2-','1-','2+'], c: 'A' },
+      { subject: 'biology', q: 'A soluble base is called…', a: ['Alkali','Acid','Oxide'], c: 'A' },
+      { subject: 'chemistry', q: 'Factorisation is rewriting an expression as…', a: ['A product of factors','A decimal only','A graph only'], c: 'A' },
+      { subject: 'biology', q: 'Difference of two squares pattern is…', a: ['a² - b²','a² + 2ab + b²','mx + c'], c: 'A' },
+      { subject: 'chemistry', q: 'A straight line graph has equation form…', a: ['y = mx + c','ax² + bx + c','A = πr²'], c: 'A' },
+      { subject: 'chemistry', q: 'A quadratic equation usually contains…', a: ['x²','Only x','No variables'], c: 'A' },
+      { subject: 'maths', q: 'If c in y = mx + c changes, the line moves…', a: ['Up or down 上下平移','Into a circle 变圆','Into a parabola 变抛物线'], c: 'A' },
+      { subject: 'maths', q: 'If |m| gets larger, the line becomes…', a: ['Steeper 更陡','Flatter 更平','Invisible 看不见'], c: 'A' },
+      { subject: 'maths', q: 'A parabola can have a turning point called…', a: ['Vertex 顶点','Membrane 膜','Crust 地壳'], c: 'A' },
+      { subject: 'biology', q: 'Biology {studies}…', a: ['Living things 生物','Only numbers 只有数字','Only rocks 只有石头'], c: 'A' },
+      { subject: 'biology', q: 'Chemistry studies…', a: ['Substances and reactions 物质与反应','Only maps 地图','Only poems 诗歌'], c: 'A' },
+      { subject: 'maths', q: 'Geography studies…', a: ['Earth and environments 地球与环境','Only cells 细胞','Only fractions 分数'], c: 'A' },
+      { subject: 'biology', q: 'Maths studies patterns like…', a: ['Graphs and equations 图像与方程','Only digestion 只有消化','Only volcanoes 只有火山'], c: 'A' },
+      { subject: 'biology', q: 'The final part of the digestive tract is…', a: ['Anus','Mouth','Liver'], c: 'A' },
+      { subject: 'biology', q: 'The organ after the esophagus is…', a: ['Stomach','Nucleus','Mantle'], c: 'A' },
+      { subject: 'biology', q: 'Which part absorbs most nutrients?', a: ['Small intestine','Large intestine','Rectum'], c: 'A' },
+      { subject: 'geography', q: 'Which layer of Earth is directly under the crust?', a: ['Mantle','Outer core','Inner core'], c: 'A' },
+      { subject: 'geography', q: 'Which Earth layer is liquid?', a: ['Outer core','Inner core','Crust'], c: 'A' },
+      { subject: 'geography', q: 'Which Earth layer is the centre?', a: ['Inner core','Mantle','Lithosphere'], c: 'A' },
+      { subject: 'geography', q: 'Which plate boundary usually has no volcanoes?', a: ['Conservative','Constructive','Destructive'], c: 'A' },
+      { subject: 'biology', q: 'Which process breaks down food chemically?', a: ['Digestion','Respiration','Erosion'], c: 'A' },
+      { subject: 'biology', q: 'Which organelle is often called the control centre?', a: ['Nucleus','Golgi body','Lysosome'], c: 'A' },
+      { subject: 'biology', q: 'Which chemistry topic often needs balancing symbols?', a: ['Equations','Cells','Maps'], c: 'A' },
+      { subject: 'biology', q: 'Which maths topic on this page lets you change a, b, c?', a: ['Quadratic graph','Periodic table','Digestive system'], c: 'A' },
+      { subject: 'biology', q: 'Which topic on this page tracks correct answers and streak?', a: ['Quiz mode','Only diagrams','Only timer'], c: 'A' },
+      { subject: 'maths', q: 'Which study tool shows short term review cards?', a: ['Flashcards','Mantle','Golgi body'], c: 'A' },
+      { subject: 'chemistry', q: 'What should you use if you want a focused study session?', a: ['Pomodoro clock','Plate boundary','Periodic table'], c: 'A' }
     ];
 
     const popup = document.getElementById('termPopup');
@@ -455,6 +474,8 @@
     const quadraticCtx = quadraticCanvas.getContext('2d');
 
     let currentQuiz = 0, flashIndex = 0, flashBack = false;
+    let quizPool = [];
+    let wrongQuestions = [];
     const scoreState = JSON.parse(localStorage.getItem('yh-score-state') || '{"correct":0,"wrong":0,"streak":0}');
 
     function bindTerms() {
@@ -567,8 +588,23 @@
       });
     }
 
+    function shuffle(arr) {
+      return [...arr].sort(() => Math.random() - 0.5);
+    }
+
+    function buildQuizPool(useWrongOnly = false) {
+      const subject = document.getElementById('subjectFilter').value;
+      const size = Number(document.getElementById('quizSize').value);
+      const source = useWrongOnly && wrongQuestions.length ? wrongQuestions : quizBank;
+      const filtered = source.filter(q => subject === 'all' || q.subject === subject);
+      quizPool = shuffle(filtered).slice(0, Math.min(size, filtered.length || size));
+      currentQuiz = 0;
+      document.getElementById('quizMeta').textContent = `题目数量 Questions: ${quizPool.length} | Subject: ${subject}`;
+    }
+
     function renderQuiz() {
-      const q = quizBank[currentQuiz % quizBank.length];
+      if (!quizPool.length) buildQuizPool(false);
+      const q = quizPool[currentQuiz % quizPool.length];
       document.getElementById('quizQuestion').textContent = applyVariants(q.q);
       document.querySelectorAll('.quiz-answer').forEach((btn, i) => btn.textContent = `${String.fromCharCode(65+i)}. ${applyVariants(q.a[i])}`);
       document.getElementById('quizResult').textContent = '';
@@ -576,14 +612,23 @@
 
     function bindQuiz() {
       document.querySelectorAll('.quiz-answer').forEach(btn => btn.onclick = () => {
-        const q = quizBank[currentQuiz % quizBank.length];
+        const q = quizPool[currentQuiz % quizPool.length];
         if (btn.dataset.answer === q.c) {
-          scoreState.correct += 1; scoreState.streak += 1; currentQuiz = (currentQuiz + 1) % quizBank.length; document.getElementById('quizResult').textContent = '答对了 Correct.'; renderQuiz();
+          scoreState.correct += 1; scoreState.streak += 1; currentQuiz += 1;
+          document.getElementById('quizResult').textContent = currentQuiz >= quizPool.length ? '这一轮完成 Round complete.' : '答对了 Correct.';
+          if (currentQuiz >= quizPool.length) buildQuizPool(false);
+          renderQuiz();
         } else {
-          scoreState.wrong += 1; scoreState.streak = 0; document.getElementById('quizResult').textContent = '再试一次 Try again.';
+          scoreState.wrong += 1; scoreState.streak = 0;
+          wrongQuestions.push(q);
+          document.getElementById('quizResult').textContent = '再试一次 Try again.';
         }
         updateScoreUI();
       });
+      document.getElementById('restartQuiz').onclick = () => { wrongQuestions = []; buildQuizPool(false); renderQuiz(); };
+      document.getElementById('redoWrong').onclick = () => { buildQuizPool(true); renderQuiz(); };
+      document.getElementById('subjectFilter').onchange = () => { buildQuizPool(false); renderQuiz(); };
+      document.getElementById('quizSize').onchange = () => { buildQuizPool(false); renderQuiz(); };
     }
 
     document.getElementById('flashcard').addEventListener('click', () => { flashBack = !flashBack; renderFlashcard(); });
