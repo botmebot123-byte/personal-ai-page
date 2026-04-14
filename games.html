@@ -79,6 +79,12 @@
     </div>
 
     <div class="card">
+      <h2 id="tankTitle">Tank Battle</h2>
+      <p id="tankDesc">A browser tank game where you move, fire, and clear enemy tanks.</p>
+      <p><a id="tankLink" href="./tank.html">Open Tank Battle</a></p>
+    </div>
+
+    <div class="card">
       <h2 id="futureTitle">Future Game Project</h2>
       <p id="futureDesc">This section can be used later for upcoming game releases and prototypes.</p>
     </div>
@@ -93,6 +99,9 @@
         snakeTitle: 'Snake Game',
         snakeDesc: 'A simple browser snake game built as an early project for the hub.',
         snakeLink: 'Open Snake Game',
+        tankTitle: 'Tank Battle',
+        tankDesc: 'A browser tank game where you move, fire, and clear enemy tanks.',
+        tankLink: 'Open Tank Battle',
         futureTitle: 'Future Game Project',
         futureDesc: 'This section can be used later for upcoming game releases and prototypes.'
       },
@@ -103,6 +112,9 @@
         snakeTitle: '贪吃蛇',
         snakeDesc: '一个简单的浏览器贪吃蛇游戏，作为这个主页里的早期项目。',
         snakeLink: '打开贪吃蛇',
+        tankTitle: '坦克大战',
+        tankDesc: '一个浏览器坦克游戏，你可以移动、射击并消灭敌方坦克。',
+        tankLink: '打开坦克大战',
         futureTitle: '未来游戏项目',
         futureDesc: '这里以后可以放新的游戏发布和原型项目。'
       },
@@ -113,6 +125,9 @@
         snakeTitle: '贪吃蛇 Snake Game',
         snakeDesc: '一个简单的 browser snake game，作为这个 hub 里的早期项目。',
         snakeLink: '打开贪吃蛇 Open Snake Game',
+        tankTitle: '坦克大战 Tank Battle',
+        tankDesc: '一个 browser tank game，你可以移动、射击并清除 enemy tanks。',
+        tankLink: '打开坦克大战 Open Tank Battle',
         futureTitle: '未来游戏项目 Future Game Project',
         futureDesc: '这里以后可以放新的 game releases 和 prototype projects。'
       }
@@ -130,6 +145,9 @@
       document.getElementById('snakeTitle').textContent = t.snakeTitle;
       document.getElementById('snakeDesc').textContent = t.snakeDesc;
       document.getElementById('snakeLink').textContent = t.snakeLink;
+      document.getElementById('tankTitle').textContent = t.tankTitle;
+      document.getElementById('tankDesc').textContent = t.tankDesc;
+      document.getElementById('tankLink').textContent = t.tankLink;
       document.getElementById('futureTitle').textContent = t.futureTitle;
       document.getElementById('futureDesc').textContent = t.futureDesc;
       langSelect.value = currentLang;

@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tank Battle | Yichen Hub</title>
+  <link rel="icon" type="image/png" href="./assets/icon.png?v=2" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Book Antiqua", Palatino, "Palatino Linotype", serif;
+      background: #f7f4ee;
+      color: #1f2937;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+    h1 {
+      margin-bottom: 10px;
+      font-size: 44px;
+    }
+    h2 {
+      margin-top: 34px;
+      font-size: 28px;
+      border-bottom: 1px solid #d6cfc3;
+      padding-bottom: 8px;
+    }
+    p, li {
+      line-height: 1.75;
+      font-size: 16px;
+    }
+    .hero p {
+      color: #4b5563;
+      max-width: 760px;
+    }
+    .card, .game-shell {
+      margin-top: 18px;
+      padding: 22px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 1px solid #ddd6c8;
+    }
+    .game-shell {
+      text-align: center;
+    }
+    canvas {
+      background: #17212b;
+      border: 3px solid #334155;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+      max-width: 100%;
+    }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 12px auto 0;
+      width: 520px;
+      max-width: 95vw;
+      font-weight: 700;
+      flex-wrap: wrap;
+    }
+    .btn, a {
+      color: #7c4f2d;
+      text-decoration: none;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 14px;
+      border: 1px solid #d4c4ae;
+      border-radius: 10px;
+      background: #fbf7f1;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    select {
+      font-family: inherit;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid #d4c4ae;
+      background: #fbf7f1;
+      color: #7c4f2d;
+    }
+    footer {
+      margin-top: 44px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <a id="backLink" href="./games.html">← Back to games</a>
+      <select id="langSelect">
+        <option value="en">English</option>
+        <option value="zh">简体中文</option>
+        <option value="mix">Combine</option>
+      </select>
+    </div>
+
+    <section class="hero">
+      <h1 id="title">Tank Battle</h1>
+      <p id="subtitle">A small browser tank game where you move, dodge, and shoot enemy tanks. Clear all enemies to win the round.</p>
+    </section>
+
+    <div class="game-shell">
+      <canvas id="game" width="520" height="520"></canvas>
+      <div class="meta">
+        <span id="scoreLabel">Score: <span id="score">0</span></span>
+        <span id="enemyLabel">Enemies left: <span id="enemies">0</span></span>
+        <span id="mode">Running</span>
+      </div>
+      <button class="btn" id="restart">Restart</button>
+    </div>
+
+    <section>
+      <h2 id="controlsTitle">Controls</h2>
+      <div class="card">
+        <ul>
+          <li id="c1">Use arrow keys to move the tank.</li>
+          <li id="c2">Press the space bar to fire.</li>
+          <li id="c3">Destroy all enemy tanks and avoid enemy bullets.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="descTitle">Project Description</h2>
+      <div class="card">
+        <p id="descText">This is a simple arcade-style tank battle demo made with HTML, CSS, and JavaScript. It focuses on basic movement, shooting, collision, and win or lose states.</p>
+      </div>
+    </section>
+
+    <footer id="footerText">Tank Battle project page on Yichen Hub.</footer>
+  </div>
+
+  <script>
+    const copy = {
+      en: {
+        back: '← Back to games',
+        title: 'Tank Battle',
+        subtitle: 'A small browser tank game where you move, dodge, and shoot enemy tanks. Clear all enemies to win the round.',
+        score: 'Score:',
+        enemies: 'Enemies left:',
+        running: 'Running',
+        won: 'You win',
+        lost: 'Game Over',
+        restart: 'Restart',
+        controlsTitle: 'Controls',
+        c1: 'Use arrow keys to move the tank.',
+        c2: 'Press the space bar to fire.',
+        c3: 'Destroy all enemy tanks and avoid enemy bullets.',
+        descTitle: 'Project Description',
+        descText: 'This is a simple arcade-style tank battle demo made with HTML, CSS, and JavaScript. It focuses on basic movement, shooting, collision, and win or lose states.',
+        footer: 'Tank Battle project page on Yichen Hub.'
+      },
+      zh: {
+        back: '← 返回游戏页',
+        title: '坦克大战',
+        subtitle: '一个小型浏览器坦克游戏，你可以移动、躲避并射击敌方坦克。清除所有敌人即可获胜。',
+        score: '分数：',
+        enemies: '剩余敌人：',
+        running: '进行中',
+        won: '你赢了',
+        lost: '游戏结束',
+        restart: '重新开始',
+        controlsTitle: '操作方式',
+        c1: '使用方向键移动坦克。',
+        c2: '按空格键发射子弹。',
+        c3: '消灭所有敌方坦克，并躲开敌方子弹。',
+        descTitle: '项目介绍',
+        descText: '这是一个用 HTML、CSS 和 JavaScript 制作的街机风格坦克大战演示，重点包括移动、射击、碰撞和胜负状态。',
+        footer: 'Yichen Hub 上的坦克大战项目页。'
+      },
+      mix: {
+        back: '← 返回游戏页 Back to games',
+        title: '坦克大战 Tank Battle',
+        subtitle: '一个小型 browser tank game，你可以移动、躲避并射击 enemy tanks。清除所有敌人即可获胜。',
+        score: '分数 Score:',
+        enemies: '剩余敌人 Enemies left:',
+        running: '进行中 Running',
+        won: '你赢了 You win',
+        lost: '游戏结束 Game Over',
+        restart: '重新开始 Restart',
+        controlsTitle: '操作方式 Controls',
+        c1: '使用 arrow keys 移动坦克。',
+        c2: '按 space bar 发射子弹。',
+        c3: '消灭所有 enemy tanks，并躲开 enemy bullets。',
+        descTitle: '项目介绍 Project Description',
+        descText: '这是一个用 HTML、CSS 和 JavaScript 制作的 arcade-style tank battle demo，重点包括 movement、shooting、collision 和 win or lose states。',
+        footer: 'Yichen Hub 上的 Tank Battle project page。'
+      }
+    };
+
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+    const enemiesEl = document.getElementById('enemies');
+    const scoreLabelEl = document.getElementById('scoreLabel');
+    const enemyLabelEl = document.getElementById('enemyLabel');
+    const modeEl = document.getElementById('mode');
+    const restartBtn = document.getElementById('restart');
+    const langSelect = document.getElementById('langSelect');
+    let currentLang = localStorage.getItem('yh-lang') || 'en';
+
+    const size = 40;
+    const board = 13;
+    let player, bullets, enemyBullets, enemies, keys, score, state, tick;
+
+    function makeTank(x, y, dir, color, isPlayer = false) {
+      return { x, y, dir, color, isPlayer, cooldown: 0, moveTick: 0 };
+    }
+
+    function resetGame() {
+      player = makeTank(6, 11, 'up', '#22c55e', true);
+      bullets = [];
+      enemyBullets = [];
+      enemies = [
+        makeTank(2, 1, 'down', '#ef4444'),
+        makeTank(6, 1, 'down', '#f97316'),
+        makeTank(10, 1, 'down', '#eab308')
+      ];
+      keys = {};
+      score = 0;
+      state = 'running';
+      tick = 0;
+      updateHud();
+      draw();
+    }
+
+    function updateHud() {
+      const t = copy[currentLang];
+      scoreEl.textContent = score;
+      enemiesEl.textContent = enemies.length;
+      scoreLabelEl.childNodes[0].textContent = t.score + ' ';
+      enemyLabelEl.childNodes[0].textContent = t.enemies + ' ';
+      modeEl.textContent = state === 'running' ? t.running : state === 'won' ? t.won : t.lost;
+    }
+
+    function applyLanguage() {
+      const t = copy[currentLang];
+      document.getElementById('backLink').textContent = t.back;
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('subtitle').textContent = t.subtitle;
+      document.getElementById('controlsTitle').textContent = t.controlsTitle;
+      document.getElementById('c1').textContent = t.c1;
+      document.getElementById('c2').textContent = t.c2;
+      document.getElementById('c3').textContent = t.c3;
+      document.getElementById('descTitle').textContent = t.descTitle;
+      document.getElementById('descText').textContent = t.descText;
+      document.getElementById('footerText').textContent = t.footer;
+      restartBtn.textContent = t.restart;
+      langSelect.value = currentLang;
+      localStorage.setItem('yh-lang', currentLang);
+      updateHud();
+    }
+
+    function canMoveTo(x, y) {
+      return x >= 0 && y >= 0 && x < board && y < board;
+    }
+
+    function shoot(tank, collection, speed) {
+      if (tank.cooldown > 0) return;
+      const dirs = {
+        up: { x: 0, y: -1 },
+        down: { x: 0, y: 1 },
+        left: { x: -1, y: 0 },
+        right: { x: 1, y: 0 }
+      };
+      const d = dirs[tank.dir];
+      collection.push({
+        x: tank.x + 0.5,
+        y: tank.y + 0.5,
+        dx: d.x * speed,
+        dy: d.y * speed,
+        owner: tank.isPlayer ? 'player' : 'enemy'
+      });
+      tank.cooldown = 18;
+    }
+
+    function updatePlayer() {
+      const dirs = [
+        ['ArrowUp', 0, -1, 'up'],
+        ['ArrowDown', 0, 1, 'down'],
+        ['ArrowLeft', -1, 0, 'left'],
+        ['ArrowRight', 1, 0, 'right']
+      ];
+      for (const [key, dx, dy, dir] of dirs) {
+        if (keys[key]) {
+          player.dir = dir;
+          const nx = player.x + dx;
+          const ny = player.y + dy;
+          if (canMoveTo(nx, ny)) {
+            player.x = nx;
+            player.y = ny;
+          }
+          break;
+        }
+      }
+      if (keys['Space']) shoot(player, bullets, 0.28);
+    }
+
+    function updateEnemies() {
+      const dirs = ['up', 'down', 'left', 'right'];
+      enemies.forEach(enemy => {
+        if (enemy.cooldown > 0) enemy.cooldown -= 1;
+        enemy.moveTick += 1;
+        if (enemy.moveTick % 18 === 0) {
+          if (Math.random() < 0.35) enemy.dir = dirs[Math.floor(Math.random() * dirs.length)];
+          const delta = {
+            up: [0, -1],
+            down: [0, 1],
+            left: [-1, 0],
+            right: [1, 0]
+          }[enemy.dir];
+          const nx = enemy.x + delta[0];
+          const ny = enemy.y + delta[1];
+          if (canMoveTo(nx, ny)) {
+            enemy.x = nx;
+            enemy.y = ny;
+          } else {
+            enemy.dir = dirs[Math.floor(Math.random() * dirs.length)];
+          }
+          if (Math.random() < 0.28) shoot(enemy, enemyBullets, 0.18);
+        }
+      });
+    }
+
+    function updateBullets(list, targetType) {
+      for (let i = list.length - 1; i >= 0; i--) {
+        const b = list[i];
+        b.x += b.dx;
+        b.y += b.dy;
+        if (b.x < 0 || b.y < 0 || b.x > board || b.y > board) {
+          list.splice(i, 1);
+          continue;
+        }
+        if (targetType === 'enemy') {
+          const hitIndex = enemies.findIndex(e => Math.abs(e.x + 0.5 - b.x) < 0.45 && Math.abs(e.y + 0.5 - b.y) < 0.45);
+          if (hitIndex >= 0) {
+            enemies.splice(hitIndex, 1);
+            list.splice(i, 1);
+            score += 10;
+            if (enemies.length === 0) state = 'won';
+            updateHud();
+          }
+        } else {
+          if (Math.abs(player.x + 0.5 - b.x) < 0.45 && Math.abs(player.y + 0.5 - b.y) < 0.45) {
+            list.splice(i, 1);
+            state = 'lost';
+            updateHud();
+          }
+        }
+      }
+    }
+
+    function drawTank(tank) {
+      const px = tank.x * size;
+      const py = tank.y * size;
+      ctx.fillStyle = tank.color;
+      ctx.fillRect(px + 7, py + 7, size - 14, size - 14);
+      ctx.fillStyle = '#111827';
+      const barrel = {
+        up: [px + 17, py + 2, 6, 16],
+        down: [px + 17, py + 22, 6, 16],
+        left: [px + 2, py + 17, 16, 6],
+        right: [px + 22, py + 17, 16, 6]
+      }[tank.dir];
+      ctx.fillRect(...barrel);
+      ctx.strokeStyle = '#e5e7eb';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(px + 7, py + 7, size - 14, size - 14);
+    }
+
+    function drawBullet(bullet) {
+      ctx.fillStyle = bullet.owner === 'player' ? '#f8fafc' : '#f87171';
+      ctx.beginPath();
+      ctx.arc(bullet.x * size, bullet.y * size, 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawGrid() {
+      ctx.fillStyle = '#17212b';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#243242';
+      for (let i = 0; i <= board; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * size, 0);
+        ctx.lineTo(i * size, canvas.height);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, i * size);
+        ctx.lineTo(canvas.width, i * size);
+        ctx.stroke();
+      }
+    }
+
+    function draw() {
+      drawGrid();
+      drawTank(player);
+      enemies.forEach(drawTank);
+      bullets.forEach(drawBullet);
+      enemyBullets.forEach(drawBullet);
+    }
+
+    function loop() {
+      if (player.cooldown > 0) player.cooldown -= 1;
+      if (state === 'running') {
+        tick += 1;
+        updatePlayer();
+        updateEnemies();
+        updateBullets(bullets, 'enemy');
+        updateBullets(enemyBullets, 'player');
+      }
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) e.preventDefault();
+      if (e.key === ' ') {
+        keys['Space'] = true;
+      } else {
+        keys[e.key] = true;
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      if (e.key === ' ') {
+        keys['Space'] = false;
+      } else {
+        keys[e.key] = false;
+      }
+    });
+
+    langSelect.addEventListener('change', () => {
+      currentLang = langSelect.value;
+      applyLanguage();
+    });
+
+    restartBtn.addEventListener('click', resetGame);
+
+    applyLanguage();
+    resetGame();
+    loop();
+  </script>
+</body>
+</html>
