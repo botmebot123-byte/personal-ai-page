@@ -13,7 +13,7 @@
       color: #1f2937;
     }
     .wrap {
-      max-width: 1020px;
+      max-width: 1040px;
       margin: 0 auto;
       padding: 40px 20px 80px;
     }
@@ -31,7 +31,7 @@
       margin: 0 0 10px;
       font-size: 21px;
     }
-    p, li {
+    p, li, label {
       line-height: 1.75;
       font-size: 16px;
     }
@@ -57,7 +57,7 @@
       flex-wrap: wrap;
       margin-bottom: 8px;
     }
-    select {
+    select, input {
       font-family: inherit;
       font-size: 16px;
       padding: 8px 12px;
@@ -72,32 +72,6 @@
       cursor: pointer;
       font-weight: 700;
       white-space: nowrap;
-    }
-    .section-btn {
-      display: inline-block;
-      margin: 8px 10px 0 0;
-      padding: 8px 12px;
-      border-radius: 10px;
-      border: 1px solid #d4c4ae;
-      background: #fbf7f1;
-      color: #7c4f2d;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 15px;
-    }
-    .detail-box {
-      margin-top: 14px;
-      padding: 16px;
-      border-radius: 12px;
-      background: #fcfaf6;
-      border: 1px solid #e7dccb;
-      display: none;
-    }
-    .formula {
-      font-weight: 700;
-      color: #7c4f2d;
-      cursor: pointer;
-      border-bottom: 1px dashed #b08968;
     }
     #termPopup {
       position: fixed;
@@ -116,6 +90,62 @@
       display: block;
       margin-bottom: 6px;
       color: #7c4f2d;
+    }
+    .interactive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .mini-card {
+      padding: 18px;
+      border-radius: 14px;
+      background: #fcfaf6;
+      border: 1px solid #e7dccb;
+    }
+    .periodic-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(44px, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .element {
+      padding: 10px 6px;
+      border-radius: 10px;
+      border: 1px solid #d4c4ae;
+      background: #fbf7f1;
+      cursor: pointer;
+      text-align: center;
+      font-weight: 700;
+      color: #7c4f2d;
+    }
+    .earth-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .layer {
+      padding: 12px;
+      border-radius: 999px;
+      text-align: center;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid #d6c3aa;
+    }
+    .controls-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 12px 0;
+      align-items: center;
+    }
+    canvas.graph {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border: 1px solid #d6cfc3;
+      border-radius: 12px;
     }
   </style>
 </head>
@@ -147,7 +177,41 @@
 
     <h2 id="mathTitle">Maths</h2>
     <div class="card" id="mathOverview"></div>
-    <div class="card" id="formulaCard"></div>
+
+    <h2 id="interactiveTitle">Interactive Revision Tools</h2>
+    <div class="interactive-grid">
+      <div class="mini-card">
+        <h3 id="ptableTitle">Mini Periodic Table</h3>
+        <p id="ptableDesc">Click an element to view key information.</p>
+        <div class="periodic-grid" id="periodicGrid"></div>
+        <p id="elementInfo"></p>
+      </div>
+
+      <div class="mini-card">
+        <h3 id="linearTitle">Linear Function Draw</h3>
+        <p id="linearDesc">Enter y = mx + c and draw the line.</p>
+        <div class="controls-row">
+          <label id="mLabel" for="mInput">m</label>
+          <input id="mInput" type="number" value="1" step="0.5" />
+          <label id="cLabel" for="cInput">c</label>
+          <input id="cInput" type="number" value="0" step="0.5" />
+        </div>
+        <p id="equationText">Current line: y = 1x + 0</p>
+        <canvas id="graphCanvas" class="graph" width="420" height="300"></canvas>
+      </div>
+
+      <div class="mini-card">
+        <h3 id="earthTitle">Earth Structure Diagram</h3>
+        <p id="earthDesc">Click a layer to read its meaning.</p>
+        <div class="earth-diagram">
+          <div class="layer" data-earth="crust" style="background:#d6b38b;">Crust</div>
+          <div class="layer" data-earth="mantle" style="background:#d97745;">Mantle</div>
+          <div class="layer" data-earth="outerCore" style="background:#f59e0b;">Outer Core</div>
+          <div class="layer" data-earth="innerCore" style="background:#facc15;">Inner Core</div>
+        </div>
+        <p id="earthInfo"></p>
+      </div>
+    </div>
   </div>
 
   <div id="termPopup"></div>
@@ -201,65 +265,43 @@
       }
     };
 
-    const formulaData = {
-      gradient: {
-        label: { en: 'Gradient formula', zh: '斜率公式', mix: '斜率公式 Gradient formula' },
-        formula: 'm = (y2 - y1) / (x2 - x1)',
-        letters: {
-          en: '<li><strong>m</strong>: gradient</li><li><strong>x1, y1</strong>: coordinates of the first point</li><li><strong>x2, y2</strong>: coordinates of the second point</li>',
-          zh: '<li><strong>m</strong>：斜率</li><li><strong>x1, y1</strong>：第一个点的坐标</li><li><strong>x2, y2</strong>：第二个点的坐标</li>',
-          mix: '<li><strong>m</strong>：gradient</li><li><strong>x1, y1</strong>：first point 坐标</li><li><strong>x2, y2</strong>：second point 坐标</li>'
-        },
-        apply: {
-          en: 'Example: points (2, 3) and (6, 11). Then m = (11 - 3) / (6 - 2) = 8 / 4 = 2.',
-          zh: '例子：点 (2, 3) 和 (6, 11)。代入后 m = (11 - 3) / (6 - 2) = 8 / 4 = 2。',
-          mix: '例子：points (2, 3) 和 (6, 11)。代入得 m = (11 - 3) / (6 - 2) = 2。'
-        },
-        check: {
-          en: 'Verification: x increases by 4 and y increases by 8, so the gradient is 8 ÷ 4 = 2.',
-          zh: '验证：x 增加了 4，y 增加了 8，所以斜率就是 8 ÷ 4 = 2。',
-          mix: '验证：x increase 4，y increase 8，所以 gradient = 8 ÷ 4 = 2。'
-        }
+    const earthInfoMap = {
+      crust: {
+        en: 'The crust is the thin outer solid layer of the Earth.',
+        zh: '地壳是地球最外面较薄的固体层。',
+        mix: '地壳是 the thin outer solid layer of the Earth.'
       },
-      speed: {
-        label: { en: 'Speed formula', zh: '速度公式', mix: '速度公式 Speed formula' },
-        formula: 'speed = distance / time',
-        letters: {
-          en: '<li><strong>speed</strong>: how fast something moves</li><li><strong>distance</strong>: total length travelled</li><li><strong>time</strong>: how long the journey takes</li>',
-          zh: '<li><strong>speed</strong>：速度</li><li><strong>distance</strong>：路程</li><li><strong>time</strong>：时间</li>',
-          mix: '<li><strong>speed</strong>：速度</li><li><strong>distance</strong>：路程</li><li><strong>time</strong>：时间</li>'
-        },
-        apply: {
-          en: 'Example: if a car travels 150 km in 3 h, speed = 150 / 3 = 50 km/h.',
-          zh: '例子：如果一辆车 3 小时走了 150 km，那么 speed = 150 / 3 = 50 km/h。',
-          mix: '例子：a car 3 小时走 150 km，那么 speed = 150 / 3 = 50 km/h。'
-        },
-        check: {
-          en: 'Verification: 50 km/h × 3 h = 150 km, so the answer is consistent.',
-          zh: '验证：50 km/h × 3 h = 150 km，所以答案成立。',
-          mix: '验证：50 km/h × 3 h = 150 km，所以 answer 是对的。'
-        }
+      mantle: {
+        en: 'The mantle is a thick hot layer of semi-molten rock beneath the crust.',
+        zh: '地幔是位于地壳下方、又厚又热的半熔融岩层。',
+        mix: '地幔是 a thick hot layer beneath the crust.'
       },
-      density: {
-        label: { en: 'Density formula', zh: '密度公式', mix: '密度公式 Density formula' },
-        formula: 'density = mass / volume',
-        letters: {
-          en: '<li><strong>density</strong>: mass per unit volume</li><li><strong>mass</strong>: amount of matter</li><li><strong>volume</strong>: space taken up</li>',
-          zh: '<li><strong>density</strong>：密度</li><li><strong>mass</strong>：质量</li><li><strong>volume</strong>：体积</li>',
-          mix: '<li><strong>density</strong>：密度</li><li><strong>mass</strong>：质量</li><li><strong>volume</strong>：体积</li>'
-        },
-        apply: {
-          en: 'Example: if mass = 24 g and volume = 8 cm³, density = 24 / 8 = 3 g/cm³.',
-          zh: '例子：如果 mass = 24 g，volume = 8 cm³，那么 density = 24 / 8 = 3 g/cm³。',
-          mix: '例子：mass = 24 g，volume = 8 cm³，所以 density = 3 g/cm³。'
-        },
-        check: {
-          en: 'Verification: 3 g/cm³ × 8 cm³ = 24 g, so the formula rearranges correctly.',
-          zh: '验证：3 g/cm³ × 8 cm³ = 24 g，所以反代检查正确。',
-          mix: '验证：3 g/cm³ × 8 cm³ = 24 g，所以 check 正确。'
-        }
+      outerCore: {
+        en: 'The outer core is liquid and mainly made of iron and nickel.',
+        zh: '外核是液态的，主要由铁和镍组成。',
+        mix: '外核是 liquid and mainly made of iron and nickel.'
+      },
+      innerCore: {
+        en: 'The inner core is the hottest and most dense central part of the Earth.',
+        zh: '内核是地球中心最热、最致密的部分。',
+        mix: '内核是 the hottest and most dense central part.'
       }
     };
+
+    const elements = [
+      { symbol: 'H', name: { en: 'Hydrogen', zh: '氢', mix: 'Hydrogen 氢' }, number: 1 },
+      { symbol: 'He', name: { en: 'Helium', zh: '氦', mix: 'Helium 氦' }, number: 2 },
+      { symbol: 'Li', name: { en: 'Lithium', zh: '锂', mix: 'Lithium 锂' }, number: 3 },
+      { symbol: 'Be', name: { en: 'Beryllium', zh: '铍', mix: 'Beryllium 铍' }, number: 4 },
+      { symbol: 'B', name: { en: 'Boron', zh: '硼', mix: 'Boron 硼' }, number: 5 },
+      { symbol: 'C', name: { en: 'Carbon', zh: '碳', mix: 'Carbon 碳' }, number: 6 },
+      { symbol: 'N', name: { en: 'Nitrogen', zh: '氮', mix: 'Nitrogen 氮' }, number: 7 },
+      { symbol: 'O', name: { en: 'Oxygen', zh: '氧', mix: 'Oxygen 氧' }, number: 8 },
+      { symbol: 'Na', name: { en: 'Sodium', zh: '钠', mix: 'Sodium 钠' }, number: 11 },
+      { symbol: 'Mg', name: { en: 'Magnesium', zh: '镁', mix: 'Magnesium 镁' }, number: 12 },
+      { symbol: 'Al', name: { en: 'Aluminium', zh: '铝', mix: 'Aluminium 铝' }, number: 13 },
+      { symbol: 'Cl', name: { en: 'Chlorine', zh: '氯', mix: 'Chlorine 氯' }, number: 17 }
+    ];
 
     const content = {
       en: {
@@ -270,38 +312,22 @@
         chemTitle: 'Chemistry',
         geoTitle: 'Geography',
         mathTitle: 'Maths',
-        guideCard: `
-          <h3>How to use this page</h3>
-          <ul>
-            <li>Click important academic terms to see Chinese meanings.</li>
-            <li>Click formulas to open sections showing letter meanings, worked examples, and verification.</li>
-            <li>Use this page as a quick revision hub rather than a full textbook.</li>
-          </ul>
-        `,
-        linksCard: `
-          <h3>Helpful reference links</h3>
-          <ul>
-            <li><a href="https://www.khanacademy.org/science/biology" target="_blank" rel="noopener noreferrer">Khan Academy Biology</a></li>
-            <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li>
-            <li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li>
-            <li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li>
-          </ul>
-        `,
+        interactiveTitle: 'Interactive Revision Tools',
+        guideCard: `<h3>How to use this page</h3><ul><li>Click important academic terms to see meanings.</li><li>Use the interactive tools below to revise with diagrams and graphs.</li><li>This page is designed as a quick study hub.</li></ul>`,
+        linksCard: `<h3>Helpful reference links</h3><ul><li><a href="https://www.khanacademy.org/science/biology" target="_blank" rel="noopener noreferrer">Khan Academy Biology</a></li><li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li><li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li><li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li></ul>`,
         bioCard: `<h3>Core Biology Points</h3><p><span class="term" data-term="digestion">Digestion</span> breaks food into small absorbable molecules. White blood cells help defend against <span class="term" data-term="pathogen">pathogens</span> and support <span class="term" data-term="immunity">immunity</span>.</p>`,
-        chemCard: `<h3>Core Chemistry Points</h3><p>An <span class="term" data-term="ion">ion</span> is a charged particle. An <span class="term" data-term="alkali">alkali</span> is a soluble base. Density questions often use the formula section below.</p>`,
+        chemCard: `<h3>Core Chemistry Points</h3><p>An <span class="term" data-term="ion">ion</span> is a charged particle. An <span class="term" data-term="alkali">alkali</span> is a soluble base.</p>`,
         geoCard: `<h3>Core Geography Points</h3><p><span class="term" data-term="tectonicPlate">Tectonic plates</span> move slowly and are linked to earthquakes and volcanoes.</p>`,
         mathOverview: `<h3>Core Maths Points</h3><p><span class="term" data-term="factorisation">Factorisation</span>, <span class="term" data-term="quadratic">quadratics</span>, and using the <span class="term" data-term="LCD">LCD</span> are key topics here.</p>`,
-        formulaCard: `
-          <h3>Formula Sections</h3>
-          <p>Click a formula below to open a focused study section.</p>
-          <button class="section-btn formula-btn" data-formula="gradient">Gradient formula: m = (y2 - y1) / (x2 - x1)</button>
-          <button class="section-btn formula-btn" data-formula="speed">Speed formula: speed = distance / time</button>
-          <button class="section-btn formula-btn" data-formula="density">Density formula: density = mass / volume</button>
-          <div class="detail-box" id="formulaDetail"></div>
-        `,
-        lettersTitle: 'Letter meanings',
-        applyTitle: 'Worked example',
-        checkTitle: 'Verification'
+        ptableTitle: 'Mini Periodic Table',
+        ptableDesc: 'Click an element to view key information.',
+        linearTitle: 'Linear Function Draw',
+        linearDesc: 'Enter y = mx + c and draw the line.',
+        earthTitle: 'Earth Structure Diagram',
+        earthDesc: 'Click a layer to read its meaning.',
+        equationText: 'Current line:',
+        elementInfo: 'Choose an element.',
+        earthInfo: 'Choose a layer.'
       },
       zh: {
         back: '← 返回主页',
@@ -311,38 +337,22 @@
         chemTitle: '化学',
         geoTitle: '地理',
         mathTitle: '数学',
-        guideCard: `
-          <h3>如何使用本页</h3>
-          <ul>
-            <li>点击重要英文术语可以看中文释义。</li>
-            <li>点击公式可以展开字母含义、实际套用和验证。</li>
-            <li>这页适合快速复习，不是完整教材。</li>
-          </ul>
-        `,
-        linksCard: `
-          <h3>参考链接</h3>
-          <ul>
-            <li><a href="https://www.khanacademy.org/science/biology" target="_blank" rel="noopener noreferrer">Khan Academy Biology</a></li>
-            <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li>
-            <li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li>
-            <li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li>
-          </ul>
-        `,
+        interactiveTitle: '交互式复习工具',
+        guideCard: `<h3>如何使用本页</h3><ul><li>点击重要术语可以看释义。</li><li>使用下面的互动工具复习图表和图像。</li><li>这页适合快速复习。</li></ul>`,
+        linksCard: `<h3>参考链接</h3><ul><li><a href="https://www.khanacademy.org/science/biology" target="_blank" rel="noopener noreferrer">Khan Academy Biology</a></li><li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li><li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li><li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li></ul>`,
         bioCard: `<h3>生物核心点</h3><p><span class="term" data-term="digestion">Digestion</span> 会把食物分解成可吸收的小分子。白细胞帮助防御 <span class="term" data-term="pathogen">pathogens</span>，并支持 <span class="term" data-term="immunity">immunity</span>。</p>`,
-        chemCard: `<h3>化学核心点</h3><p><span class="term" data-term="ion">Ion</span> 是带电粒子。<span class="term" data-term="alkali">Alkali</span> 是可溶于水的碱。密度题可以看下面的公式 section。</p>`,
+        chemCard: `<h3>化学核心点</h3><p><span class="term" data-term="ion">Ion</span> 是带电粒子。<span class="term" data-term="alkali">Alkali</span> 是可溶于水的碱。</p>`,
         geoCard: `<h3>地理核心点</h3><p><span class="term" data-term="tectonicPlate">Tectonic plates</span> 会缓慢移动，并和地震、火山有关。</p>`,
         mathOverview: `<h3>数学核心点</h3><p><span class="term" data-term="factorisation">Factorisation</span>、<span class="term" data-term="quadratic">quadratics</span> 和使用 <span class="term" data-term="LCD">LCD</span> 都是重点。</p>`,
-        formulaCard: `
-          <h3>公式学习分区</h3>
-          <p>点击下面的公式，展开对应学习内容。</p>
-          <button class="section-btn formula-btn" data-formula="gradient">斜率公式: m = (y2 - y1) / (x2 - x1)</button>
-          <button class="section-btn formula-btn" data-formula="speed">速度公式: speed = distance / time</button>
-          <button class="section-btn formula-btn" data-formula="density">密度公式: density = mass / volume</button>
-          <div class="detail-box" id="formulaDetail"></div>
-        `,
-        lettersTitle: '字母含义',
-        applyTitle: '实际套用',
-        checkTitle: '验证'
+        ptableTitle: '迷你元素周期表',
+        ptableDesc: '点击元素查看关键信息。',
+        linearTitle: '一次函数画图',
+        linearDesc: '输入 y = mx + c 并画出直线。',
+        earthTitle: '地球结构图',
+        earthDesc: '点击某一层查看说明。',
+        equationText: '当前直线：',
+        elementInfo: '请选择一个元素。',
+        earthInfo: '请选择一层。'
       },
       mix: {
         back: '← 返回主页',
@@ -352,62 +362,30 @@
         chemTitle: '化学 Chemistry',
         geoTitle: '地理 Geography',
         mathTitle: '数学 Maths',
-        guideCard: `
-          <h3>如何使用本页 How to use this page</h3>
-          <ul>
-            <li>点击 academic terms 可以看中文释义。</li>
-            <li>点击 formulas 可以展开 letter meanings、worked example 和 verification。</li>
-            <li>这页适合 quick revision，不是 full textbook。</li>
-          </ul>
-        `,
-        linksCard: `
-          <h3>参考链接 Helpful reference links</h3>
-          <ul>
-            <li><a href="https://www.khanacademy.org/science/biology" target="_blank" rel="noopener noreferrer">Khan Academy Biology</a></li>
-            <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li>
-            <li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li>
-            <li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li>
-          </ul>
-        `,
+        interactiveTitle: '交互式复习工具 Interactive Revision Tools',
+        guideCard: `<h3>如何使用本页 How to use this page</h3><ul><li>点击重要 terms 可以看 meanings。</li><li>使用下面的 interactive tools 复习 diagrams 和 graphs。</li><li>这页适合 quick revision。</li></ul>`,
+        linksCard: `<h3>参考链接 Helpful reference links</h3><ul><li><a href="https://www.khanacademy.org/science/biology" target="_blank" rel="noopener noreferrer">Khan Academy Biology</a></li><li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li><li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li><li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li></ul>`,
         bioCard: `<h3>Core Biology Points</h3><p><span class="term" data-term="digestion">Digestion</span> 会把 food 分解成可吸收的小分子。白细胞帮助防御 <span class="term" data-term="pathogen">pathogens</span>，并支持 <span class="term" data-term="immunity">immunity</span>。</p>`,
-        chemCard: `<h3>Core Chemistry Points</h3><p><span class="term" data-term="ion">Ion</span> 是 charged particle。<span class="term" data-term="alkali">Alkali</span> 是 soluble base。密度题可以看下面的 formula section。</p>`,
+        chemCard: `<h3>Core Chemistry Points</h3><p><span class="term" data-term="ion">Ion</span> 是 charged particle。<span class="term" data-term="alkali">Alkali</span> 是 soluble base。</p>`,
         geoCard: `<h3>Core Geography Points</h3><p><span class="term" data-term="tectonicPlate">Tectonic plates</span> 会 slowly move，并和 earthquakes、volcanoes 有关。</p>`,
         mathOverview: `<h3>Core Maths Points</h3><p><span class="term" data-term="factorisation">Factorisation</span>、<span class="term" data-term="quadratic">quadratics</span> 和使用 <span class="term" data-term="LCD">LCD</span> 都是 key topics。</p>`,
-        formulaCard: `
-          <h3>Formula Sections</h3>
-          <p>点击下面的 formula，展开对应学习内容。</p>
-          <button class="section-btn formula-btn" data-formula="gradient">Gradient formula: m = (y2 - y1) / (x2 - x1)</button>
-          <button class="section-btn formula-btn" data-formula="speed">Speed formula: speed = distance / time</button>
-          <button class="section-btn formula-btn" data-formula="density">Density formula: density = mass / volume</button>
-          <div class="detail-box" id="formulaDetail"></div>
-        `,
-        lettersTitle: '字母含义 Letter meanings',
-        applyTitle: '实际套用 Worked example',
-        checkTitle: '验证 Verification'
+        ptableTitle: '迷你元素周期表 Mini Periodic Table',
+        ptableDesc: '点击 element 查看 key information。',
+        linearTitle: '一次函数画图 Linear Function Draw',
+        linearDesc: '输入 y = mx + c 并 draw the line。',
+        earthTitle: '地球结构图 Earth Structure Diagram',
+        earthDesc: '点击某一层查看说明。',
+        equationText: '当前直线 Current line:',
+        elementInfo: '请选择一个 element。',
+        earthInfo: '请选择一层。'
       }
     };
 
     const langSelect = document.getElementById('langSelect');
     const popup = document.getElementById('termPopup');
+    const graphCanvas = document.getElementById('graphCanvas');
+    const graphCtx = graphCanvas.getContext('2d');
     let currentLang = localStorage.getItem('yh-lang') || 'en';
-
-    function renderFormulaDetail(key) {
-      const t = content[currentLang];
-      const data = formulaData[key];
-      const box = document.getElementById('formulaDetail');
-      if (!box || !data) return;
-      box.style.display = 'block';
-      box.innerHTML = `
-        <h3>${data.label[currentLang]}</h3>
-        <p><span class="formula">${data.formula}</span></p>
-        <p><strong>${t.lettersTitle}</strong></p>
-        <ul>${data.letters[currentLang]}</ul>
-        <p><strong>${t.applyTitle}</strong></p>
-        <p>${data.apply[currentLang]}</p>
-        <p><strong>${t.checkTitle}</strong></p>
-        <p>${data.check[currentLang]}</p>
-      `;
-    }
 
     function bindTerms() {
       document.querySelectorAll('.term').forEach(el => {
@@ -421,9 +399,74 @@
       });
     }
 
-    function bindFormulaButtons() {
-      document.querySelectorAll('.formula-btn').forEach(btn => {
-        btn.onclick = () => renderFormulaDetail(btn.dataset.formula);
+    function renderPeriodicTable() {
+      const grid = document.getElementById('periodicGrid');
+      const info = document.getElementById('elementInfo');
+      const t = content[currentLang];
+      grid.innerHTML = '';
+      info.textContent = t.elementInfo;
+      elements.forEach(el => {
+        const btn = document.createElement('button');
+        btn.className = 'element';
+        btn.textContent = el.symbol;
+        btn.onclick = () => {
+          info.textContent = `${el.symbol} | ${el.name[currentLang]} | ${el.number}`;
+        };
+        grid.appendChild(btn);
+      });
+    }
+
+    function drawGraph() {
+      const m = Number(document.getElementById('mInput').value);
+      const c = Number(document.getElementById('cInput').value);
+      const t = content[currentLang];
+      document.getElementById('equationText').textContent = `${t.equationText} y = ${m}x + ${c}`;
+      graphCtx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
+      graphCtx.fillStyle = '#ffffff';
+      graphCtx.fillRect(0, 0, graphCanvas.width, graphCanvas.height);
+      graphCtx.strokeStyle = '#d1d5db';
+      for (let x = 0; x <= 420; x += 30) {
+        graphCtx.beginPath();
+        graphCtx.moveTo(x, 0);
+        graphCtx.lineTo(x, 300);
+        graphCtx.stroke();
+      }
+      for (let y = 0; y <= 300; y += 30) {
+        graphCtx.beginPath();
+        graphCtx.moveTo(0, y);
+        graphCtx.lineTo(420, y);
+        graphCtx.stroke();
+      }
+      graphCtx.strokeStyle = '#111827';
+      graphCtx.beginPath();
+      graphCtx.moveTo(210, 0);
+      graphCtx.lineTo(210, 300);
+      graphCtx.stroke();
+      graphCtx.beginPath();
+      graphCtx.moveTo(0, 150);
+      graphCtx.lineTo(420, 150);
+      graphCtx.stroke();
+      graphCtx.strokeStyle = '#7c4f2d';
+      graphCtx.lineWidth = 2;
+      graphCtx.beginPath();
+      for (let px = 0; px <= 420; px++) {
+        const x = (px - 210) / 30;
+        const y = m * x + c;
+        const py = 150 - y * 30;
+        if (px === 0) graphCtx.moveTo(px, py);
+        else graphCtx.lineTo(px, py);
+      }
+      graphCtx.stroke();
+      graphCtx.lineWidth = 1;
+    }
+
+    function bindEarthDiagram() {
+      const info = document.getElementById('earthInfo');
+      info.textContent = content[currentLang].earthInfo;
+      document.querySelectorAll('.layer').forEach(layer => {
+        layer.onclick = () => {
+          info.textContent = earthInfoMap[layer.dataset.earth][currentLang];
+        };
       });
     }
 
@@ -436,17 +479,25 @@
       document.getElementById('chemTitle').textContent = t.chemTitle;
       document.getElementById('geoTitle').textContent = t.geoTitle;
       document.getElementById('mathTitle').textContent = t.mathTitle;
+      document.getElementById('interactiveTitle').textContent = t.interactiveTitle;
       document.getElementById('guideCard').innerHTML = t.guideCard;
       document.getElementById('linksCard').innerHTML = t.linksCard;
       document.getElementById('bioCard').innerHTML = t.bioCard;
       document.getElementById('chemCard').innerHTML = t.chemCard;
       document.getElementById('geoCard').innerHTML = t.geoCard;
       document.getElementById('mathOverview').innerHTML = t.mathOverview;
-      document.getElementById('formulaCard').innerHTML = t.formulaCard;
+      document.getElementById('ptableTitle').textContent = t.ptableTitle;
+      document.getElementById('ptableDesc').textContent = t.ptableDesc;
+      document.getElementById('linearTitle').textContent = t.linearTitle;
+      document.getElementById('linearDesc').textContent = t.linearDesc;
+      document.getElementById('earthTitle').textContent = t.earthTitle;
+      document.getElementById('earthDesc').textContent = t.earthDesc;
       langSelect.value = currentLang;
       localStorage.setItem('yh-lang', currentLang);
       bindTerms();
-      bindFormulaButtons();
+      renderPeriodicTable();
+      bindEarthDiagram();
+      drawGraph();
     }
 
     popup.addEventListener('click', () => {
@@ -458,6 +509,9 @@
         popup.style.display = 'none';
       }
     });
+
+    document.getElementById('mInput').addEventListener('input', drawGraph);
+    document.getElementById('cInput').addEventListener('input', drawGraph);
 
     langSelect.addEventListener('change', () => {
       currentLang = langSelect.value;
