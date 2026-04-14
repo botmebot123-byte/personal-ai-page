@@ -193,6 +193,19 @@
     }
     .pet-name { font-weight: 700; color: var(--accent); }
     .pet-note { font-size: 14px; color: #6b7280; }
+    .checklist-card {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 16px;
+      background: #fcfaf6;
+      border: 1px solid #e7dccb;
+      text-align: left;
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .checklist-card h3 { margin-top: 0; color: var(--accent); }
+    .checklist-card label { display: flex; gap: 10px; align-items: flex-start; margin: 10px 0; color: #4b5563; }
     .sound-note {
       margin-top: 12px;
       font-size: 14px;
@@ -280,6 +293,14 @@
         </div>
       </div>
       <div class="sound-note">开始、暂停、切换和结束时会有轻微 sound effects。</div>
+    </div>
+
+    <div class="checklist-card">
+      <h3>今日专注清单 Today Checklist</h3>
+      <label><input type="checkbox" /> 完成一轮 revision quiz</label>
+      <label><input type="checkbox" /> 做一次 maths graph practice</label>
+      <label><input type="checkbox" /> 复习一个 biology topic</label>
+      <label><input type="checkbox" /> 完成至少 1 次 focus session</label>
     </div>
   </div>
 
