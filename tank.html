@@ -44,6 +44,7 @@
     }
     .game-shell {
       text-align: center;
+      position: relative;
     }
     canvas {
       background: #17212b;
@@ -53,14 +54,15 @@
       max-width: 100%;
     }
     .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.7);
+      position: absolute;
+      inset: 22px;
+      background: rgba(15, 23, 42, 0.74);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
+      z-index: 20;
       padding: 20px;
+      border-radius: 12px;
     }
     .overlay-card {
       width: min(420px, 100%);
@@ -147,6 +149,13 @@
 
     <div class="game-shell">
       <canvas id="game" width="576" height="576"></canvas>
+      <div class="overlay" id="gameOverlay">
+        <div class="overlay-card">
+          <h2 id="overlayTitle">Game Over</h2>
+          <p id="overlayText">You ran out of lives. Click below to restart the game.</p>
+          <button class="btn" id="overlayRestart">Restart</button>
+        </div>
+      </div>
       <div class="meta">
         <span id="scoreLabel">Score: <span id="score">0</span></span>
         <span id="enemyLabel">Enemies left: <span id="enemies">0</span></span>
@@ -185,14 +194,6 @@
     </section>
 
     <footer id="footerText">Tank Battle project page on Yichen Hub.</footer>
-  </div>
-
-  <div class="overlay" id="gameOverlay">
-    <div class="overlay-card">
-      <h2 id="overlayTitle">Game Over</h2>
-      <p id="overlayText">You ran out of lives. Click below to restart the game.</p>
-      <button class="btn" id="overlayRestart">Restart</button>
-    </div>
   </div>
 
   <script>
@@ -261,7 +262,7 @@
 
     const size = 32;
     const board = 18;
-    let player, playerBullets, enemyBullets, enemies, walls, explosions, score, state, lives, level;
+    let player, playerBullets, enemyBullets, enemies, walls, explosions, score, state, lives, level, bossActive;
 
     function makeTank(x, y, dir, color, isPlayer = false) {
       return { x, y, dir, color, isPlayer, moveCooldown: 0, fireCooldown: 0 };
@@ -278,12 +279,19 @@
         if (protectedCells.has(key)) continue;
         if (walls.some(wall => wall.x === x && wall.y === y)) continue;
         if ((x <= 2 && y <= 3) || (x >= 15 && y <= 3) || (x >= 7 && x <= 9 && y <= 2)) continue;
-        walls.push({ x, y });
+        walls.push({ x, y, hp: Math.random() < 0.3 ? 2 : 1 });
       }
       return walls;
     }
 
     function buildEnemies(levelNum) {
+      if (levelNum % 5 === 0) {
+        const boss = makeTank(8, 1, 'down', '#f97316');
+        boss.hp = 8;
+        boss.spawnShield = 180;
+        boss.isBoss = true;
+        return [boss];
+      }
       const list = [
         makeTank(1, 1, 'down', '#ef4444'),
         makeTank(4, 1, 'down', '#f97316'),
@@ -293,6 +301,10 @@
       ];
       if (levelNum >= 2) list.push(makeTank(2, 3, 'down', '#a855f7'), makeTank(15, 3, 'down', '#14b8a6'));
       if (levelNum >= 3) list.push(makeTank(8, 3, 'down', '#fb7185'));
+      list.forEach(enemy => {
+        enemy.hp = 1;
+        enemy.spawnShield = 120;
+      });
       return list;
     }
 
@@ -308,6 +320,7 @@
       explosions = [];
       walls = buildWalls(level);
       enemies = buildEnemies(level);
+      bossActive = level % 5 === 0;
       state = 'running';
       overlay.style.display = 'none';
       Object.keys(keys).forEach(key => { keys[key] = false; });
@@ -361,9 +374,14 @@
       return walls.some(wall => wall.x === x && wall.y === y);
     }
 
-    function removeWall(x, y) {
-      const index = walls.findIndex(wall => wall.x === x && wall.y === y);
-      if (index >= 0) walls.splice(index, 1);
+    function hitWall(x, y) {
+      const wall = walls.find(item => item.x === x && item.y === y);
+      if (!wall) return;
+      wall.hp -= 1;
+      if (wall.hp <= 0) {
+        const index = walls.indexOf(wall);
+        if (index >= 0) walls.splice(index, 1);
+      }
     }
 
     function addExplosion(x, y, color = '#facc15') {
@@ -418,6 +436,7 @@
       enemies.forEach(enemy => {
         if (enemy.moveCooldown > 0) enemy.moveCooldown -= 1;
         if (enemy.fireCooldown > 0) enemy.fireCooldown -= 1;
+        if (enemy.spawnShield > 0) enemy.spawnShield -= 1;
         if (Math.random() < 0.05 + level * 0.01) {
           const [dx, dy, dir] = options[Math.floor(Math.random() * options.length)];
           tryMoveTank(enemy, dx, dy, dir);
@@ -459,19 +478,23 @@
         }
 
         if (isWall(cellX, cellY)) {
-          removeWall(cellX, cellY);
+          hitWall(cellX, cellY);
           addExplosion(cellX + 0.5, cellY + 0.5, '#f59e0b');
           list.splice(i, 1);
           continue;
         }
 
         if (targetType === 'enemy') {
-          const hitIndex = enemies.findIndex(enemy => Math.abs(enemy.x + 0.5 - bullet.x) < 0.38 && Math.abs(enemy.y + 0.5 - bullet.y) < 0.38);
+          const hitIndex = enemies.findIndex(enemy => enemy.spawnShield <= 0 && Math.abs(enemy.x + 0.5 - bullet.x) < 0.38 && Math.abs(enemy.y + 0.5 - bullet.y) < 0.38);
           if (hitIndex >= 0) {
-            addExplosion(enemies[hitIndex].x + 0.5, enemies[hitIndex].y + 0.5);
-            enemies.splice(hitIndex, 1);
+            const enemy = enemies[hitIndex];
+            enemy.hp -= 1;
+            addExplosion(enemy.x + 0.5, enemy.y + 0.5, enemy.isBoss ? '#fb923c' : '#facc15');
             list.splice(i, 1);
-            score += 10;
+            if (enemy.hp <= 0) {
+              enemies.splice(hitIndex, 1);
+              score += enemy.isBoss ? 80 : 10;
+            }
             if (enemies.length === 0) {
               state = 'won';
               setTimeout(() => {
@@ -523,6 +546,7 @@
     function drawWalls() {
       ctx.fillStyle = '#8b5e3c';
       walls.forEach(wall => {
+        ctx.fillStyle = wall.hp >= 2 ? '#6b4226' : '#8b5e3c';
         ctx.fillRect(wall.x * size + 4, wall.y * size + 4, size - 8, size - 8);
       });
     }
@@ -568,7 +592,16 @@
       drawGrid();
       drawWalls();
       if (player) drawTank(player);
-      enemies.forEach(drawTank);
+      enemies.forEach(enemy => {
+        drawTank(enemy);
+        if (enemy.spawnShield > 0) {
+          ctx.strokeStyle = '#93c5fd';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc((enemy.x + 0.5) * size, (enemy.y + 0.5) * size, 14, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      });
       drawBullets();
       drawExplosions();
     }
