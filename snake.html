@@ -252,12 +252,31 @@
     const restartBtn = document.getElementById('restart');
     const langSelect = document.getElementById('langSelect');
     let currentLang = localStorage.getItem('yh-lang') || 'en';
+    let audioCtx;
 
     let snake, direction, nextDirection, food, score, gameTimer, gameOver;
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext('2d');
     const size = 20;
     const count = canvas.width / size;
+
+    function playTone(type = 'move') {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = type === 'eat' ? 720 : type === 'gameover' ? 180 : 360;
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.06, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + (type === 'eat' ? 0.18 : 0.12));
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + (type === 'eat' ? 0.18 : 0.12));
+      } catch (e) {}
+    }
 
     function applyLanguage() {
       const t = copy[currentLang];
@@ -317,6 +336,7 @@
       if (head.x < 0 || head.y < 0 || head.x >= count || head.y >= count || snake.some(part => part.x === head.x && part.y === head.y)) {
         gameOver = true;
         modeEl.textContent = copy[currentLang].gameOver;
+        playTone('gameover');
         clearInterval(gameTimer);
         draw();
         return;
@@ -325,6 +345,7 @@
       if (head.x === food.x && head.y === food.y) {
         score += 1;
         timerEl.textContent = score;
+        playTone('eat');
         food = spawnFood();
       } else {
         snake.pop();
@@ -376,6 +397,7 @@
       e.preventDefault();
       if (newDir.x === -direction.x && newDir.y === -direction.y) return;
       nextDirection = newDir;
+      playTone('move');
     });
 
     langSelect.addEventListener('change', () => {
@@ -383,7 +405,10 @@
       applyLanguage();
     });
 
-    restartBtn.addEventListener('click', resetGame);
+    restartBtn.addEventListener('click', () => {
+      playTone('move');
+      resetGame();
+    });
     applyLanguage();
     resetGame();
   </script>
