@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,19 +44,18 @@
       gap: 18px;
       margin-top: 24px;
     }
-    .panel, .item {
+    .panel {
       padding: 22px;
       border-radius: 16px;
       background: #ffffff;
       border: 1px solid #ddd6c8;
     }
-    .panel h3, .item strong {
+    .panel h3 {
       margin-top: 0;
       font-size: 22px;
-      display: block;
       margin-bottom: 8px;
     }
-    .panel p, .item span {
+    .panel p {
       color: #4b5563;
     }
     .tag {
@@ -86,20 +85,6 @@
       background: #fbf7f1;
       font-weight: 700;
     }
-    .topbar {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 8px;
-    }
-    select {
-      font-family: inherit;
-      font-size: 16px;
-      padding: 8px 12px;
-      border-radius: 10px;
-      border: 1px solid #d4c4ae;
-      background: #fbf7f1;
-      color: #7c4f2d;
-    }
     footer {
       margin-top: 44px;
       text-align: center;
@@ -110,112 +95,29 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="topbar">
-      <select id="langSelect">
-        <option value="en">English</option>
-        <option value="zh">简体中文</option>
-        <option value="mix">Combine</option>
-      </select>
-    </div>
-
     <section class="hero">
-      <h1 id="title">Yichen Hub</h1>
-      <p id="subtitle">A personal academic-style hub for my games, study materials, revision notes, and chat records. Built as a quiet working space rather than a flashy homepage.</p>
+      <h1>Yichen Hub</h1>
+      <p>一个偏 academic 风格的个人主页，用来放学习资料、revision notes、chat notes 和个人整理内容。</p>
     </section>
 
     <section>
-      <h2 id="mainSections">Main Sections</h2>
+      <h2>主要分区 Main Sections</h2>
       <div class="grid">
         <div class="panel">
-          <div class="tag">Games</div>
-          <h3 id="gamesTitle">Games</h3>
-          <p id="gamesDesc">Project pages, browser game links, screenshots, updates, and release notes.</p>
-          <a class="btn" id="gamesBtn" href="./games.html">Open games</a>
-        </div>
-
-        <div class="panel">
           <div class="tag">Study</div>
-          <h3 id="studyTitle">Study Materials</h3>
-          <p id="studyDesc">Notes, resources, revision topics, chat notes, and subject-based learning materials.</p>
+          <h3>学习资料 Study Materials</h3>
+          <p>放 notes、resources、revision topics、chat notes 和 subject-based materials。</p>
           <div class="links">
-            <p><a id="notesLink" href="./notes.html">Open chat notes</a></p>
-            <p><a id="revLink" href="./revision-summary.html">Open revision summary</a></p>
-            <p><a id="pomodoroLink" href="./pomodoro.html">Open Pomodoro Clock</a></p>
+            <p><a href="./study.html">打开学习资料 Open study materials</a></p>
+            <p><a href="./notes.html">打开聊天笔记 Open chat notes</a></p>
+            <p><a href="./revision-summary.html">打开复习总结 Open revision summary</a></p>
+            <p><a href="./pomodoro.html">打开番茄钟 Open Pomodoro Clock</a></p>
           </div>
         </div>
       </div>
     </section>
 
-    <footer id="footerText">Academic, simple, and built for personal use.</footer>
+    <footer>Academic、简洁、用于个人使用。</footer>
   </div>
-
-  <script>
-    const copy = {
-      en: {
-        title: 'Yichen Hub',
-        subtitle: 'A personal academic-style hub for my games, study materials, revision notes, and chat records. Built as a quiet working space rather than a flashy homepage.',
-        mainSections: 'Main Sections',
-        gamesTitle: 'Games',
-        gamesDesc: 'Project pages, browser game links, screenshots, updates, and release notes.',
-        gamesBtn: 'Open games',
-        studyTitle: 'Study Materials',
-        studyDesc: 'Notes, resources, revision topics, chat notes, and subject-based learning materials.',
-        notesLink: 'Open chat notes',
-        revLink: 'Open revision summary',
-        pomodoroLink: 'Open Pomodoro Clock',
-        footer: 'Academic, simple, and built for personal use.'
-      },
-      zh: {
-        title: 'Yichen Hub',
-        subtitle: '一个偏学术风格的个人主页，用来放游戏、学习资料、复习总结和聊天记录。',
-        mainSections: '主要分区',
-        gamesTitle: '游戏',
-        gamesDesc: '放项目页面、浏览器游戏链接、截图、更新内容和发布记录。',
-        gamesBtn: '打开游戏区',
-        studyTitle: '学习资料',
-        studyDesc: '放笔记、资源、复习主题、聊天笔记和分科资料。',
-        notesLink: '打开聊天笔记',
-        revLink: '打开复习总结',
-        pomodoroLink: '打开番茄钟',
-        footer: '简洁、学术、用于个人使用。'
-      },
-      mix: {
-        title: 'Yichen Hub',
-        subtitle: '一个偏 academic 风格的个人主页，用来放游戏、学习资料、revision notes 和聊天记录。',
-        mainSections: '主要分区 Main Sections',
-        gamesTitle: '游戏 Games',
-        gamesDesc: '放 project pages、browser game links、截图、更新和 release notes。',
-        gamesBtn: '打开游戏区 Open games',
-        studyTitle: '学习资料 Study Materials',
-        studyDesc: '放 notes、resources、revision topics、chat notes 和 subject-based materials。',
-        notesLink: '打开聊天笔记 Open chat notes',
-        revLink: '打开复习总结 Open revision summary',
-        pomodoroLink: '打开番茄钟 Open Pomodoro Clock',
-        footer: 'Academic、简洁、用于个人使用。'
-      }
-    };
-
-    const keys = ['title','subtitle','mainSections','gamesTitle','gamesDesc','gamesBtn','studyTitle','studyDesc','notesLink','revLink','pomodoroLink'];
-    const langSelect = document.getElementById('langSelect');
-    let currentLang = localStorage.getItem('yh-lang') || 'en';
-
-    function applyLanguage() {
-      const t = copy[currentLang];
-      keys.forEach(key => {
-        const el = document.getElementById(key);
-        if (el) el.textContent = t[key];
-      });
-      document.getElementById('footerText').textContent = t.footer;
-      langSelect.value = currentLang;
-      localStorage.setItem('yh-lang', currentLang);
-    }
-
-    langSelect.addEventListener('change', () => {
-      currentLang = langSelect.value;
-      applyLanguage();
-    });
-
-    applyLanguage();
-  </script>
 </body>
 </html>
