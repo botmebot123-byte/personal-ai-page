@@ -122,7 +122,7 @@
     </section>
 
     <div class="game-shell">
-      <canvas id="game" width="520" height="520"></canvas>
+      <canvas id="game" width="544" height="544"></canvas>
       <div class="meta">
         <span id="scoreLabel">Score: <span id="score">0</span></span>
         <span id="enemyLabel">Enemies left: <span id="enemies">0</span></span>
@@ -243,24 +243,33 @@
     const keys = {};
     let currentLang = localStorage.getItem('yh-lang') || 'en';
 
-    const size = 40;
-    const board = 13;
-    let player, bullet, enemies, score, state;
+    const size = 32;
+    const board = 17;
+    let player, bullet, bulletTick, walls, enemies, score, state;
 
     function makeTank(x, y, dir, color, isPlayer = false) {
       return { x, y, dir, color, isPlayer, moveCooldown: 0 };
     }
 
     function resetGame() {
-      player = makeTank(6, 11, 'up', '#22c55e', true);
+      player = makeTank(8, 15, 'up', '#22c55e', true);
       bullet = null;
+      bulletTick = 0;
+      walls = [
+        { x: 4, y: 4 }, { x: 5, y: 4 }, { x: 6, y: 4 },
+        { x: 10, y: 4 }, { x: 11, y: 4 }, { x: 12, y: 4 },
+        { x: 3, y: 8 }, { x: 4, y: 8 }, { x: 5, y: 8 },
+        { x: 11, y: 8 }, { x: 12, y: 8 }, { x: 13, y: 8 },
+        { x: 7, y: 11 }, { x: 8, y: 11 }, { x: 9, y: 11 }
+      ];
       enemies = [
         makeTank(1, 1, 'down', '#ef4444'),
         makeTank(4, 1, 'down', '#f97316'),
-        makeTank(7, 1, 'down', '#eab308'),
-        makeTank(10, 1, 'down', '#38bdf8'),
-        makeTank(2, 3, 'down', '#f43f5e'),
-        makeTank(9, 3, 'down', '#a855f7')
+        makeTank(8, 1, 'down', '#eab308'),
+        makeTank(12, 1, 'down', '#38bdf8'),
+        makeTank(15, 1, 'down', '#f43f5e'),
+        makeTank(2, 3, 'down', '#a855f7'),
+        makeTank(14, 3, 'down', '#14b8a6')
       ];
       score = 0;
       state = 'running';
@@ -300,9 +309,8 @@
       updateHud();
     }
 
-    function isBlocked(x, y) {
-      if (x < 0 || y < 0 || x >= board || y >= board) return true;
-      return enemies.some(enemy => enemy.x === x && enemy.y === y) || (player && !player.isTemp && player.x === x && player.y === y);
+    function isWall(x, y) {
+      return walls.some(wall => wall.x === x && wall.y === y);
     }
 
     function tryMoveTank(tank, dx, dy, dir) {
@@ -313,7 +321,7 @@
       const occupiedByOther = tank.isPlayer
         ? enemies.some(enemy => enemy.x === nx && enemy.y === ny)
         : (player.x === nx && player.y === ny) || enemies.some(enemy => enemy !== tank && enemy.x === nx && enemy.y === ny);
-      if (nx >= 0 && ny >= 0 && nx < board && ny < board && !occupiedByOther) {
+      if (nx >= 0 && ny >= 0 && nx < board && ny < board && !occupiedByOther && !isWall(nx, ny)) {
         tank.x = nx;
         tank.y = ny;
       }
@@ -335,6 +343,7 @@
         dx: dir.dx,
         dy: dir.dy
       };
+      bulletTick = 0;
     }
 
     function updatePlayer() {
@@ -366,8 +375,14 @@
 
     function updateBullet() {
       if (!bullet) return;
+      bulletTick += 1;
+      if (bulletTick % 2 !== 0) return;
       bullet.x += bullet.dx;
       bullet.y += bullet.dy;
+      if (isWall(bullet.x, bullet.y)) {
+        bullet = null;
+        return;
+      }
       if (bullet.x < 0 || bullet.y < 0 || bullet.x >= board || bullet.y >= board) {
         bullet = null;
         return;
@@ -408,6 +423,13 @@
       ctx.fill();
     }
 
+    function drawWalls() {
+      ctx.fillStyle = '#8b5e3c';
+      walls.forEach(wall => {
+        ctx.fillRect(wall.x * size + 4, wall.y * size + 4, size - 8, size - 8);
+      });
+    }
+
     function drawGrid() {
       ctx.fillStyle = '#17212b';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -426,6 +448,7 @@
 
     function draw() {
       drawGrid();
+      drawWalls();
       if (player) drawTank(player);
       enemies.forEach(drawTank);
       drawBullet();
