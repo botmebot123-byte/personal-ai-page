@@ -118,7 +118,7 @@
 
     <section class="hero">
       <h1 id="title">Tank Battle</h1>
-      <p id="subtitle">A small browser tank game where you move, dodge, and shoot enemy tanks. Clear all enemies to win the round.</p>
+      <p id="subtitle">A simple browser tank game. Move with the arrow keys, shoot with the space bar, and defeat all enemy tanks.</p>
     </section>
 
     <div class="game-shell">
@@ -137,7 +137,7 @@
         <ul>
           <li id="c1">Use arrow keys to move the tank.</li>
           <li id="c2">Press the space bar to fire.</li>
-          <li id="c3">Destroy all enemy tanks and avoid enemy bullets.</li>
+          <li id="c3">Destroy all enemy tanks and avoid direct contact.</li>
         </ul>
       </div>
     </section>
@@ -145,7 +145,16 @@
     <section>
       <h2 id="descTitle">Project Description</h2>
       <div class="card">
-        <p id="descText">This is a simple arcade-style tank battle demo made with HTML, CSS, and JavaScript. It focuses on basic movement, shooting, collision, and win or lose states.</p>
+        <p id="descText">This is a rebuilt stable version of the tank game made with HTML, CSS, and JavaScript. It focuses on smooth movement, simple shooting, and clear win or lose states.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="openTitle">Open Source</h2>
+      <div class="card">
+        <p id="openText">This game project is open source. You can view the code or download the file directly.</p>
+        <p><a id="codeLink" href="https://github.com/botmebot123-byte/yichen-hub/blob/main/tank.html" target="_blank" rel="noopener noreferrer">View code</a></p>
+        <p><a id="downloadLink" href="https://raw.githubusercontent.com/botmebot123-byte/yichen-hub/main/tank.html" target="_blank" rel="noopener noreferrer">Download file</a></p>
       </div>
     </section>
 
@@ -157,7 +166,7 @@
       en: {
         back: '← Back to games',
         title: 'Tank Battle',
-        subtitle: 'A small browser tank game where you move, dodge, and shoot enemy tanks. Clear all enemies to win the round.',
+        subtitle: 'A simple browser tank game. Move with the arrow keys, shoot with the space bar, and defeat all enemy tanks.',
         score: 'Score:',
         enemies: 'Enemies left:',
         running: 'Running',
@@ -167,15 +176,19 @@
         controlsTitle: 'Controls',
         c1: 'Use arrow keys to move the tank.',
         c2: 'Press the space bar to fire.',
-        c3: 'Destroy all enemy tanks and avoid enemy bullets.',
+        c3: 'Destroy all enemy tanks and avoid direct contact.',
         descTitle: 'Project Description',
-        descText: 'This is a simple arcade-style tank battle demo made with HTML, CSS, and JavaScript. It focuses on basic movement, shooting, collision, and win or lose states.',
+        descText: 'This is a rebuilt stable version of the tank game made with HTML, CSS, and JavaScript. It focuses on smooth movement, simple shooting, and clear win or lose states.',
+        openTitle: 'Open Source',
+        openText: 'This game project is open source. You can view the code or download the file directly.',
+        codeLink: 'View code',
+        downloadLink: 'Download file',
         footer: 'Tank Battle project page on Yichen Hub.'
       },
       zh: {
         back: '← 返回游戏页',
         title: '坦克大战',
-        subtitle: '一个小型浏览器坦克游戏，你可以移动、躲避并射击敌方坦克。清除所有敌人即可获胜。',
+        subtitle: '一个简单的浏览器坦克游戏。用方向键移动，用空格键开火，击败所有敌方坦克。',
         score: '分数：',
         enemies: '剩余敌人：',
         running: '进行中',
@@ -185,15 +198,19 @@
         controlsTitle: '操作方式',
         c1: '使用方向键移动坦克。',
         c2: '按空格键发射子弹。',
-        c3: '消灭所有敌方坦克，并躲开敌方子弹。',
+        c3: '消灭所有敌方坦克，并避免直接碰撞。',
         descTitle: '项目介绍',
-        descText: '这是一个用 HTML、CSS 和 JavaScript 制作的街机风格坦克大战演示，重点包括移动、射击、碰撞和胜负状态。',
+        descText: '这是一个重做后的稳定版坦克游戏，使用 HTML、CSS 和 JavaScript 制作，重点是顺畅移动、基础射击和清晰的胜负状态。',
+        openTitle: '开源',
+        openText: '这个游戏项目是开源的。你可以查看代码，或直接下载文件。',
+        codeLink: '查看代码',
+        downloadLink: '下载文件',
         footer: 'Yichen Hub 上的坦克大战项目页。'
       },
       mix: {
         back: '← 返回游戏页 Back to games',
         title: '坦克大战 Tank Battle',
-        subtitle: '一个小型 browser tank game，你可以移动、躲避并射击 enemy tanks。清除所有敌人即可获胜。',
+        subtitle: '一个简单的 browser tank game。用 arrow keys 移动，用 space bar 开火，击败所有 enemy tanks。',
         score: '分数 Score:',
         enemies: '剩余敌人 Enemies left:',
         running: '进行中 Running',
@@ -203,9 +220,13 @@
         controlsTitle: '操作方式 Controls',
         c1: '使用 arrow keys 移动坦克。',
         c2: '按 space bar 发射子弹。',
-        c3: '消灭所有 enemy tanks，并躲开 enemy bullets。',
+        c3: '消灭所有 enemy tanks，并避免直接碰撞。',
         descTitle: '项目介绍 Project Description',
-        descText: '这是一个用 HTML、CSS 和 JavaScript 制作的 arcade-style tank battle demo，重点包括 movement、shooting、collision 和 win or lose states。',
+        descText: '这是一个 rebuilt stable version 的 tank game，使用 HTML、CSS 和 JavaScript 制作，重点是 smooth movement、simple shooting 和 clear win or lose states。',
+        openTitle: '开源 Open Source',
+        openText: '这个 game project 是 open source 的。你可以查看代码，或直接下载文件。',
+        codeLink: '查看代码 View code',
+        downloadLink: '下载文件 Download file',
         footer: 'Yichen Hub 上的 Tank Battle project page。'
       }
     };
@@ -219,30 +240,28 @@
     const modeEl = document.getElementById('mode');
     const restartBtn = document.getElementById('restart');
     const langSelect = document.getElementById('langSelect');
+    const keys = {};
     let currentLang = localStorage.getItem('yh-lang') || 'en';
 
     const size = 40;
     const board = 13;
-    const keys = {};
-    let player, bullets, enemyBullets, enemies, score, state, tick;
+    let player, bullet, enemies, score, state;
 
     function makeTank(x, y, dir, color, isPlayer = false) {
-      return { x, y, dir, color, isPlayer, cooldown: 0, moveTick: 0 };
+      return { x, y, dir, color, isPlayer, moveCooldown: 0 };
     }
 
     function resetGame() {
       player = makeTank(6, 11, 'up', '#22c55e', true);
-      bullets = [];
-      enemyBullets = [];
+      bullet = null;
       enemies = [
         makeTank(2, 1, 'down', '#ef4444'),
         makeTank(6, 1, 'down', '#f97316'),
         makeTank(10, 1, 'down', '#eab308')
       ];
-      Object.keys(keys).forEach(key => { keys[key] = false; });
       score = 0;
       state = 'running';
-      tick = 0;
+      Object.keys(keys).forEach(key => { keys[key] = false; });
       updateHud();
       draw();
     }
@@ -267,6 +286,10 @@
       document.getElementById('c3').textContent = t.c3;
       document.getElementById('descTitle').textContent = t.descTitle;
       document.getElementById('descText').textContent = t.descText;
+      document.getElementById('openTitle').textContent = t.openTitle;
+      document.getElementById('openText').textContent = t.openText;
+      document.getElementById('codeLink').textContent = t.codeLink;
+      document.getElementById('downloadLink').textContent = t.downloadLink;
       document.getElementById('footerText').textContent = t.footer;
       restartBtn.textContent = t.restart;
       langSelect.value = currentLang;
@@ -274,112 +297,85 @@
       updateHud();
     }
 
-    function canMoveTo(x, y, self = null) {
-      if (!(x >= 0 && y >= 0 && x < board && y < board)) return false;
-      const occupied = [player, ...enemies].filter(Boolean).some(tank => tank !== self && tank.x === x && tank.y === y);
-      return !occupied;
+    function isBlocked(x, y) {
+      if (x < 0 || y < 0 || x >= board || y >= board) return true;
+      return enemies.some(enemy => enemy.x === x && enemy.y === y) || (player && !player.isTemp && player.x === x && player.y === y);
     }
 
-    function shoot(tank, collection, speed) {
-      if (tank.cooldown > 0) return;
-      const dirs = {
-        up: { x: 0, y: -1 },
-        down: { x: 0, y: 1 },
-        left: { x: -1, y: 0 },
-        right: { x: 1, y: 0 }
+    function tryMoveTank(tank, dx, dy, dir) {
+      tank.dir = dir;
+      if (tank.moveCooldown > 0) return;
+      const nx = tank.x + dx;
+      const ny = tank.y + dy;
+      const occupiedByOther = tank.isPlayer
+        ? enemies.some(enemy => enemy.x === nx && enemy.y === ny)
+        : (player.x === nx && player.y === ny) || enemies.some(enemy => enemy !== tank && enemy.x === nx && enemy.y === ny);
+      if (nx >= 0 && ny >= 0 && nx < board && ny < board && !occupiedByOther) {
+        tank.x = nx;
+        tank.y = ny;
+      }
+      tank.moveCooldown = 6;
+    }
+
+    function fireBullet() {
+      if (bullet || state !== 'running') return;
+      const dirMap = {
+        up: { dx: 0, dy: -1 },
+        down: { dx: 0, dy: 1 },
+        left: { dx: -1, dy: 0 },
+        right: { dx: 1, dy: 0 }
       };
-      const d = dirs[tank.dir];
-      collection.push({
-        x: tank.x + 0.5,
-        y: tank.y + 0.5,
-        dx: d.x * speed,
-        dy: d.y * speed,
-        owner: tank.isPlayer ? 'player' : 'enemy'
-      });
-      tank.cooldown = 18;
+      const dir = dirMap[player.dir];
+      bullet = {
+        x: player.x,
+        y: player.y,
+        dx: dir.dx,
+        dy: dir.dy
+      };
     }
 
     function updatePlayer() {
-      const dirs = [
-        ['ArrowUp', 0, -1, 'up'],
-        ['ArrowDown', 0, 1, 'down'],
-        ['ArrowLeft', -1, 0, 'left'],
-        ['ArrowRight', 1, 0, 'right']
-      ];
-      for (const [key, dx, dy, dir] of dirs) {
-        if (keys[key]) {
-          player.dir = dir;
-          const nx = player.x + dx;
-          const ny = player.y + dy;
-          if (canMoveTo(nx, ny, player)) {
-            player.x = nx;
-            player.y = ny;
-          }
-          break;
-        }
-      }
-      if (player.cooldown > 0) player.cooldown -= 1;
-      if (keys['Space']) shoot(player, bullets, 0.32);
+      if (player.moveCooldown > 0) player.moveCooldown -= 1;
+      if (keys.ArrowUp) tryMoveTank(player, 0, -1, 'up');
+      else if (keys.ArrowDown) tryMoveTank(player, 0, 1, 'down');
+      else if (keys.ArrowLeft) tryMoveTank(player, -1, 0, 'left');
+      else if (keys.ArrowRight) tryMoveTank(player, 1, 0, 'right');
     }
 
     function updateEnemies() {
-      const dirs = ['up', 'down', 'left', 'right'];
+      const options = [
+        [0, 1, 'down'],
+        [0, -1, 'up'],
+        [-1, 0, 'left'],
+        [1, 0, 'right']
+      ];
       enemies.forEach(enemy => {
-        if (enemy.cooldown > 0) enemy.cooldown -= 1;
-        enemy.moveTick += 1;
-        if (enemy.moveTick % 18 === 0) {
-          if (Math.random() < 0.35) enemy.dir = dirs[Math.floor(Math.random() * dirs.length)];
-          const delta = {
-            up: [0, -1],
-            down: [0, 1],
-            left: [-1, 0],
-            right: [1, 0]
-          }[enemy.dir];
-          const nx = enemy.x + delta[0];
-          const ny = enemy.y + delta[1];
-          if (canMoveTo(nx, ny, enemy)) {
-            enemy.x = nx;
-            enemy.y = ny;
-          } else {
-            enemy.dir = dirs[Math.floor(Math.random() * dirs.length)];
-          }
-          if (Math.random() < 0.22) shoot(enemy, enemyBullets, 0.2);
+        if (enemy.moveCooldown > 0) enemy.moveCooldown -= 1;
+        if (Math.random() < 0.08) {
+          const [dx, dy, dir] = options[Math.floor(Math.random() * options.length)];
+          tryMoveTank(enemy, dx, dy, dir);
+        }
+        if (enemy.x === player.x && enemy.y === player.y) {
+          state = 'lost';
         }
       });
     }
 
-    function updateBullets(list, targetType) {
-      for (let i = list.length - 1; i >= 0; i--) {
-        const b = list[i];
-        b.x += b.dx;
-        b.y += b.dy;
-        if (b.x < 0 || b.y < 0 || b.x > board || b.y > board) {
-          list.splice(i, 1);
-          continue;
-        }
-
-        if (targetType === 'enemy') {
-          const hitIndex = enemies.findIndex(e => {
-            const cx = e.x + 0.5;
-            const cy = e.y + 0.5;
-            return Math.hypot(cx - b.x, cy - b.y) < 0.42;
-          });
-          if (hitIndex >= 0) {
-            enemies.splice(hitIndex, 1);
-            list.splice(i, 1);
-            score += 10;
-            if (enemies.length === 0) state = 'won';
-            updateHud();
-          }
-        } else if (player) {
-          const cx = player.x + 0.5;
-          const cy = player.y + 0.5;
-          if (Math.hypot(cx - b.x, cy - b.y) < 0.42) {
-            list.splice(i, 1);
-            state = 'lost';
-            updateHud();
-          }
-        }
+    function updateBullet() {
+      if (!bullet) return;
+      bullet.x += bullet.dx;
+      bullet.y += bullet.dy;
+      if (bullet.x < 0 || bullet.y < 0 || bullet.x >= board || bullet.y >= board) {
+        bullet = null;
+        return;
+      }
+      const hit = enemies.findIndex(enemy => enemy.x === bullet.x && enemy.y === bullet.y);
+      if (hit >= 0) {
+        enemies.splice(hit, 1);
+        bullet = null;
+        score += 10;
+        if (enemies.length === 0) state = 'won';
+        updateHud();
       }
     }
 
@@ -401,10 +397,11 @@
       ctx.strokeRect(px + 7, py + 7, size - 14, size - 14);
     }
 
-    function drawBullet(bullet) {
-      ctx.fillStyle = bullet.owner === 'player' ? '#f8fafc' : '#f87171';
+    function drawBullet() {
+      if (!bullet) return;
+      ctx.fillStyle = '#f8fafc';
       ctx.beginPath();
-      ctx.arc(bullet.x * size, bullet.y * size, 4, 0, Math.PI * 2);
+      ctx.arc(bullet.x * size + size / 2, bullet.y * size + size / 2, 5, 0, Math.PI * 2);
       ctx.fill();
     }
 
@@ -428,17 +425,15 @@
       drawGrid();
       if (player) drawTank(player);
       enemies.forEach(drawTank);
-      bullets.forEach(drawBullet);
-      enemyBullets.forEach(drawBullet);
+      drawBullet();
     }
 
     function loop() {
       if (state === 'running') {
-        tick += 1;
         updatePlayer();
         updateEnemies();
-        updateBullets(bullets, 'enemy');
-        updateBullets(enemyBullets, 'player');
+        updateBullet();
+        updateHud();
       }
       draw();
       requestAnimationFrame(loop);
@@ -447,18 +442,14 @@
     window.addEventListener('keydown', (e) => {
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) e.preventDefault();
       if (e.key === ' ') {
-        keys['Space'] = true;
+        fireBullet();
       } else {
         keys[e.key] = true;
       }
     });
 
     window.addEventListener('keyup', (e) => {
-      if (e.key === ' ') {
-        keys['Space'] = false;
-      } else {
-        keys[e.key] = false;
-      }
+      keys[e.key] = false;
     });
 
     langSelect.addEventListener('change', () => {
