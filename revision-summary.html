@@ -13,7 +13,7 @@
       color: #1f2937;
     }
     .wrap {
-      max-width: 980px;
+      max-width: 1020px;
       margin: 0 auto;
       padding: 40px 20px 80px;
     }
@@ -28,7 +28,7 @@
       padding-bottom: 8px;
     }
     h3 {
-      margin-bottom: 8px;
+      margin: 0 0 10px;
       font-size: 21px;
     }
     p, li {
@@ -73,11 +73,37 @@
       font-weight: 700;
       white-space: nowrap;
     }
+    .section-btn {
+      display: inline-block;
+      margin: 8px 10px 0 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid #d4c4ae;
+      background: #fbf7f1;
+      color: #7c4f2d;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 15px;
+    }
+    .detail-box {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #fcfaf6;
+      border: 1px solid #e7dccb;
+      display: none;
+    }
+    .formula {
+      font-weight: 700;
+      color: #7c4f2d;
+      cursor: pointer;
+      border-bottom: 1px dashed #b08968;
+    }
     #termPopup {
       position: fixed;
       right: 20px;
       bottom: 20px;
-      max-width: 340px;
+      max-width: 360px;
       padding: 14px 16px;
       border-radius: 12px;
       background: #fffaf3;
@@ -105,30 +131,23 @@
     </div>
 
     <h1 id="title">Revision Summary</h1>
-    <p id="subtitle">A combined revision summary for the current Biology, Chemistry, Geography, and Maths materials.</p>
+    <p id="subtitle">A combined revision summary for Biology, Chemistry, Geography, and Maths.</p>
 
-    <div class="card" id="useCard"></div>
+    <div class="card" id="guideCard"></div>
     <div class="card" id="linksCard"></div>
 
     <h2 id="bioTitle">Biology</h2>
-    <div class="card" id="bioCard1"></div>
-    <div class="card" id="bioCard2"></div>
-    <div class="card" id="bioCard3"></div>
+    <div class="card" id="bioCard"></div>
 
     <h2 id="chemTitle">Chemistry</h2>
-    <div class="card" id="chemCard1"></div>
-    <div class="card" id="chemCard2"></div>
-    <div class="card" id="chemCard3"></div>
+    <div class="card" id="chemCard"></div>
 
     <h2 id="geoTitle">Geography</h2>
-    <div class="card" id="geoCard1"></div>
+    <div class="card" id="geoCard"></div>
 
     <h2 id="mathTitle">Maths</h2>
-    <div class="card" id="mathCard0"></div>
-    <div class="card" id="mathCard1"></div>
-    <div class="card" id="mathCard2"></div>
-    <div class="card" id="mathCard3"></div>
-    <div class="card" id="mathCard4"></div>
+    <div class="card" id="mathOverview"></div>
+    <div class="card" id="formulaCard"></div>
   </div>
 
   <div id="termPopup"></div>
@@ -140,45 +159,20 @@
         zh: '消化，把食物分解成可被吸收的小分子',
         mix: '消化，breaking down food into absorbable substances'
       },
+      immunity: {
+        en: 'the body’s ability to resist infection or disease',
+        zh: '免疫力，身体抵抗感染或疾病的能力',
+        mix: '免疫力，the body’s ability to resist infection'
+      },
       pathogen: {
         en: 'a disease-causing microorganism',
         zh: '病原体，会引起疾病的微生物',
         mix: '病原体，disease-causing microorganism'
       },
-      immunity: {
-        en: 'the body’s ability to resist a particular infection or disease',
-        zh: '免疫力，身体抵抗特定感染或疾病的能力',
-        mix: '免疫力，the body’s ability to resist infection'
-      },
-      carbohydrates: {
-        en: 'nutrients such as sugars and starch that mainly provide energy',
-        zh: '碳水化合物，如糖和淀粉，主要提供能量',
-        mix: '碳水化合物，nutrients that mainly provide energy'
-      },
-      lipids: {
-        en: 'fats and oils used for energy storage and cell structures',
-        zh: '脂类，包括脂肪和油，用于储能和构成细胞结构',
-        mix: '脂类，fats and oils for storage and structure'
-      },
-      proteins: {
-        en: 'large biological molecules made of amino acids',
-        zh: '蛋白质，由氨基酸组成的大分子',
-        mix: '蛋白质，large molecules made of amino acids'
-      },
       ion: {
         en: 'a charged particle formed when an atom gains or loses electrons',
         zh: '离子，原子得到或失去电子后形成的带电粒子',
         mix: '离子，charged particle formed by gaining or losing electrons'
-      },
-      cations: {
-        en: 'positively charged ions',
-        zh: '阳离子，带正电的离子',
-        mix: '阳离子，positively charged ions'
-      },
-      anions: {
-        en: 'negatively charged ions',
-        zh: '阴离子，带负电的离子',
-        mix: '阴离子，negatively charged ions'
       },
       alkali: {
         en: 'a soluble base that dissolves in water',
@@ -190,35 +184,15 @@
         zh: '板块，地球岩石圈中缓慢移动的大块区域',
         mix: '板块，large moving section of the lithosphere'
       },
-      quadratic: {
-        en: 'related to expressions or equations involving x squared',
-        zh: '二次的，和平方项有关的表达式或方程',
-        mix: '二次的，related to x squared'
-      },
       factorisation: {
         en: 'rewriting an expression as a product of factors',
-        zh: '因式分解，把式子写成几个因式相乘的形式',
+        zh: '因式分解，把式子写成因式相乘的形式',
         mix: '因式分解，rewriting as a product of factors'
       },
-      algebraicFractions: {
-        en: 'fractions containing algebraic expressions in the numerator or denominator',
-        zh: '代数分式，分子或分母含有代数式的分式',
-        mix: '代数分式，fractions with algebraic expressions'
-      },
-      distributiveLaw: {
-        en: 'a rule used to expand brackets by multiplying each term inside',
-        zh: '分配律，把括号外的数乘到括号内每一项',
-        mix: '分配律，rule for expanding brackets term by term'
-      },
-      lineOfSymmetry: {
-        en: 'a line that divides a graph into two mirror halves',
-        zh: '对称轴，把图像分成左右镜像两半的直线',
-        mix: '对称轴，line dividing a graph into mirror halves'
-      },
-      LCM: {
-        en: 'lowest common multiple',
-        zh: '最小公倍数',
-        mix: '最小公倍数，lowest common multiple'
+      quadratic: {
+        en: 'related to expressions containing a squared term',
+        zh: '二次的，含有平方项',
+        mix: '二次的，related to squared terms'
       },
       LCD: {
         en: 'lowest common denominator',
@@ -227,22 +201,81 @@
       }
     };
 
+    const formulaData = {
+      gradient: {
+        label: { en: 'Gradient formula', zh: '斜率公式', mix: '斜率公式 Gradient formula' },
+        formula: 'm = (y2 - y1) / (x2 - x1)',
+        letters: {
+          en: '<li><strong>m</strong>: gradient</li><li><strong>x1, y1</strong>: coordinates of the first point</li><li><strong>x2, y2</strong>: coordinates of the second point</li>',
+          zh: '<li><strong>m</strong>：斜率</li><li><strong>x1, y1</strong>：第一个点的坐标</li><li><strong>x2, y2</strong>：第二个点的坐标</li>',
+          mix: '<li><strong>m</strong>：gradient</li><li><strong>x1, y1</strong>：first point 坐标</li><li><strong>x2, y2</strong>：second point 坐标</li>'
+        },
+        apply: {
+          en: 'Example: points (2, 3) and (6, 11). Then m = (11 - 3) / (6 - 2) = 8 / 4 = 2.',
+          zh: '例子：点 (2, 3) 和 (6, 11)。代入后 m = (11 - 3) / (6 - 2) = 8 / 4 = 2。',
+          mix: '例子：points (2, 3) 和 (6, 11)。代入得 m = (11 - 3) / (6 - 2) = 2。'
+        },
+        check: {
+          en: 'Verification: x increases by 4 and y increases by 8, so the gradient is 8 ÷ 4 = 2.',
+          zh: '验证：x 增加了 4，y 增加了 8，所以斜率就是 8 ÷ 4 = 2。',
+          mix: '验证：x increase 4，y increase 8，所以 gradient = 8 ÷ 4 = 2。'
+        }
+      },
+      speed: {
+        label: { en: 'Speed formula', zh: '速度公式', mix: '速度公式 Speed formula' },
+        formula: 'speed = distance / time',
+        letters: {
+          en: '<li><strong>speed</strong>: how fast something moves</li><li><strong>distance</strong>: total length travelled</li><li><strong>time</strong>: how long the journey takes</li>',
+          zh: '<li><strong>speed</strong>：速度</li><li><strong>distance</strong>：路程</li><li><strong>time</strong>：时间</li>',
+          mix: '<li><strong>speed</strong>：速度</li><li><strong>distance</strong>：路程</li><li><strong>time</strong>：时间</li>'
+        },
+        apply: {
+          en: 'Example: if a car travels 150 km in 3 h, speed = 150 / 3 = 50 km/h.',
+          zh: '例子：如果一辆车 3 小时走了 150 km，那么 speed = 150 / 3 = 50 km/h。',
+          mix: '例子：a car 3 小时走 150 km，那么 speed = 150 / 3 = 50 km/h。'
+        },
+        check: {
+          en: 'Verification: 50 km/h × 3 h = 150 km, so the answer is consistent.',
+          zh: '验证：50 km/h × 3 h = 150 km，所以答案成立。',
+          mix: '验证：50 km/h × 3 h = 150 km，所以 answer 是对的。'
+        }
+      },
+      density: {
+        label: { en: 'Density formula', zh: '密度公式', mix: '密度公式 Density formula' },
+        formula: 'density = mass / volume',
+        letters: {
+          en: '<li><strong>density</strong>: mass per unit volume</li><li><strong>mass</strong>: amount of matter</li><li><strong>volume</strong>: space taken up</li>',
+          zh: '<li><strong>density</strong>：密度</li><li><strong>mass</strong>：质量</li><li><strong>volume</strong>：体积</li>',
+          mix: '<li><strong>density</strong>：密度</li><li><strong>mass</strong>：质量</li><li><strong>volume</strong>：体积</li>'
+        },
+        apply: {
+          en: 'Example: if mass = 24 g and volume = 8 cm³, density = 24 / 8 = 3 g/cm³.',
+          zh: '例子：如果 mass = 24 g，volume = 8 cm³，那么 density = 24 / 8 = 3 g/cm³。',
+          mix: '例子：mass = 24 g，volume = 8 cm³，所以 density = 3 g/cm³。'
+        },
+        check: {
+          en: 'Verification: 3 g/cm³ × 8 cm³ = 24 g, so the formula rearranges correctly.',
+          zh: '验证：3 g/cm³ × 8 cm³ = 24 g，所以反代检查正确。',
+          mix: '验证：3 g/cm³ × 8 cm³ = 24 g，所以 check 正确。'
+        }
+      }
+    };
+
     const content = {
       en: {
         back: '← Back to home',
         title: 'Revision Summary',
-        subtitle: 'A combined revision summary for the current Biology, Chemistry, Geography, and Maths materials.',
+        subtitle: 'A combined revision summary for Biology, Chemistry, Geography, and Maths.',
         bioTitle: 'Biology',
         chemTitle: 'Chemistry',
         geoTitle: 'Geography',
         mathTitle: 'Maths',
-        useCard: `
+        guideCard: `
           <h3>How to use this page</h3>
           <ul>
-            <li>Use Biology for living systems, <span class="term" data-term="digestion">digestion</span>, molecules, and <span class="term" data-term="immunity">immunity</span>.</li>
-            <li>Use Chemistry for atomic structure, <span class="term" data-term="ion">ions</span>, ionic compounds, and acids and bases.</li>
-            <li>Use Geography for tectonic hazards and Earth structure.</li>
-            <li>Use Maths for methods, formulas, graph skills, <span class="term" data-term="quadratic">quadratics</span>, and <span class="term" data-term="algebraicFractions">algebraic fractions</span>.</li>
+            <li>Click important academic terms to see Chinese meanings.</li>
+            <li>Click formulas to open sections showing letter meanings, worked examples, and verification.</li>
+            <li>Use this page as a quick revision hub rather than a full textbook.</li>
           </ul>
         `,
         linksCard: `
@@ -252,38 +285,38 @@
             <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li>
             <li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li>
             <li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li>
-            <li><a href="https://www.nationalgeographic.org/education/" target="_blank" rel="noopener noreferrer">National Geographic Education</a></li>
           </ul>
-          <p>These are reference links only, meant to support revision when you want a second explanation.</p>
         `,
-        bioCard1: `<h3>Biological Molecules</h3><p>Main nutrients include <span class="term" data-term="carbohydrates">carbohydrates</span>, <span class="term" data-term="lipids">lipids</span>, <span class="term" data-term="proteins">proteins</span>, vitamins, minerals, and water.</p>`,
-        bioCard2: `<h3>Digestive System</h3><p>The alimentary canal includes the mouth, oesophagus, stomach, small intestine, large intestine, and anus. <span class="term" data-term="digestion">Digestion</span> is needed before large food molecules can be absorbed.</p>`,
-        bioCard3: `<h3>Defence Against Infectious Disease</h3><p>White blood cells defend the body: lymphocytes produce antibodies, phagocytes engulf <span class="term" data-term="pathogen">pathogens</span>, and together they help build <span class="term" data-term="immunity">immunity</span>.</p>`,
-        chemCard1: `<h3>Atomic Structure</h3><p>Atoms contain equal numbers of protons and electrons, so they are neutral.</p>`,
-        chemCard2: `<h3>Ions and Ionic Compounds</h3><p>Metals lose electrons to form <span class="term" data-term="cations">cations</span>, while non-metals gain electrons to form <span class="term" data-term="anions">anions</span>. Both are types of <span class="term" data-term="ion">ions</span>.</p>`,
-        chemCard3: `<h3>Acids and Bases</h3><p>Acids react with bases to form salt and water; an <span class="term" data-term="alkali">alkali</span> is a soluble base.</p>`,
-        geoCard1: `<h3>Tectonic Hazards</h3><p>The Earth has four main layers and <span class="term" data-term="tectonicPlate">tectonic plates</span> are responsible for earthquakes and volcanoes.</p>`,
-        mathCard0: `<h3>Key Maths Structure</h3><p>Main revision areas include linear graphs, simultaneous equations, expansion and <span class="term" data-term="factorisation">factorisation</span>, <span class="term" data-term="quadratic">quadratics</span>, and <span class="term" data-term="algebraicFractions">algebraic fractions</span>.</p>`,
-        mathCard1: `<h3>Linear Graphs and Simultaneous Equations</h3><p>Horizontal lines have equations y = c, vertical lines have equations x = a, and simultaneous equations can be solved by elimination, substitution, or graphical method.</p>`,
-        mathCard2: `<h3>Expansion and Special Products</h3><p>Use the <span class="term" data-term="distributiveLaw">distributive law</span> to expand, combine like terms, and remember identities such as (a + b)^2, (a - b)^2, and a^2 - b^2.</p>`,
-        mathCard3: `<h3>Quadratic Equations and Graphs</h3><p><span class="term" data-term="quadratic">Quadratic</span> equations can be solved by <span class="term" data-term="factorisation">factorisation</span>. Graphs have a turning point and a <span class="term" data-term="lineOfSymmetry">line of symmetry</span>.</p>`,
-        mathCard4: `<h3>Algebraic Fractions</h3><p><span class="term" data-term="factorisation">Factorisation</span> comes first. Use the <span class="term" data-term="LCM">LCM</span> or <span class="term" data-term="LCD">LCD</span> when adding or subtracting <span class="term" data-term="algebraicFractions">algebraic fractions</span>.</p>`
+        bioCard: `<h3>Core Biology Points</h3><p><span class="term" data-term="digestion">Digestion</span> breaks food into small absorbable molecules. White blood cells help defend against <span class="term" data-term="pathogen">pathogens</span> and support <span class="term" data-term="immunity">immunity</span>.</p>`,
+        chemCard: `<h3>Core Chemistry Points</h3><p>An <span class="term" data-term="ion">ion</span> is a charged particle. An <span class="term" data-term="alkali">alkali</span> is a soluble base. Density questions often use the formula section below.</p>`,
+        geoCard: `<h3>Core Geography Points</h3><p><span class="term" data-term="tectonicPlate">Tectonic plates</span> move slowly and are linked to earthquakes and volcanoes.</p>`,
+        mathOverview: `<h3>Core Maths Points</h3><p><span class="term" data-term="factorisation">Factorisation</span>, <span class="term" data-term="quadratic">quadratics</span>, and using the <span class="term" data-term="LCD">LCD</span> are key topics here.</p>`,
+        formulaCard: `
+          <h3>Formula Sections</h3>
+          <p>Click a formula below to open a focused study section.</p>
+          <button class="section-btn formula-btn" data-formula="gradient">Gradient formula: m = (y2 - y1) / (x2 - x1)</button>
+          <button class="section-btn formula-btn" data-formula="speed">Speed formula: speed = distance / time</button>
+          <button class="section-btn formula-btn" data-formula="density">Density formula: density = mass / volume</button>
+          <div class="detail-box" id="formulaDetail"></div>
+        `,
+        lettersTitle: 'Letter meanings',
+        applyTitle: 'Worked example',
+        checkTitle: 'Verification'
       },
       zh: {
         back: '← 返回主页',
         title: '复习总结',
-        subtitle: '这里整理了目前 Biology、Chemistry、Geography 和 Maths 的综合复习内容。',
+        subtitle: '这里整理了 Biology、Chemistry、Geography 和 Maths 的综合复习内容。',
         bioTitle: '生物',
         chemTitle: '化学',
         geoTitle: '地理',
         mathTitle: '数学',
-        useCard: `
+        guideCard: `
           <h3>如何使用本页</h3>
           <ul>
-            <li>Biology 主要看生命系统、<span class="term" data-term="digestion">digestion</span>、分子和<span class="term" data-term="immunity">immunity</span>。</li>
-            <li>Chemistry 主要看原子结构、<span class="term" data-term="ion">ions</span>、离子化合物以及酸和碱。</li>
-            <li>Geography 主要看构造灾害和地球结构。</li>
-            <li>Maths 主要看方法、公式、图像技巧、<span class="term" data-term="quadratic">quadratics</span> 和<span class="term" data-term="algebraicFractions">algebraic fractions</span>。</li>
+            <li>点击重要英文术语可以看中文释义。</li>
+            <li>点击公式可以展开字母含义、实际套用和验证。</li>
+            <li>这页适合快速复习，不是完整教材。</li>
           </ul>
         `,
         linksCard: `
@@ -293,38 +326,38 @@
             <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li>
             <li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li>
             <li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li>
-            <li><a href="https://www.nationalgeographic.org/education/" target="_blank" rel="noopener noreferrer">National Geographic Education</a></li>
           </ul>
-          <p>这些只是参考资源，用来在你想看第二种讲解时辅助复习。</p>
         `,
-        bioCard1: `<h3>生物分子</h3><p>主要营养包括 <span class="term" data-term="carbohydrates">carbohydrates</span>、<span class="term" data-term="lipids">lipids</span>、<span class="term" data-term="proteins">proteins</span>、维生素、矿物质和水。</p>`,
-        bioCard2: `<h3>消化系统</h3><p>消化道包括 mouth、oesophagus、stomach、small intestine、large intestine 和 anus。大型食物分子要先经过 <span class="term" data-term="digestion">digestion</span> 才能被吸收。</p>`,
-        bioCard3: `<h3>传染病防御</h3><p>白细胞负责防御：lymphocytes 产生抗体，phagocytes 吞噬 <span class="term" data-term="pathogen">pathogens</span>，一起帮助建立 <span class="term" data-term="immunity">immunity</span>。</p>`,
-        chemCard1: `<h3>原子结构</h3><p>原子中 proton 和 electron 数目相等，所以整体不带电。</p>`,
-        chemCard2: `<h3>离子与离子化合物</h3><p>金属失去电子形成 <span class="term" data-term="cations">cations</span>，非金属得到电子形成 <span class="term" data-term="anions">anions</span>，它们都属于 <span class="term" data-term="ion">ions</span>。</p>`,
-        chemCard3: `<h3>酸和碱</h3><p>酸和碱反应生成 salt 和 water；<span class="term" data-term="alkali">alkali</span> 是可溶于水的碱。</p>`,
-        geoCard1: `<h3>构造灾害</h3><p>地球有四个主要层次，而 <span class="term" data-term="tectonicPlate">tectonic plates</span> 与地震和火山有关。</p>`,
-        mathCard0: `<h3>数学结构</h3><p>主要复习区域包括线性图像、联立方程、展开与<span class="term" data-term="factorisation">factorisation</span>、<span class="term" data-term="quadratic">quadratics</span> 和 <span class="term" data-term="algebraicFractions">algebraic fractions</span>。</p>`,
-        mathCard1: `<h3>线性图像和联立方程</h3><p>水平线方程是 y = c，竖直线方程是 x = a，联立方程可以用 elimination、substitution 或 graphical method。</p>`,
-        mathCard2: `<h3>展开与特殊乘积</h3><p>用 <span class="term" data-term="distributiveLaw">distributive law</span> 展开，合并 like terms，并记住 (a + b)^2、(a - b)^2 和 a^2 - b^2。</p>`,
-        mathCard3: `<h3>二次方程与图像</h3><p><span class="term" data-term="quadratic">Quadratic</span> 方程可用 <span class="term" data-term="factorisation">factorisation</span> 求解。图像有 turning point 和 <span class="term" data-term="lineOfSymmetry">line of symmetry</span>。</p>`,
-        mathCard4: `<h3>代数分式</h3><p>先做 <span class="term" data-term="factorisation">factorisation</span>。加减 <span class="term" data-term="algebraicFractions">algebraic fractions</span> 时用 <span class="term" data-term="LCM">LCM</span> 或 <span class="term" data-term="LCD">LCD</span>。</p>`
+        bioCard: `<h3>生物核心点</h3><p><span class="term" data-term="digestion">Digestion</span> 会把食物分解成可吸收的小分子。白细胞帮助防御 <span class="term" data-term="pathogen">pathogens</span>，并支持 <span class="term" data-term="immunity">immunity</span>。</p>`,
+        chemCard: `<h3>化学核心点</h3><p><span class="term" data-term="ion">Ion</span> 是带电粒子。<span class="term" data-term="alkali">Alkali</span> 是可溶于水的碱。密度题可以看下面的公式 section。</p>`,
+        geoCard: `<h3>地理核心点</h3><p><span class="term" data-term="tectonicPlate">Tectonic plates</span> 会缓慢移动，并和地震、火山有关。</p>`,
+        mathOverview: `<h3>数学核心点</h3><p><span class="term" data-term="factorisation">Factorisation</span>、<span class="term" data-term="quadratic">quadratics</span> 和使用 <span class="term" data-term="LCD">LCD</span> 都是重点。</p>`,
+        formulaCard: `
+          <h3>公式学习分区</h3>
+          <p>点击下面的公式，展开对应学习内容。</p>
+          <button class="section-btn formula-btn" data-formula="gradient">斜率公式: m = (y2 - y1) / (x2 - x1)</button>
+          <button class="section-btn formula-btn" data-formula="speed">速度公式: speed = distance / time</button>
+          <button class="section-btn formula-btn" data-formula="density">密度公式: density = mass / volume</button>
+          <div class="detail-box" id="formulaDetail"></div>
+        `,
+        lettersTitle: '字母含义',
+        applyTitle: '实际套用',
+        checkTitle: '验证'
       },
       mix: {
         back: '← 返回主页',
         title: '复习总结 Revision Summary',
-        subtitle: '这里整理了目前 Biology、Chemistry、Geography 和 Maths 的 combined revision 内容。',
+        subtitle: '这里整理了 Biology、Chemistry、Geography 和 Maths 的 combined revision 内容。',
         bioTitle: '生物 Biology',
         chemTitle: '化学 Chemistry',
         geoTitle: '地理 Geography',
         mathTitle: '数学 Maths',
-        useCard: `
+        guideCard: `
           <h3>如何使用本页 How to use this page</h3>
           <ul>
-            <li>Biology 主要看 living systems、<span class="term" data-term="digestion">digestion</span>、molecules 和 <span class="term" data-term="immunity">immunity</span>。</li>
-            <li>Chemistry 主要看 atomic structure、<span class="term" data-term="ion">ions</span>、ionic compounds 以及 acids and bases。</li>
-            <li>Geography 主要看 tectonic hazards 和 Earth structure。</li>
-            <li>Maths 主要看 methods、formulas、graph skills、<span class="term" data-term="quadratic">quadratics</span> 和 <span class="term" data-term="algebraicFractions">algebraic fractions</span>。</li>
+            <li>点击 academic terms 可以看中文释义。</li>
+            <li>点击 formulas 可以展开 letter meanings、worked example 和 verification。</li>
+            <li>这页适合 quick revision，不是 full textbook。</li>
           </ul>
         `,
         linksCard: `
@@ -334,22 +367,23 @@
             <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener noreferrer">Khan Academy Chemistry</a></li>
             <li><a href="https://www.khanacademy.org/math" target="_blank" rel="noopener noreferrer">Khan Academy Maths</a></li>
             <li><a href="https://www.bbc.co.uk/bitesize" target="_blank" rel="noopener noreferrer">BBC Bitesize</a></li>
-            <li><a href="https://www.nationalgeographic.org/education/" target="_blank" rel="noopener noreferrer">National Geographic Education</a></li>
           </ul>
-          <p>这些只是 reference links，用来在你想看第二种 explanation 时辅助 revision。</p>
         `,
-        bioCard1: `<h3>Biological Molecules</h3><p>主要营养包括 <span class="term" data-term="carbohydrates">carbohydrates</span>、<span class="term" data-term="lipids">lipids</span>、<span class="term" data-term="proteins">proteins</span>、vitamins、minerals 和 water。</p>`,
-        bioCard2: `<h3>Digestive System</h3><p>消化道包括 mouth、oesophagus、stomach、small intestine、large intestine 和 anus。大型食物分子要先经过 <span class="term" data-term="digestion">digestion</span> 才能被吸收。</p>`,
-        bioCard3: `<h3>Defence Against Infectious Disease</h3><p>白细胞负责 defence：lymphocytes 产生 antibodies，phagocytes 吞噬 <span class="term" data-term="pathogen">pathogens</span>，一起帮助建立 <span class="term" data-term="immunity">immunity</span>。</p>`,
-        chemCard1: `<h3>Atomic Structure</h3><p>原子中 proton 和 electron 数目相等，所以整体 neutral。</p>`,
-        chemCard2: `<h3>Ions and Ionic Compounds</h3><p>金属失去 electrons 形成 <span class="term" data-term="cations">cations</span>，非金属得到 electrons 形成 <span class="term" data-term="anions">anions</span>，它们都属于 <span class="term" data-term="ion">ions</span>。</p>`,
-        chemCard3: `<h3>Acids and Bases</h3><p>酸和碱反应生成 salt 和 water；<span class="term" data-term="alkali">alkali</span> 是 soluble base。</p>`,
-        geoCard1: `<h3>Tectonic Hazards</h3><p>地球有四个主要 layers，而 <span class="term" data-term="tectonicPlate">tectonic plates</span> 与 earthquakes 和 volcanoes 有关。</p>`,
-        mathCard0: `<h3>Key Maths Structure</h3><p>主要复习区域包括 linear graphs、simultaneous equations、expansion and <span class="term" data-term="factorisation">factorisation</span>、<span class="term" data-term="quadratic">quadratics</span> 和 <span class="term" data-term="algebraicFractions">algebraic fractions</span>。</p>`,
-        mathCard1: `<h3>Linear Graphs and Simultaneous Equations</h3><p>水平线方程是 y = c，竖直线方程是 x = a，联立方程可以用 elimination、substitution 或 graphical method。</p>`,
-        mathCard2: `<h3>Expansion and Special Products</h3><p>用 <span class="term" data-term="distributiveLaw">distributive law</span> 展开，合并 like terms，并记住 (a + b)^2、(a - b)^2 和 a^2 - b^2。</p>`,
-        mathCard3: `<h3>Quadratic Equations and Graphs</h3><p><span class="term" data-term="quadratic">Quadratic</span> 方程可用 <span class="term" data-term="factorisation">factorisation</span> 求解。graph 有 turning point 和 <span class="term" data-term="lineOfSymmetry">line of symmetry</span>。</p>`,
-        mathCard4: `<h3>Algebraic Fractions</h3><p>先做 <span class="term" data-term="factorisation">factorisation</span>。加减 <span class="term" data-term="algebraicFractions">algebraic fractions</span> 时用 <span class="term" data-term="LCM">LCM</span> 或 <span class="term" data-term="LCD">LCD</span>。</p>`
+        bioCard: `<h3>Core Biology Points</h3><p><span class="term" data-term="digestion">Digestion</span> 会把 food 分解成可吸收的小分子。白细胞帮助防御 <span class="term" data-term="pathogen">pathogens</span>，并支持 <span class="term" data-term="immunity">immunity</span>。</p>`,
+        chemCard: `<h3>Core Chemistry Points</h3><p><span class="term" data-term="ion">Ion</span> 是 charged particle。<span class="term" data-term="alkali">Alkali</span> 是 soluble base。密度题可以看下面的 formula section。</p>`,
+        geoCard: `<h3>Core Geography Points</h3><p><span class="term" data-term="tectonicPlate">Tectonic plates</span> 会 slowly move，并和 earthquakes、volcanoes 有关。</p>`,
+        mathOverview: `<h3>Core Maths Points</h3><p><span class="term" data-term="factorisation">Factorisation</span>、<span class="term" data-term="quadratic">quadratics</span> 和使用 <span class="term" data-term="LCD">LCD</span> 都是 key topics。</p>`,
+        formulaCard: `
+          <h3>Formula Sections</h3>
+          <p>点击下面的 formula，展开对应学习内容。</p>
+          <button class="section-btn formula-btn" data-formula="gradient">Gradient formula: m = (y2 - y1) / (x2 - x1)</button>
+          <button class="section-btn formula-btn" data-formula="speed">Speed formula: speed = distance / time</button>
+          <button class="section-btn formula-btn" data-formula="density">Density formula: density = mass / volume</button>
+          <div class="detail-box" id="formulaDetail"></div>
+        `,
+        lettersTitle: '字母含义 Letter meanings',
+        applyTitle: '实际套用 Worked example',
+        checkTitle: '验证 Verification'
       }
     };
 
@@ -357,32 +391,22 @@
     const popup = document.getElementById('termPopup');
     let currentLang = localStorage.getItem('yh-lang') || 'en';
 
-    function renderPage() {
+    function renderFormulaDetail(key) {
       const t = content[currentLang];
-      document.getElementById('backLink').textContent = t.back;
-      document.getElementById('title').textContent = t.title;
-      document.getElementById('subtitle').textContent = t.subtitle;
-      document.getElementById('bioTitle').textContent = t.bioTitle;
-      document.getElementById('chemTitle').textContent = t.chemTitle;
-      document.getElementById('geoTitle').textContent = t.geoTitle;
-      document.getElementById('mathTitle').textContent = t.mathTitle;
-      document.getElementById('useCard').innerHTML = t.useCard;
-      document.getElementById('linksCard').innerHTML = t.linksCard;
-      document.getElementById('bioCard1').innerHTML = t.bioCard1;
-      document.getElementById('bioCard2').innerHTML = t.bioCard2;
-      document.getElementById('bioCard3').innerHTML = t.bioCard3;
-      document.getElementById('chemCard1').innerHTML = t.chemCard1;
-      document.getElementById('chemCard2').innerHTML = t.chemCard2;
-      document.getElementById('chemCard3').innerHTML = t.chemCard3;
-      document.getElementById('geoCard1').innerHTML = t.geoCard1;
-      document.getElementById('mathCard0').innerHTML = t.mathCard0;
-      document.getElementById('mathCard1').innerHTML = t.mathCard1;
-      document.getElementById('mathCard2').innerHTML = t.mathCard2;
-      document.getElementById('mathCard3').innerHTML = t.mathCard3;
-      document.getElementById('mathCard4').innerHTML = t.mathCard4;
-      langSelect.value = currentLang;
-      localStorage.setItem('yh-lang', currentLang);
-      bindTerms();
+      const data = formulaData[key];
+      const box = document.getElementById('formulaDetail');
+      if (!box || !data) return;
+      box.style.display = 'block';
+      box.innerHTML = `
+        <h3>${data.label[currentLang]}</h3>
+        <p><span class="formula">${data.formula}</span></p>
+        <p><strong>${t.lettersTitle}</strong></p>
+        <ul>${data.letters[currentLang]}</ul>
+        <p><strong>${t.applyTitle}</strong></p>
+        <p>${data.apply[currentLang]}</p>
+        <p><strong>${t.checkTitle}</strong></p>
+        <p>${data.check[currentLang]}</p>
+      `;
     }
 
     function bindTerms() {
@@ -395,6 +419,34 @@
           popup.style.display = 'block';
         };
       });
+    }
+
+    function bindFormulaButtons() {
+      document.querySelectorAll('.formula-btn').forEach(btn => {
+        btn.onclick = () => renderFormulaDetail(btn.dataset.formula);
+      });
+    }
+
+    function renderPage() {
+      const t = content[currentLang];
+      document.getElementById('backLink').textContent = t.back;
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('subtitle').textContent = t.subtitle;
+      document.getElementById('bioTitle').textContent = t.bioTitle;
+      document.getElementById('chemTitle').textContent = t.chemTitle;
+      document.getElementById('geoTitle').textContent = t.geoTitle;
+      document.getElementById('mathTitle').textContent = t.mathTitle;
+      document.getElementById('guideCard').innerHTML = t.guideCard;
+      document.getElementById('linksCard').innerHTML = t.linksCard;
+      document.getElementById('bioCard').innerHTML = t.bioCard;
+      document.getElementById('chemCard').innerHTML = t.chemCard;
+      document.getElementById('geoCard').innerHTML = t.geoCard;
+      document.getElementById('mathOverview').innerHTML = t.mathOverview;
+      document.getElementById('formulaCard').innerHTML = t.formulaCard;
+      langSelect.value = currentLang;
+      localStorage.setItem('yh-lang', currentLang);
+      bindTerms();
+      bindFormulaButtons();
     }
 
     popup.addEventListener('click', () => {
