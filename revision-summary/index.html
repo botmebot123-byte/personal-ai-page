@@ -27,6 +27,9 @@
     .element, .diagram-btn, .quiz-btn, .boundary-btn { padding: 8px 4px; border-radius: 10px; border: 1px solid #d4c4ae; background: #fbf7f1; cursor: pointer; text-align: center; font-weight: 700; color: #7c4f2d; }
     .diagram-stack, .boundary-group { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
     canvas.graph, canvas.diagram { width: 100%; max-width: 420px; background: #fff; border: 1px solid #d6cfc3; border-radius: 12px; }
+    .diagram-frame { position: relative; display: inline-block; width: 100%; max-width: 420px; }
+    .diagram-frame img { width: 100%; display: block; border: 1px solid #d6cfc3; border-radius: 12px; background: #fff; }
+    .diagram-label { margin-top: 10px; font-size: 15px; color: #4b5563; }
     .score-box { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; font-weight: 700; }
     .flashcard { min-height: 120px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; border-radius: 14px; border: 1px solid #d6cfc3; background: #fff; margin-top: 12px; cursor: pointer; }
     .term { color: #7c4f2d; border-bottom: 1px dashed #b08968; cursor: pointer; font-weight: 700; white-space: nowrap; }
@@ -102,7 +105,10 @@
           <p id="digestiveInfo">请选择一个 organ。</p>
           <p>Variants: ingestion, digestion, absorption, egestion.</p>
         </div>
-        <canvas id="digestiveCanvas" class="diagram" width="360" height="320"></canvas>
+        <div class="diagram-frame">
+          <img src="../assets/diagrams/digestive-system.jpg" alt="Digestive system diagram" />
+          <div class="diagram-label">Digestive reference diagram</div>
+        </div>
       </div>
 
       <div class="mini-card split">
@@ -118,7 +124,10 @@
           <p id="cellInfo">请选择一个 cell part。</p>
           <p>Variants: plant vs animal cells, respiration, protein synthesis.</p>
         </div>
-        <canvas id="cellCanvas" class="diagram" width="360" height="320"></canvas>
+        <div class="diagram-frame">
+          <img src="../assets/diagrams/animal-cell.jpg" alt="Animal cell diagram" />
+          <div class="diagram-label">Animal cell reference diagram</div>
+        </div>
       </div>
     </div>
 
@@ -165,7 +174,10 @@
           <p id="earthInfo">请选择一层。</p>
           <p>Variants: temperature, thickness, state of matter.</p>
         </div>
-        <canvas id="earthCanvas" class="diagram" width="360" height="320"></canvas>
+        <div class="diagram-frame">
+          <img src="../assets/diagrams/earth-layers.jpg" alt="Earth layers diagram" />
+          <div class="diagram-label">Earth layers reference diagram</div>
+        </div>
       </div>
 
       <div class="mini-card split">
@@ -179,7 +191,10 @@
           <p id="boundaryInfo">请选择一种 boundary type。</p>
           <p>Variants: volcanoes, earthquakes, new crust, subduction.</p>
         </div>
-        <canvas id="boundaryCanvas" class="diagram" width="360" height="320"></canvas>
+        <div class="diagram-frame">
+          <img src="../assets/diagrams/plate-movement.jpg" alt="Plate movement diagram" />
+          <div class="diagram-label">Plate movement reference diagram</div>
+        </div>
       </div>
     </div>
 
@@ -336,14 +351,6 @@
     const graphCtx = graphCanvas.getContext('2d');
     const quadraticCanvas = document.getElementById('quadraticCanvas');
     const quadraticCtx = quadraticCanvas.getContext('2d');
-    const digestiveCanvas = document.getElementById('digestiveCanvas');
-    const digestiveCtx = digestiveCanvas.getContext('2d');
-    const cellCanvas = document.getElementById('cellCanvas');
-    const cellCtx = cellCanvas.getContext('2d');
-    const earthCanvas = document.getElementById('earthCanvas');
-    const earthCtx = earthCanvas.getContext('2d');
-    const boundaryCanvas = document.getElementById('boundaryCanvas');
-    const boundaryCtx = boundaryCanvas.getContext('2d');
 
     let currentQuiz = 0, flashIndex = 0, flashBack = false;
     const scoreState = JSON.parse(localStorage.getItem('yh-score-state') || '{"correct":0,"wrong":0,"streak":0}');
@@ -431,77 +438,12 @@
       quadraticCtx.stroke(); quadraticCtx.lineWidth = 1;
     }
 
-    function line(ctx, x1, y1, x2, y2) {
-      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-    }
-
-    function drawDigestive(highlight = '') {
-      digestiveCtx.clearRect(0,0,360,320); digestiveCtx.fillStyle = '#fff'; digestiveCtx.fillRect(0,0,360,320);
-      digestiveCtx.strokeStyle = '#9ca3af'; digestiveCtx.lineWidth = 1.5; digestiveCtx.fillStyle = '#111827';
-      digestiveCtx.fillStyle = highlight === 'mouth' ? '#f59e0b' : '#f0c9a4'; digestiveCtx.beginPath(); digestiveCtx.arc(190,35,12,0,Math.PI*2); digestiveCtx.fill();
-      digestiveCtx.fillStyle = highlight === 'stomach' ? '#f59e0b' : '#d97745'; digestiveCtx.beginPath(); digestiveCtx.ellipse(205,120,36,28,0.5,0,Math.PI*2); digestiveCtx.fill();
-      digestiveCtx.fillStyle = highlight === 'liver' ? '#f59e0b' : '#8b5e3c'; digestiveCtx.fillRect(150,78,70,22);
-      digestiveCtx.fillStyle = highlight === 'smallIntestine' ? '#f59e0b' : '#facc15'; digestiveCtx.fillRect(165,170,70,46);
-      digestiveCtx.strokeStyle = highlight === 'largeIntestine' ? '#f59e0b' : '#a16207'; digestiveCtx.lineWidth = 10; digestiveCtx.strokeRect(155,160,90,64);
-      digestiveCtx.lineWidth = 4; digestiveCtx.strokeStyle = '#c08457'; line(digestiveCtx,190,47,190,84); line(digestiveCtx,190,148,190,160);
-      digestiveCtx.strokeStyle = '#6b7280'; digestiveCtx.lineWidth = 1.2;
-      line(digestiveCtx,40,35,175,35); digestiveCtx.fillStyle='#111827'; digestiveCtx.fillText('Mouth', 20, 30);
-      line(digestiveCtx,40,90,150,90); digestiveCtx.fillText('Liver', 20, 85);
-      line(digestiveCtx,285,120,240,120); digestiveCtx.fillText('Stomach', 290, 124);
-      line(digestiveCtx,40,190,160,190); digestiveCtx.fillText('Large Intestine', 20, 186);
-      line(digestiveCtx,285,206,238,206); digestiveCtx.fillText('Small Intestine', 245, 210);
-    }
-
-    function drawCell(highlight = '') {
-      cellCtx.clearRect(0,0,360,320); cellCtx.fillStyle='#fff'; cellCtx.fillRect(0,0,360,320);
-      cellCtx.strokeStyle = highlight === 'cellMembrane' ? '#f59e0b' : '#7c4f2d'; cellCtx.lineWidth = 6; cellCtx.beginPath(); cellCtx.ellipse(175,160,110,85,0,0,Math.PI*2); cellCtx.stroke();
-      cellCtx.fillStyle = highlight === 'cytoplasm' ? '#fde68a' : '#fef3c7'; cellCtx.beginPath(); cellCtx.ellipse(175,160,100,75,0,0,Math.PI*2); cellCtx.fill();
-      cellCtx.fillStyle = highlight === 'nucleus' ? '#f59e0b' : '#c084fc'; cellCtx.beginPath(); cellCtx.arc(175,160,28,0,Math.PI*2); cellCtx.fill();
-      cellCtx.fillStyle = highlight === 'mitochondria' ? '#f59e0b' : '#fb7185'; cellCtx.fillRect(118,122,28,12); cellCtx.fillRect(224,194,28,12);
-      cellCtx.fillStyle = highlight === 'ribosome' ? '#f59e0b' : '#2563eb'; cellCtx.beginPath(); cellCtx.arc(128,210,5,0,Math.PI*2); cellCtx.fill(); cellCtx.beginPath(); cellCtx.arc(225,118,5,0,Math.PI*2); cellCtx.fill();
-      cellCtx.strokeStyle = '#6b7280'; cellCtx.lineWidth = 1.2; cellCtx.fillStyle='#111827';
-      line(cellCtx,40,60,88,85); cellCtx.fillText('Cell Membrane', 12, 56);
-      line(cellCtx,40,104,95,122); cellCtx.fillText('Cytoplasm', 16, 100);
-      line(cellCtx,40,164,145,162); cellCtx.fillText('Nucleus', 12, 160);
-      line(cellCtx,288,118,252,128); cellCtx.fillText('Mitochondria', 262, 112);
-      line(cellCtx,286,214,230,210); cellCtx.fillText('Ribosome', 282, 236);
-    }
-
-    function drawEarth(highlight = '') {
-      earthCtx.clearRect(0,0,360,320); earthCtx.fillStyle='#fff'; earthCtx.fillRect(0,0,360,320);
-      const cx = 145, cy = 160;
-      const layers = [['crust', 105, '#d6b38b'],['mantle', 80, '#d97745'],['outerCore', 52, '#f59e0b'],['innerCore', 25, '#facc15']];
-      layers.forEach(([name, r, color]) => { earthCtx.fillStyle = highlight === name ? '#ef4444' : color; earthCtx.beginPath(); earthCtx.arc(cx,cy,r,0,Math.PI*2); earthCtx.fill(); });
-      earthCtx.strokeStyle='#6b7280'; earthCtx.lineWidth=1.2; earthCtx.fillStyle='#111827';
-      line(earthCtx,252,72,208,88); earthCtx.fillText('Crust', 260, 70);
-      line(earthCtx,252,118,194,128); earthCtx.fillText('Mantle', 260, 116);
-      line(earthCtx,252,164,182,164); earthCtx.fillText('Outer Core', 260, 162);
-      line(earthCtx,252,212,168,178); earthCtx.fillText('Inner Core', 260, 210);
-    }
-
-    function drawBoundary(type = '') {
-      boundaryCtx.clearRect(0,0,360,320); boundaryCtx.fillStyle='#fff'; boundaryCtx.fillRect(0,0,360,320);
-      boundaryCtx.fillStyle = '#8b5e3c'; boundaryCtx.fillRect(36,186,110,46); boundaryCtx.fillRect(202,186,110,46);
-      boundaryCtx.fillStyle = '#2563eb'; boundaryCtx.strokeStyle = '#2563eb'; boundaryCtx.lineWidth = 2;
-      if (type === 'constructive') {
-        boundaryCtx.fillText('←', 157, 176); boundaryCtx.fillText('→', 190, 176); boundaryCtx.fillText('new crust', 140, 244); boundaryCtx.fillRect(168,186,12,46);
-      } else if (type === 'destructive') {
-        boundaryCtx.fillText('→', 157, 176); boundaryCtx.fillText('←', 190, 176); boundaryCtx.fillText('subduction', 132, 244); boundaryCtx.beginPath(); boundaryCtx.moveTo(202,186); boundaryCtx.lineTo(258,250); boundaryCtx.stroke();
-      } else if (type === 'conservative') {
-        boundaryCtx.fillText('⇆', 166, 176); boundaryCtx.fillText('earthquake risk', 118, 244);
-      } else {
-        boundaryCtx.fillText('Plate boundary', 132, 176);
-      }
-      boundaryCtx.strokeStyle='#6b7280'; boundaryCtx.lineWidth=1.2; boundaryCtx.fillStyle='#111827';
-      line(boundaryCtx,36,110,120,184); boundaryCtx.fillText('Plate A', 18, 106);
-      line(boundaryCtx,324,110,258,184); boundaryCtx.fillText('Plate B', 286, 106);
-    }
 
     function bindTextDiagrams() {
-      document.querySelectorAll('[data-digestive]').forEach(btn => btn.onclick = () => { document.getElementById('digestiveInfo').textContent = digestiveInfoMap[btn.dataset.digestive]; drawDigestive(btn.dataset.digestive); });
-      document.querySelectorAll('[data-cell]').forEach(btn => btn.onclick = () => { document.getElementById('cellInfo').textContent = cellInfoMap[btn.dataset.cell]; drawCell(btn.dataset.cell); });
-      document.querySelectorAll('[data-earth]').forEach(btn => btn.onclick = () => { document.getElementById('earthInfo').textContent = earthInfoMap[btn.dataset.earth]; drawEarth(btn.dataset.earth); });
-      document.querySelectorAll('[data-boundary]').forEach(btn => btn.onclick = () => { document.getElementById('boundaryInfo').textContent = boundaryInfoMap[btn.dataset.boundary]; drawBoundary(btn.dataset.boundary); });
+      document.querySelectorAll('[data-digestive]').forEach(btn => btn.onclick = () => { document.getElementById('digestiveInfo').textContent = digestiveInfoMap[btn.dataset.digestive]; });
+      document.querySelectorAll('[data-cell]').forEach(btn => btn.onclick = () => { document.getElementById('cellInfo').textContent = cellInfoMap[btn.dataset.cell]; });
+      document.querySelectorAll('[data-earth]').forEach(btn => btn.onclick = () => { document.getElementById('earthInfo').textContent = earthInfoMap[btn.dataset.earth]; });
+      document.querySelectorAll('[data-boundary]').forEach(btn => btn.onclick = () => { document.getElementById('boundaryInfo').textContent = boundaryInfoMap[btn.dataset.boundary]; });
       document.querySelectorAll('[data-factor]').forEach(btn => btn.onclick = () => document.getElementById('factorInfo').textContent = factorInfoMap[btn.dataset.factor]);
       document.querySelectorAll('[data-eq]').forEach(btn => btn.onclick = () => document.getElementById('equationPracticeInfo').textContent = equationInfoMap[btn.dataset.eq]);
     }
@@ -543,10 +485,6 @@
     bindTextDiagrams();
     drawGraph();
     drawQuadratic();
-    drawDigestive();
-    drawCell();
-    drawEarth();
-    drawBoundary();
     renderQuiz();
     bindQuiz();
   </script>
