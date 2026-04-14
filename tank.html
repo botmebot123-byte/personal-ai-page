@@ -163,6 +163,12 @@
         <span id="levelLabel">Level: <span id="level">1</span></span>
         <span id="mode">Running</span>
       </div>
+      <div id="bossBarWrap" style="display:none; margin-top:12px; max-width:520px; margin-left:auto; margin-right:auto; text-align:left;">
+        <div id="bossBarLabel" style="font-weight:700; margin-bottom:6px; color:#7c4f2d;">Boss HP</div>
+        <div style="height:14px; background:#e5e7eb; border-radius:999px; overflow:hidden; border:1px solid #d6cfc3;">
+          <div id="bossBar" style="height:100%; width:100%; background:#f97316;"></div>
+        </div>
+      </div>
       <button class="btn" id="restart">Restart</button>
     </div>
 
@@ -201,7 +207,7 @@
       en: {
         back: '← Back to games', title: 'Tank Battle',
         subtitle: 'A fuller browser tank game with walls, lives, enemy fire, explosions, and level progression.',
-        score: 'Score:', enemies: 'Enemies left:', lives: 'Lives:', level: 'Level:',
+        score: 'Score:', enemies: 'Enemies left:', lives: 'Lives:', level: 'Level:', bossHp: 'Boss HP',
         running: 'Running', won: 'Level Clear', lost: 'Game Over',
         restart: 'Restart', overlayTitle: 'Game Over', overlayText: 'You ran out of lives. Click below to restart the game.', controlsTitle: 'Controls',
         c1: 'Use arrow keys to move the tank.',
@@ -215,7 +221,7 @@
       zh: {
         back: '← 返回游戏页', title: '坦克大战',
         subtitle: '一个更完整的浏览器坦克游戏，加入了墙体、生命值、敌人开火、爆炸特效和关卡推进。',
-        score: '分数：', enemies: '剩余敌人：', lives: '生命：', level: '关卡：',
+        score: '分数：', enemies: '剩余敌人：', lives: '生命：', level: '关卡：', bossHp: 'Boss 血量',
         running: '进行中', won: '本关通过', lost: '游戏结束',
         restart: '重新开始', overlayTitle: '游戏结束', overlayText: '你的生命值已经耗尽。点击下面按钮重新开始游戏。', controlsTitle: '操作方式',
         c1: '使用方向键移动坦克。',
@@ -229,7 +235,7 @@
       mix: {
         back: '← 返回游戏页 Back to games', title: '坦克大战 Tank Battle',
         subtitle: '一个更完整的 browser tank game，加入了 walls、lives、enemy fire、explosions 和 level progression。',
-        score: '分数 Score:', enemies: '剩余敌人 Enemies left:', lives: '生命 Lives:', level: '关卡 Level:',
+        score: '分数 Score:', enemies: '剩余敌人 Enemies left:', lives: '生命 Lives:', level: '关卡 Level:', bossHp: 'Boss 血量 Boss HP',
         running: '进行中 Running', won: '本关通过 Level Clear', lost: '游戏结束 Game Over',
         restart: '重新开始 Restart', overlayTitle: '游戏结束 Game Over', overlayText: '你的生命值已经耗尽。点击下面按钮重新开始游戏。', controlsTitle: '操作方式 Controls',
         c1: '使用 arrow keys 移动坦克。',
@@ -254,6 +260,9 @@
     const levelLabelEl = document.getElementById('levelLabel');
     const modeEl = document.getElementById('mode');
     const restartBtn = document.getElementById('restart');
+    const bossBarWrap = document.getElementById('bossBarWrap');
+    const bossBar = document.getElementById('bossBar');
+    const bossBarLabel = document.getElementById('bossBarLabel');
     const overlay = document.getElementById('gameOverlay');
     const overlayRestart = document.getElementById('overlayRestart');
     const langSelect = document.getElementById('langSelect');
@@ -288,6 +297,7 @@
       if (levelNum % 5 === 0) {
         const boss = makeTank(8, 1, 'down', '#f97316');
         boss.hp = 8;
+        boss.maxHp = 8;
         boss.spawnShield = 180;
         boss.isBoss = true;
         return [boss];
@@ -303,6 +313,7 @@
       if (levelNum >= 3) list.push(makeTank(8, 3, 'down', '#fb7185'));
       list.forEach(enemy => {
         enemy.hp = 1;
+        enemy.maxHp = 1;
         enemy.spawnShield = 120;
       });
       return list;
@@ -343,6 +354,14 @@
       lifeLabelEl.childNodes[0].textContent = t.lives + ' ';
       levelLabelEl.childNodes[0].textContent = t.level + ' ';
       modeEl.textContent = state === 'running' ? t.running : state === 'won' ? t.won : t.lost;
+      const boss = enemies.find(enemy => enemy.isBoss);
+      if (boss) {
+        bossBarWrap.style.display = 'block';
+        bossBarLabel.textContent = t.bossHp;
+        bossBar.style.width = `${(boss.hp / boss.maxHp) * 100}%`;
+      } else {
+        bossBarWrap.style.display = 'none';
+      }
     }
 
     function applyLanguage() {
@@ -441,7 +460,13 @@
           const [dx, dy, dir] = options[Math.floor(Math.random() * options.length)];
           tryMoveTank(enemy, dx, dy, dir);
         }
-        if (Math.random() < 0.015 + level * 0.005) {
+        if (enemy.isBoss) {
+          if (Math.random() < 0.04) {
+            spawnBullet(enemy, enemyBullets, 0.18);
+            enemyBullets.push({ x: enemy.x + 0.5, y: enemy.y + 0.5, dx: -0.14, dy: 0.18, owner: 'enemy' });
+            enemyBullets.push({ x: enemy.x + 0.5, y: enemy.y + 0.5, dx: 0.14, dy: 0.18, owner: 'enemy' });
+          }
+        } else if (Math.random() < 0.015 + level * 0.005) {
           spawnBullet(enemy, enemyBullets, 0.16);
         }
         if (enemy.x === player.x && enemy.y === player.y) {
@@ -525,20 +550,27 @@
     function drawTank(tank) {
       const px = tank.x * size;
       const py = tank.y * size;
-      const body = size - 10;
-      const offset = 5;
+      const offset = tank.isBoss ? 2 : 5;
+      const body = tank.isBoss ? size - 4 : size - 10;
       ctx.fillStyle = tank.color;
       ctx.fillRect(px + offset, py + offset, body, body);
       ctx.fillStyle = '#0f172a';
-      ctx.fillRect(px + offset + 5, py + offset + 5, body - 10, body - 10);
+      ctx.fillRect(px + offset + 4, py + offset + 4, body - 8, body - 8);
       ctx.fillStyle = tank.color;
-      ctx.fillRect(px + offset + 8, py + offset + 8, body - 16, body - 16);
-      const barrel = {
-        up: [px + size / 2 - 3, py + 1, 6, 16],
-        down: [px + size / 2 - 3, py + size - 17, 6, 16],
-        left: [px + 1, py + size / 2 - 3, 16, 6],
-        right: [px + size - 17, py + size / 2 - 3, 16, 6]
-      }[tank.dir];
+      ctx.fillRect(px + offset + 7, py + offset + 7, body - 14, body - 14);
+      const barrel = tank.isBoss
+        ? {
+            up: [px + size / 2 - 4, py, 8, 18],
+            down: [px + size / 2 - 4, py + size - 18, 8, 18],
+            left: [px, py + size / 2 - 4, 18, 8],
+            right: [px + size - 18, py + size / 2 - 4, 18, 8]
+          }[tank.dir]
+        : {
+            up: [px + size / 2 - 3, py + 1, 6, 16],
+            down: [px + size / 2 - 3, py + size - 17, 6, 16],
+            left: [px + 1, py + size / 2 - 3, 16, 6],
+            right: [px + size - 17, py + size / 2 - 3, 16, 6]
+          }[tank.dir];
       ctx.fillStyle = '#111827';
       ctx.fillRect(...barrel);
     }
