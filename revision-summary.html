@@ -23,7 +23,7 @@
     .mini-card { padding: 18px; border-radius: 14px; background: #fcfaf6; border: 1px solid #e7dccb; }
     .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
     .controls-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; align-items: center; }
-    .periodic-grid { display: grid; grid-template-columns: repeat(9, minmax(42px, 1fr)); gap: 6px; margin-top: 12px; }
+    .periodic-grid { display: grid; grid-template-columns: repeat(10, minmax(42px, 1fr)); gap: 6px; margin-top: 12px; }
     .element, .diagram-btn, .quiz-btn, .boundary-btn { padding: 8px 4px; border-radius: 10px; border: 1px solid #d4c4ae; background: #fbf7f1; cursor: pointer; text-align: center; font-weight: 700; color: #7c4f2d; }
     .diagram-stack, .boundary-group { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
     canvas.graph, canvas.diagram { width: 100%; max-width: 420px; background: #fff; border: 1px solid #d6cfc3; border-radius: 12px; }
@@ -130,8 +130,8 @@
     <p class="section-note">先记常见元素和 ions，再看 equation patterns。</p>
     <div class="subject-grid">
       <div class="mini-card">
-        <h3>Expanded Periodic Table</h3>
-        <p>点击 element 查看信息。现在是 expanded school-use 版本，后面还能继续补完整排布。</p>
+        <h3>Full Periodic Table</h3>
+        <p>点击 element 查看信息。现在这里是完整 1–118 元素表。</p>
         <div class="periodic-grid" id="periodicGrid"></div>
         <p id="elementInfo">请选择一个 element。</p>
       </div>
@@ -288,8 +288,17 @@
 
     const elements = [
       ['H','Hydrogen 氢',1],['He','Helium 氦',2],['Li','Lithium 锂',3],['Be','Beryllium 铍',4],['B','Boron 硼',5],['C','Carbon 碳',6],['N','Nitrogen 氮',7],['O','Oxygen 氧',8],['F','Fluorine 氟',9],['Ne','Neon 氖',10],
-      ['Na','Sodium 钠',11],['Mg','Magnesium 镁',12],['Al','Aluminium 铝',13],['Si','Silicon 硅',14],['P','Phosphorus 磷',15],['S','Sulfur 硫',16],['Cl','Chlorine 氯',17],['Ar','Argon 氩',18],
-      ['K','Potassium 钾',19],['Ca','Calcium 钙',20],['Fe','Iron 铁',26],['Cu','Copper 铜',29],['Zn','Zinc 锌',30],['Ag','Silver 银',47],['Sn','Tin 锡',50],['I','Iodine 碘',53],['Au','Gold 金',79],['Pb','Lead 铅',82]
+      ['Na','Sodium 钠',11],['Mg','Magnesium 镁',12],['Al','Aluminium 铝',13],['Si','Silicon 硅',14],['P','Phosphorus 磷',15],['S','Sulfur 硫',16],['Cl','Chlorine 氯',17],['Ar','Argon 氩',18],['K','Potassium 钾',19],['Ca','Calcium 钙',20],
+      ['Sc','Scandium 钪',21],['Ti','Titanium 钛',22],['V','Vanadium 钒',23],['Cr','Chromium 铬',24],['Mn','Manganese 锰',25],['Fe','Iron 铁',26],['Co','Cobalt 钴',27],['Ni','Nickel 镍',28],['Cu','Copper 铜',29],['Zn','Zinc 锌',30],
+      ['Ga','Gallium 镓',31],['Ge','Germanium 锗',32],['As','Arsenic 砷',33],['Se','Selenium 硒',34],['Br','Bromine 溴',35],['Kr','Krypton 氪',36],['Rb','Rubidium 铷',37],['Sr','Strontium 锶',38],['Y','Yttrium 钇',39],['Zr','Zirconium 锆',40],
+      ['Nb','Niobium 铌',41],['Mo','Molybdenum 钼',42],['Tc','Technetium 锝',43],['Ru','Ruthenium 钌',44],['Rh','Rhodium 铑',45],['Pd','Palladium 钯',46],['Ag','Silver 银',47],['Cd','Cadmium 镉',48],['In','Indium 铟',49],['Sn','Tin 锡',50],
+      ['Sb','Antimony 锑',51],['Te','Tellurium 碲',52],['I','Iodine 碘',53],['Xe','Xenon 氙',54],['Cs','Caesium 铯',55],['Ba','Barium 钡',56],['La','Lanthanum 镧',57],['Ce','Cerium 铈',58],['Pr','Praseodymium 镨',59],['Nd','Neodymium 钕',60],
+      ['Pm','Promethium 钷',61],['Sm','Samarium 钐',62],['Eu','Europium 铕',63],['Gd','Gadolinium 钆',64],['Tb','Terbium 铽',65],['Dy','Dysprosium 镝',66],['Ho','Holmium 钬',67],['Er','Erbium 铒',68],['Tm','Thulium 铥',69],['Yb','Ytterbium 镱',70],
+      ['Lu','Lutetium 镥',71],['Hf','Hafnium 铪',72],['Ta','Tantalum 钽',73],['W','Tungsten 钨',74],['Re','Rhenium 铼',75],['Os','Osmium 锇',76],['Ir','Iridium 铱',77],['Pt','Platinum 铂',78],['Au','Gold 金',79],['Hg','Mercury 汞',80],
+      ['Tl','Thallium 铊',81],['Pb','Lead 铅',82],['Bi','Bismuth 铋',83],['Po','Polonium 钋',84],['At','Astatine 砹',85],['Rn','Radon 氡',86],['Fr','Francium 钫',87],['Ra','Radium 镭',88],['Ac','Actinium 锕',89],['Th','Thorium 钍',90],
+      ['Pa','Protactinium 镤',91],['U','Uranium 铀',92],['Np','Neptunium 镎',93],['Pu','Plutonium 钚',94],['Am','Americium 镅',95],['Cm','Curium 锔',96],['Bk','Berkelium 锫',97],['Cf','Californium 锎',98],['Es','Einsteinium 锿',99],['Fm','Fermium 镄',100],
+      ['Md','Mendelevium 钔',101],['No','Nobelium 锘',102],['Lr','Lawrencium 铹',103],['Rf','Rutherfordium 𬬻',104],['Db','Dubnium 𬭊',105],['Sg','Seaborgium 𬭳',106],['Bh','Bohrium 𬭛',107],['Hs','Hassium 𬭶',108],['Mt','Meitnerium 鿏',109],['Ds','Darmstadtium 𫟼',110],
+      ['Rg','Roentgenium 𬬭',111],['Cn','Copernicium 鿔',112],['Nh','Nihonium 鿭',113],['Fl','Flerovium 𫓧',114],['Mc','Moscovium 镆',115],['Lv','Livermorium 鿬',116],['Ts','Tennessine 117',117],['Og','Oganesson 鿫',118]
     ];
 
     const ionList = [
