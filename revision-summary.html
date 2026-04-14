@@ -541,10 +541,27 @@
       document.querySelectorAll('[data-eq]').forEach(btn => btn.onclick = () => document.getElementById('equationPracticeInfo').textContent = equationInfoMap[btn.dataset.eq]);
     }
 
+    const variantMap = {
+      organ: ['organ', 'part', 'body part'],
+      mainly: ['mainly', 'mostly', 'primarily'],
+      charge: ['charge', 'electrical charge'],
+      forms: ['forms', 'creates', 'produces'],
+      controls: ['controls', 'regulates', 'manages'],
+      layer: ['layer', 'section'],
+      studies: ['studies', 'focuses on', 'explores']
+    };
+
+    function applyVariants(text) {
+      return text.replace(/\{(\w+)\}/g, (_, key) => {
+        const pool = variantMap[key];
+        return pool ? pool[Math.floor(Math.random() * pool.length)] : key;
+      });
+    }
+
     function renderQuiz() {
       const q = quizBank[currentQuiz % quizBank.length];
-      document.getElementById('quizQuestion').textContent = q.q;
-      document.querySelectorAll('.quiz-answer').forEach((btn, i) => btn.textContent = `${String.fromCharCode(65+i)}. ${q.a[i]}`);
+      document.getElementById('quizQuestion').textContent = applyVariants(q.q);
+      document.querySelectorAll('.quiz-answer').forEach((btn, i) => btn.textContent = `${String.fromCharCode(65+i)}. ${applyVariants(q.a[i])}`);
       document.getElementById('quizResult').textContent = '';
     }
 
