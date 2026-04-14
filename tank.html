@@ -255,9 +255,12 @@
       player = makeTank(6, 11, 'up', '#22c55e', true);
       bullet = null;
       enemies = [
-        makeTank(2, 1, 'down', '#ef4444'),
-        makeTank(6, 1, 'down', '#f97316'),
-        makeTank(10, 1, 'down', '#eab308')
+        makeTank(1, 1, 'down', '#ef4444'),
+        makeTank(4, 1, 'down', '#f97316'),
+        makeTank(7, 1, 'down', '#eab308'),
+        makeTank(10, 1, 'down', '#38bdf8'),
+        makeTank(2, 3, 'down', '#f43f5e'),
+        makeTank(9, 3, 'down', '#a855f7')
       ];
       score = 0;
       state = 'running';
@@ -314,7 +317,7 @@
         tank.x = nx;
         tank.y = ny;
       }
-      tank.moveCooldown = 6;
+      tank.moveCooldown = 10;
     }
 
     function fireBullet() {
@@ -351,7 +354,7 @@
       ];
       enemies.forEach(enemy => {
         if (enemy.moveCooldown > 0) enemy.moveCooldown -= 1;
-        if (Math.random() < 0.08) {
+        if (Math.random() < 0.05) {
           const [dx, dy, dir] = options[Math.floor(Math.random() * options.length)];
           tryMoveTank(enemy, dx, dy, dir);
         }
