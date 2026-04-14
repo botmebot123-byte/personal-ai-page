@@ -9,25 +9,29 @@
     body { margin: 0; font-family: "Book Antiqua", Palatino, "Palatino Linotype", serif; background: #f8f5ef; color: #1f2937; }
     .wrap { max-width: 1220px; margin: 0 auto; padding: 40px 20px 80px; }
     h1 { font-size: 44px; margin-bottom: 8px; }
-    h2 { margin-top: 34px; font-size: 28px; border-bottom: 1px solid #d6cfc3; padding-bottom: 8px; }
+    h2 { margin-top: 38px; font-size: 28px; border-bottom: 1px solid #d6cfc3; padding-bottom: 8px; }
     h3 { margin: 0 0 10px; font-size: 21px; }
     p, li, label, button { line-height: 1.75; font-size: 16px; }
-    .card { margin-top: 18px; padding: 22px; border-radius: 16px; background: #fff; border: 1px solid #ddd6c8; }
     a { color: #7c4f2d; text-decoration: none; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
     button, input { font-family: inherit; font-size: 16px; padding: 8px 12px; border-radius: 10px; border: 1px solid #d4c4ae; background: #fbf7f1; color: #7c4f2d; }
-    .term { color: #7c4f2d; border-bottom: 1px dashed #b08968; cursor: pointer; font-weight: 700; white-space: nowrap; }
-    #termPopup { position: fixed; right: 20px; bottom: 20px; max-width: 360px; padding: 14px 16px; border-radius: 12px; background: #fffaf3; border: 1px solid #d6c3aa; box-shadow: 0 10px 24px rgba(0,0,0,.12); display: none; z-index: 999; }
-    .interactive-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 18px; margin-top: 18px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+    .card { margin-top: 18px; padding: 22px; border-radius: 16px; background: #fff; border: 1px solid #ddd6c8; }
+    .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 18px; }
+    .dash-box { padding: 18px; border-radius: 14px; background: #fcfaf6; border: 1px solid #e7dccb; }
+    .dash-box ul { margin: 8px 0 0 18px; padding: 0; }
+    .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 18px; margin-top: 18px; }
     .mini-card { padding: 18px; border-radius: 14px; background: #fcfaf6; border: 1px solid #e7dccb; }
     .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
-    .periodic-grid { display: grid; grid-template-columns: repeat(9, minmax(42px, 1fr)); gap: 6px; margin-top: 12px; }
-    .element, .diagram-btn, .quiz-btn, .boundary-btn, .flash-btn { padding: 8px 4px; border-radius: 10px; border: 1px solid #d4c4ae; background: #fbf7f1; cursor: pointer; text-align: center; font-weight: 700; color: #7c4f2d; }
-    .diagram-stack, .boundary-group { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
     .controls-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; align-items: center; }
+    .periodic-grid { display: grid; grid-template-columns: repeat(9, minmax(42px, 1fr)); gap: 6px; margin-top: 12px; }
+    .element, .diagram-btn, .quiz-btn, .boundary-btn { padding: 8px 4px; border-radius: 10px; border: 1px solid #d4c4ae; background: #fbf7f1; cursor: pointer; text-align: center; font-weight: 700; color: #7c4f2d; }
+    .diagram-stack, .boundary-group { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
     canvas.graph, canvas.diagram { width: 100%; max-width: 420px; background: #fff; border: 1px solid #d6cfc3; border-radius: 12px; }
     .score-box { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; font-weight: 700; }
     .flashcard { min-height: 120px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; border-radius: 14px; border: 1px solid #d6cfc3; background: #fff; margin-top: 12px; cursor: pointer; }
+    .term { color: #7c4f2d; border-bottom: 1px dashed #b08968; cursor: pointer; font-weight: 700; white-space: nowrap; }
+    #termPopup { position: fixed; right: 20px; bottom: 20px; max-width: 360px; padding: 14px 16px; border-radius: 12px; background: #fffaf3; border: 1px solid #d6c3aa; box-shadow: 0 10px 24px rgba(0,0,0,.12); display: none; z-index: 999; }
+    .section-note { color: #4b5563; margin-top: 0; }
   </style>
 </head>
 <body>
@@ -37,15 +41,44 @@
     </div>
 
     <h1>复习总结 Revision Summary</h1>
-    <p>这里整理了 Biology、Chemistry、Geography 和 Maths 的 combined revision 内容，并加入了 diagrams、graphs、flashcards 和 quiz tools。</p>
+    <p>这里把 Biology、Chemistry、Geography 和 Maths 拆成更清楚的 student dashboard，先看 summary，再做图、练习和 quiz。</p>
 
     <div class="card">
-      <h3>如何使用本页 How to use this page</h3>
-      <ul>
-        <li>点击重要 terms 看 meanings。</li>
-        <li>每个互动部分旁边都有 diagram 或 visual 区域。</li>
-        <li>点 diagram labels 时，会同步显示对应说明。</li>
-      </ul>
+      <h3>今日复习导航 Today’s Revision Dashboard</h3>
+      <div class="dashboard">
+        <div class="dash-box">
+          <strong>Biology</strong>
+          <ul>
+            <li>Digestive system</li>
+            <li>Cell structure</li>
+            <li>Diagram + labels</li>
+          </ul>
+        </div>
+        <div class="dash-box">
+          <strong>Chemistry</strong>
+          <ul>
+            <li>Periodic table</li>
+            <li>Ions</li>
+            <li>Equations</li>
+          </ul>
+        </div>
+        <div class="dash-box">
+          <strong>Geography</strong>
+          <ul>
+            <li>Earth layers</li>
+            <li>Plate boundaries</li>
+            <li>Earthquake / volcano links</li>
+          </ul>
+        </div>
+        <div class="dash-box">
+          <strong>Maths</strong>
+          <ul>
+            <li>Linear graph</li>
+            <li>Quadratic graph</li>
+            <li>Factorisation</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -53,8 +86,147 @@
       <p><span class="term" data-term="digestion">Digestion</span> 会把 food 分解成可吸收的小分子。<span class="term" data-term="ion">Ion</span> 是 charged particle。<span class="term" data-term="tectonicPlate">Tectonic plates</span> 与 earthquakes 和 volcanoes 有关。<span class="term" data-term="factorisation">Factorisation</span>、<span class="term" data-term="quadratic">quadratics</span> 和 <span class="term" data-term="LCD">LCD</span> 都是重点。</p>
     </div>
 
-    <h2>Interactive Revision Tools</h2>
-    <div class="interactive-grid">
+    <h2>Biology</h2>
+    <p class="section-note">先看 diagram，再点 labels，最后记 function 和 examples。</p>
+    <div class="subject-grid">
+      <div class="mini-card split">
+        <div>
+          <h3>Digestive System Diagram</h3>
+          <div class="diagram-stack">
+            <button class="diagram-btn" data-digestive="mouth">Mouth</button>
+            <button class="diagram-btn" data-digestive="stomach">Stomach</button>
+            <button class="diagram-btn" data-digestive="smallIntestine">Small Intestine</button>
+            <button class="diagram-btn" data-digestive="largeIntestine">Large Intestine</button>
+            <button class="diagram-btn" data-digestive="liver">Liver</button>
+          </div>
+          <p id="digestiveInfo">请选择一个 organ。</p>
+          <p>Variants: ingestion, digestion, absorption, egestion.</p>
+        </div>
+        <canvas id="digestiveCanvas" class="diagram" width="360" height="320"></canvas>
+      </div>
+
+      <div class="mini-card split">
+        <div>
+          <h3>Cell Structure Diagram</h3>
+          <div class="diagram-stack">
+            <button class="diagram-btn" data-cell="nucleus">Nucleus</button>
+            <button class="diagram-btn" data-cell="cytoplasm">Cytoplasm</button>
+            <button class="diagram-btn" data-cell="cellMembrane">Cell Membrane</button>
+            <button class="diagram-btn" data-cell="mitochondria">Mitochondria</button>
+            <button class="diagram-btn" data-cell="ribosome">Ribosome</button>
+          </div>
+          <p id="cellInfo">请选择一个 cell part。</p>
+          <p>Variants: plant vs animal cells, respiration, protein synthesis.</p>
+        </div>
+        <canvas id="cellCanvas" class="diagram" width="360" height="320"></canvas>
+      </div>
+    </div>
+
+    <h2>Chemistry</h2>
+    <p class="section-note">先记常见元素和 ions，再看 equation patterns。</p>
+    <div class="subject-grid">
+      <div class="mini-card">
+        <h3>Expanded Periodic Table</h3>
+        <p>点击 element 查看信息。现在是 expanded school-use 版本，后面还能继续补完整排布。</p>
+        <div class="periodic-grid" id="periodicGrid"></div>
+        <p id="elementInfo">请选择一个 element。</p>
+      </div>
+
+      <div class="mini-card">
+        <h3>Ions Quick Practice</h3>
+        <div class="periodic-grid" id="ionGrid"></div>
+        <p id="ionInfo">请选择一个 ion。</p>
+      </div>
+
+      <div class="mini-card">
+        <h3>Equation Check</h3>
+        <div class="boundary-group">
+          <button class="quiz-btn" data-eq="acidBase">Acid + Base</button>
+          <button class="quiz-btn" data-eq="metalAcid">Metal + Acid</button>
+          <button class="quiz-btn" data-eq="combustion">Hydrocarbon Combustion</button>
+          <button class="quiz-btn" data-eq="metalOxide">Metal + Oxygen</button>
+        </div>
+        <p id="equationPracticeInfo">请选择一个 equation block。</p>
+      </div>
+    </div>
+
+    <h2>Geography</h2>
+    <p class="section-note">把结构图和 boundary types 连起来理解，记住不同板块运动的结果。</p>
+    <div class="subject-grid">
+      <div class="mini-card split">
+        <div>
+          <h3>Earth Structure Diagram</h3>
+          <div class="diagram-stack">
+            <button class="diagram-btn" data-earth="crust">Crust</button>
+            <button class="diagram-btn" data-earth="mantle">Mantle</button>
+            <button class="diagram-btn" data-earth="outerCore">Outer Core</button>
+            <button class="diagram-btn" data-earth="innerCore">Inner Core</button>
+          </div>
+          <p id="earthInfo">请选择一层。</p>
+          <p>Variants: temperature, thickness, state of matter.</p>
+        </div>
+        <canvas id="earthCanvas" class="diagram" width="360" height="320"></canvas>
+      </div>
+
+      <div class="mini-card split">
+        <div>
+          <h3>Plate Boundary Interaction</h3>
+          <div class="boundary-group">
+            <button class="boundary-btn" data-boundary="constructive">Constructive</button>
+            <button class="boundary-btn" data-boundary="destructive">Destructive</button>
+            <button class="boundary-btn" data-boundary="conservative">Conservative</button>
+          </div>
+          <p id="boundaryInfo">请选择一种 boundary type。</p>
+          <p>Variants: volcanoes, earthquakes, new crust, subduction.</p>
+        </div>
+        <canvas id="boundaryCanvas" class="diagram" width="360" height="320"></canvas>
+      </div>
+    </div>
+
+    <h2>Maths</h2>
+    <p class="section-note">先看 graph shape，再记公式和变式。</p>
+    <div class="subject-grid">
+      <div class="mini-card split">
+        <div>
+          <h3>Linear Function Draw</h3>
+          <div class="controls-row">
+            <label for="mInput">m</label><input id="mInput" type="number" value="1" step="0.5" />
+            <label for="cInput">c</label><input id="cInput" type="number" value="0" step="0.5" />
+          </div>
+          <p id="equationText">当前直线 Current line: y = 1x + 0</p>
+          <p>Variants: positive gradient, negative gradient, steeper line, larger intercept.</p>
+        </div>
+        <canvas id="graphCanvas" class="graph" width="420" height="300"></canvas>
+      </div>
+
+      <div class="mini-card split">
+        <div>
+          <h3>Quadratic Graph Tool</h3>
+          <div class="controls-row">
+            <label for="aInput">a</label><input id="aInput" type="number" value="1" step="0.5" />
+            <label for="bInput">b</label><input id="bInput" type="number" value="0" step="0.5" />
+            <label for="qcInput">c</label><input id="qcInput" type="number" value="0" step="0.5" />
+          </div>
+          <p id="quadraticText">当前曲线 Current curve: y = x²</p>
+          <p>Variants: y=x², y=2x²+3x+1, y=-x²+4, y=x²-6x+5.</p>
+        </div>
+        <canvas id="quadraticCanvas" class="graph" width="420" height="300"></canvas>
+      </div>
+
+      <div class="mini-card">
+        <h3>Factorisation Practice</h3>
+        <div class="boundary-group">
+          <button class="quiz-btn" data-factor="common">Common factor</button>
+          <button class="quiz-btn" data-factor="difference">Difference of two squares</button>
+          <button class="quiz-btn" data-factor="trinomial">Simple trinomial</button>
+          <button class="quiz-btn" data-factor="cubicHint">Cubic hint</button>
+        </div>
+        <p id="factorInfo">请选择一种 factor form。</p>
+      </div>
+    </div>
+
+    <h2>Practice Tools</h2>
+    <div class="subject-grid">
       <div class="mini-card">
         <h3>Flashcards</h3>
         <div id="flashcard" class="flashcard"></div>
@@ -72,128 +244,6 @@
           <span id="scoreStreak">连对 Streak: 0</span>
         </div>
         <button id="resetScore">重置分数 Reset score</button>
-      </div>
-
-      <div class="mini-card">
-        <h3>Full Periodic Table (core school set)</h3>
-        <p>点击 element 查看信息。</p>
-        <div class="periodic-grid" id="periodicGrid"></div>
-        <p id="elementInfo">请选择一个 element。</p>
-      </div>
-
-      <div class="mini-card split">
-        <div>
-          <h3>Linear Function Draw</h3>
-          <div class="controls-row">
-            <label for="mInput">m</label><input id="mInput" type="number" value="1" step="0.5" />
-            <label for="cInput">c</label><input id="cInput" type="number" value="0" step="0.5" />
-          </div>
-          <p id="equationText">当前直线 Current line: y = 1x + 0</p>
-        </div>
-        <canvas id="graphCanvas" class="graph" width="420" height="300"></canvas>
-      </div>
-
-      <div class="mini-card split">
-        <div>
-          <h3>Quadratic Graph Tool</h3>
-          <div class="controls-row">
-            <label for="aInput">a</label><input id="aInput" type="number" value="1" step="0.5" />
-            <label for="bInput">b</label><input id="bInput" type="number" value="0" step="0.5" />
-            <label for="qcInput">c</label><input id="qcInput" type="number" value="0" step="0.5" />
-          </div>
-          <p id="quadraticText">当前曲线 Current curve: y = x²</p>
-          <p id="quadraticExamples">Variants: y=x², y=2x²+3x+1, y=-x²+4</p>
-        </div>
-        <canvas id="quadraticCanvas" class="graph" width="420" height="300"></canvas>
-      </div>
-
-      <div class="mini-card split">
-        <div>
-          <h3>Digestive System Diagram</h3>
-          <div class="diagram-stack">
-            <button class="diagram-btn" data-digestive="mouth">Mouth</button>
-            <button class="diagram-btn" data-digestive="stomach">Stomach</button>
-            <button class="diagram-btn" data-digestive="smallIntestine">Small Intestine</button>
-            <button class="diagram-btn" data-digestive="largeIntestine">Large Intestine</button>
-            <button class="diagram-btn" data-digestive="liver">Liver</button>
-          </div>
-          <p id="digestiveInfo">请选择一个 organ。</p>
-          <p id="digestiveExamples">Variants: digestion start, absorption, water absorption, bile support.</p>
-        </div>
-        <canvas id="digestiveCanvas" class="diagram" width="320" height="320"></canvas>
-      </div>
-
-      <div class="mini-card split">
-        <div>
-          <h3>Cell Structure Diagram</h3>
-          <div class="diagram-stack">
-            <button class="diagram-btn" data-cell="nucleus">Nucleus</button>
-            <button class="diagram-btn" data-cell="cytoplasm">Cytoplasm</button>
-            <button class="diagram-btn" data-cell="cellMembrane">Cell Membrane</button>
-            <button class="diagram-btn" data-cell="mitochondria">Mitochondria</button>
-            <button class="diagram-btn" data-cell="ribosome">Ribosome</button>
-          </div>
-          <p id="cellInfo">请选择一个 cell part。</p>
-          <p id="cellExamples">Variants: plant vs animal cells, respiration, protein synthesis.</p>
-        </div>
-        <canvas id="cellCanvas" class="diagram" width="320" height="320"></canvas>
-      </div>
-
-      <div class="mini-card split">
-        <div>
-          <h3>Earth Structure Diagram</h3>
-          <div class="diagram-stack">
-            <button class="diagram-btn" data-earth="crust">Crust</button>
-            <button class="diagram-btn" data-earth="mantle">Mantle</button>
-            <button class="diagram-btn" data-earth="outerCore">Outer Core</button>
-            <button class="diagram-btn" data-earth="innerCore">Inner Core</button>
-          </div>
-          <p id="earthInfo">请选择一层。</p>
-          <p id="earthExamples">Variants: temperature, thickness, state of matter.</p>
-        </div>
-        <canvas id="earthCanvas" class="diagram" width="320" height="320"></canvas>
-      </div>
-
-      <div class="mini-card split">
-        <div>
-          <h3>Plate Boundary Interaction</h3>
-          <div class="boundary-group">
-            <button class="boundary-btn" data-boundary="constructive">Constructive</button>
-            <button class="boundary-btn" data-boundary="destructive">Destructive</button>
-            <button class="boundary-btn" data-boundary="conservative">Conservative</button>
-          </div>
-          <p id="boundaryInfo">请选择一种 boundary type。</p>
-          <p id="boundaryExamples">Variants: volcanoes, earthquakes, new crust, subduction.</p>
-        </div>
-        <canvas id="boundaryCanvas" class="diagram" width="320" height="320"></canvas>
-      </div>
-
-      <div class="mini-card">
-        <h3>Ions Quick Practice</h3>
-        <div class="periodic-grid" id="ionGrid"></div>
-        <p id="ionInfo">请选择一个 ion。</p>
-      </div>
-
-      <div class="mini-card">
-        <h3>Factorisation Practice</h3>
-        <div class="boundary-group">
-          <button class="quiz-btn" data-factor="common">Common factor</button>
-          <button class="quiz-btn" data-factor="difference">Difference of two squares</button>
-          <button class="quiz-btn" data-factor="trinomial">Simple trinomial</button>
-          <button class="quiz-btn" data-factor="cubicHint">Cubic hint</button>
-        </div>
-        <p id="factorInfo">请选择一种 factor form。</p>
-      </div>
-
-      <div class="mini-card">
-        <h3>Equation Check</h3>
-        <div class="boundary-group">
-          <button class="quiz-btn" data-eq="acidBase">Acid + Base</button>
-          <button class="quiz-btn" data-eq="metalAcid">Metal + Acid</button>
-          <button class="quiz-btn" data-eq="combustion">Hydrocarbon Combustion</button>
-          <button class="quiz-btn" data-eq="metalOxide">Metal + Oxygen</button>
-        </div>
-        <p id="equationPracticeInfo">请选择一个 equation block。</p>
       </div>
 
       <div class="mini-card">
@@ -301,7 +351,7 @@
     function bindTerms() {
       document.querySelectorAll('.term').forEach(el => {
         el.onclick = () => {
-          popup.innerHTML = `<strong>${el.textContent}</strong>${glossary[el.dataset.term] || ''}`;
+          popup.innerHTML = `<strong>${el.textContent}</strong><div style="margin-top:6px;">${glossary[el.dataset.term] || ''}</div>`;
           popup.style.display = 'block';
         };
       });
@@ -369,13 +419,6 @@
       graphCtx.stroke(); graphCtx.lineWidth = 1;
     }
 
-    function updateSimultaneous() {
-      const m1 = Number(document.getElementById('m1Input').value), c1 = Number(document.getElementById('c1Input').value), m2 = Number(document.getElementById('m2Input').value), c2 = Number(document.getElementById('c2Input').value);
-      if (m1 === m2) { document.getElementById('simText').textContent = '交点 Intersection: parallel or same line'; return; }
-      const x = (c2 - c1) / (m1 - m2), y = m1 * x + c1;
-      document.getElementById('simText').textContent = `交点 Intersection: (${x.toFixed(2)}, ${y.toFixed(2)})`;
-    }
-
     function drawQuadratic() {
       const a = Number(document.getElementById('aInput').value), b = Number(document.getElementById('bInput').value), c = Number(document.getElementById('qcInput').value);
       document.getElementById('quadraticText').textContent = `当前曲线 Current curve: y = ${a}x² + ${b}x + ${c}`;
@@ -388,42 +431,70 @@
       quadraticCtx.stroke(); quadraticCtx.lineWidth = 1;
     }
 
+    function line(ctx, x1, y1, x2, y2) {
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    }
+
     function drawDigestive(highlight = '') {
-      digestiveCtx.clearRect(0,0,320,320);
-      digestiveCtx.fillStyle = '#fff'; digestiveCtx.fillRect(0,0,320,320);
-      digestiveCtx.fillStyle = highlight === 'mouth' ? '#f59e0b' : '#d6b38b'; digestiveCtx.fillRect(145,20,30,24); digestiveCtx.fillText('Mouth', 120, 18);
-      digestiveCtx.fillStyle = highlight === 'stomach' ? '#f59e0b' : '#d97745'; digestiveCtx.beginPath(); digestiveCtx.ellipse(150,110,34,26,0,0,Math.PI*2); digestiveCtx.fill(); digestiveCtx.fillText('Stomach', 110, 150);
-      digestiveCtx.fillStyle = highlight === 'smallIntestine' ? '#f59e0b' : '#facc15'; digestiveCtx.fillRect(110,170,100,50); digestiveCtx.fillText('Small Intestine', 90, 238);
-      digestiveCtx.fillStyle = highlight === 'largeIntestine' ? '#f59e0b' : '#a16207'; digestiveCtx.strokeStyle = digestiveCtx.fillStyle; digestiveCtx.lineWidth = 8; digestiveCtx.strokeRect(100,160,120,70); digestiveCtx.fillText('Large Intestine', 92, 255);
-      digestiveCtx.fillStyle = highlight === 'liver' ? '#f59e0b' : '#8b5e3c'; digestiveCtx.fillRect(90,70,70,24); digestiveCtx.fillText('Liver', 92, 66);
+      digestiveCtx.clearRect(0,0,360,320); digestiveCtx.fillStyle = '#fff'; digestiveCtx.fillRect(0,0,360,320);
+      digestiveCtx.strokeStyle = '#9ca3af'; digestiveCtx.lineWidth = 1.5; digestiveCtx.fillStyle = '#111827';
+      digestiveCtx.fillStyle = highlight === 'mouth' ? '#f59e0b' : '#f0c9a4'; digestiveCtx.beginPath(); digestiveCtx.arc(190,35,12,0,Math.PI*2); digestiveCtx.fill();
+      digestiveCtx.fillStyle = highlight === 'stomach' ? '#f59e0b' : '#d97745'; digestiveCtx.beginPath(); digestiveCtx.ellipse(205,120,36,28,0.5,0,Math.PI*2); digestiveCtx.fill();
+      digestiveCtx.fillStyle = highlight === 'liver' ? '#f59e0b' : '#8b5e3c'; digestiveCtx.fillRect(150,78,70,22);
+      digestiveCtx.fillStyle = highlight === 'smallIntestine' ? '#f59e0b' : '#facc15'; digestiveCtx.fillRect(165,170,70,46);
+      digestiveCtx.strokeStyle = highlight === 'largeIntestine' ? '#f59e0b' : '#a16207'; digestiveCtx.lineWidth = 10; digestiveCtx.strokeRect(155,160,90,64);
+      digestiveCtx.lineWidth = 4; digestiveCtx.strokeStyle = '#c08457'; line(digestiveCtx,190,47,190,84); line(digestiveCtx,190,148,190,160);
+      digestiveCtx.strokeStyle = '#6b7280'; digestiveCtx.lineWidth = 1.2;
+      line(digestiveCtx,40,35,175,35); digestiveCtx.fillStyle='#111827'; digestiveCtx.fillText('Mouth', 20, 30);
+      line(digestiveCtx,40,90,150,90); digestiveCtx.fillText('Liver', 20, 85);
+      line(digestiveCtx,285,120,240,120); digestiveCtx.fillText('Stomach', 290, 124);
+      line(digestiveCtx,40,190,160,190); digestiveCtx.fillText('Large Intestine', 20, 186);
+      line(digestiveCtx,285,206,238,206); digestiveCtx.fillText('Small Intestine', 245, 210);
     }
 
     function drawCell(highlight = '') {
-      cellCtx.clearRect(0,0,320,320); cellCtx.fillStyle='#fff'; cellCtx.fillRect(0,0,320,320);
-      cellCtx.strokeStyle = highlight === 'cellMembrane' ? '#f59e0b' : '#7c4f2d'; cellCtx.lineWidth = 6; cellCtx.beginPath(); cellCtx.ellipse(160,160,110,85,0,0,Math.PI*2); cellCtx.stroke(); cellCtx.fillText('Cell Membrane', 108, 48);
-      cellCtx.fillStyle = highlight === 'cytoplasm' ? '#fde68a' : '#fef3c7'; cellCtx.beginPath(); cellCtx.ellipse(160,160,100,75,0,0,Math.PI*2); cellCtx.fill(); cellCtx.fillText('Cytoplasm', 120, 285);
-      cellCtx.fillStyle = highlight === 'nucleus' ? '#f59e0b' : '#c084fc'; cellCtx.beginPath(); cellCtx.arc(160,160,28,0,Math.PI*2); cellCtx.fill(); cellCtx.fillText('Nucleus', 132, 162);
-      cellCtx.fillStyle = highlight === 'mitochondria' ? '#f59e0b' : '#fb7185'; cellCtx.fillRect(95,120,26,12); cellCtx.fillRect(205,195,26,12); cellCtx.fillText('Mitochondria', 185, 220);
-      cellCtx.fillStyle = highlight === 'ribosome' ? '#f59e0b' : '#2563eb'; cellCtx.beginPath(); cellCtx.arc(120,210,5,0,Math.PI*2); cellCtx.fill(); cellCtx.beginPath(); cellCtx.arc(210,120,5,0,Math.PI*2); cellCtx.fill(); cellCtx.fillText('Ribosome', 196, 105);
+      cellCtx.clearRect(0,0,360,320); cellCtx.fillStyle='#fff'; cellCtx.fillRect(0,0,360,320);
+      cellCtx.strokeStyle = highlight === 'cellMembrane' ? '#f59e0b' : '#7c4f2d'; cellCtx.lineWidth = 6; cellCtx.beginPath(); cellCtx.ellipse(175,160,110,85,0,0,Math.PI*2); cellCtx.stroke();
+      cellCtx.fillStyle = highlight === 'cytoplasm' ? '#fde68a' : '#fef3c7'; cellCtx.beginPath(); cellCtx.ellipse(175,160,100,75,0,0,Math.PI*2); cellCtx.fill();
+      cellCtx.fillStyle = highlight === 'nucleus' ? '#f59e0b' : '#c084fc'; cellCtx.beginPath(); cellCtx.arc(175,160,28,0,Math.PI*2); cellCtx.fill();
+      cellCtx.fillStyle = highlight === 'mitochondria' ? '#f59e0b' : '#fb7185'; cellCtx.fillRect(118,122,28,12); cellCtx.fillRect(224,194,28,12);
+      cellCtx.fillStyle = highlight === 'ribosome' ? '#f59e0b' : '#2563eb'; cellCtx.beginPath(); cellCtx.arc(128,210,5,0,Math.PI*2); cellCtx.fill(); cellCtx.beginPath(); cellCtx.arc(225,118,5,0,Math.PI*2); cellCtx.fill();
+      cellCtx.strokeStyle = '#6b7280'; cellCtx.lineWidth = 1.2; cellCtx.fillStyle='#111827';
+      line(cellCtx,40,60,88,85); cellCtx.fillText('Cell Membrane', 12, 56);
+      line(cellCtx,40,104,95,122); cellCtx.fillText('Cytoplasm', 16, 100);
+      line(cellCtx,40,164,145,162); cellCtx.fillText('Nucleus', 12, 160);
+      line(cellCtx,288,118,252,128); cellCtx.fillText('Mitochondria', 262, 112);
+      line(cellCtx,286,214,230,210); cellCtx.fillText('Ribosome', 282, 236);
     }
 
     function drawEarth(highlight = '') {
-      earthCtx.clearRect(0,0,320,320); earthCtx.fillStyle='#fff'; earthCtx.fillRect(0,0,320,320);
-      const layers = [
-        ['crust', 110, '#d6b38b'], ['mantle', 85, '#d97745'], ['outerCore', 55, '#f59e0b'], ['innerCore', 28, '#facc15']
-      ];
-      layers.forEach(([name, r, color]) => { earthCtx.fillStyle = highlight === name ? '#ef4444' : color; earthCtx.beginPath(); earthCtx.arc(160,160,r,0,Math.PI*2); earthCtx.fill(); });
-      earthCtx.fillStyle='#111827'; earthCtx.fillText('Crust', 252, 70); earthCtx.fillText('Mantle', 252, 110); earthCtx.fillText('Outer Core', 232, 160); earthCtx.fillText('Inner Core', 232, 205);
+      earthCtx.clearRect(0,0,360,320); earthCtx.fillStyle='#fff'; earthCtx.fillRect(0,0,360,320);
+      const cx = 145, cy = 160;
+      const layers = [['crust', 105, '#d6b38b'],['mantle', 80, '#d97745'],['outerCore', 52, '#f59e0b'],['innerCore', 25, '#facc15']];
+      layers.forEach(([name, r, color]) => { earthCtx.fillStyle = highlight === name ? '#ef4444' : color; earthCtx.beginPath(); earthCtx.arc(cx,cy,r,0,Math.PI*2); earthCtx.fill(); });
+      earthCtx.strokeStyle='#6b7280'; earthCtx.lineWidth=1.2; earthCtx.fillStyle='#111827';
+      line(earthCtx,252,72,208,88); earthCtx.fillText('Crust', 260, 70);
+      line(earthCtx,252,118,194,128); earthCtx.fillText('Mantle', 260, 116);
+      line(earthCtx,252,164,182,164); earthCtx.fillText('Outer Core', 260, 162);
+      line(earthCtx,252,212,168,178); earthCtx.fillText('Inner Core', 260, 210);
     }
 
     function drawBoundary(type = '') {
-      boundaryCtx.clearRect(0,0,320,320); boundaryCtx.fillStyle='#fff'; boundaryCtx.fillRect(0,0,320,320);
-      boundaryCtx.fillStyle = '#a16207'; boundaryCtx.fillRect(40,180,100,40); boundaryCtx.fillRect(180,180,100,40);
-      boundaryCtx.fillStyle = '#2563eb';
-      if (type === 'constructive') { boundaryCtx.fillText('←   →', 140, 170); boundaryCtx.fillText('new crust', 122, 230); }
-      else if (type === 'destructive') { boundaryCtx.fillText('→   ←', 140, 170); boundaryCtx.fillText('subduction', 118, 230); boundaryCtx.beginPath(); boundaryCtx.moveTo(180,180); boundaryCtx.lineTo(240,250); boundaryCtx.stroke(); }
-      else if (type === 'conservative') { boundaryCtx.fillText('⇆', 152, 170); boundaryCtx.fillText('earthquake risk', 106, 230); }
-      else { boundaryCtx.fillText('Plate boundary', 110, 170); }
+      boundaryCtx.clearRect(0,0,360,320); boundaryCtx.fillStyle='#fff'; boundaryCtx.fillRect(0,0,360,320);
+      boundaryCtx.fillStyle = '#8b5e3c'; boundaryCtx.fillRect(36,186,110,46); boundaryCtx.fillRect(202,186,110,46);
+      boundaryCtx.fillStyle = '#2563eb'; boundaryCtx.strokeStyle = '#2563eb'; boundaryCtx.lineWidth = 2;
+      if (type === 'constructive') {
+        boundaryCtx.fillText('←', 157, 176); boundaryCtx.fillText('→', 190, 176); boundaryCtx.fillText('new crust', 140, 244); boundaryCtx.fillRect(168,186,12,46);
+      } else if (type === 'destructive') {
+        boundaryCtx.fillText('→', 157, 176); boundaryCtx.fillText('←', 190, 176); boundaryCtx.fillText('subduction', 132, 244); boundaryCtx.beginPath(); boundaryCtx.moveTo(202,186); boundaryCtx.lineTo(258,250); boundaryCtx.stroke();
+      } else if (type === 'conservative') {
+        boundaryCtx.fillText('⇆', 166, 176); boundaryCtx.fillText('earthquake risk', 118, 244);
+      } else {
+        boundaryCtx.fillText('Plate boundary', 132, 176);
+      }
+      boundaryCtx.strokeStyle='#6b7280'; boundaryCtx.lineWidth=1.2; boundaryCtx.fillStyle='#111827';
+      line(boundaryCtx,36,110,120,184); boundaryCtx.fillText('Plate A', 18, 106);
+      line(boundaryCtx,324,110,258,184); boundaryCtx.fillText('Plate B', 286, 106);
     }
 
     function bindTextDiagrams() {
@@ -459,7 +530,6 @@
     document.getElementById('flashNext').addEventListener('click', () => { flashIndex = (flashIndex + 1) % flashcards.length; flashBack = false; renderFlashcard(); });
     document.getElementById('resetScore').addEventListener('click', () => { scoreState.correct = 0; scoreState.wrong = 0; scoreState.streak = 0; updateScoreUI(); });
     ['mInput','cInput'].forEach(id => document.getElementById(id).addEventListener('input', drawGraph));
-    ['m1Input','c1Input','m2Input','c2Input'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', updateSimultaneous); });
     ['aInput','bInput','qcInput'].forEach(id => document.getElementById(id).addEventListener('input', drawQuadratic));
 
     popup.addEventListener('click', () => popup.style.display = 'none');
