@@ -223,7 +223,7 @@
 
     const size = 40;
     const board = 13;
-    let player, bullets, enemyBullets, enemies, keys, score, state, tick;
+    let player, bullets, enemyBullets, enemies, keys = {}, score, state, tick;
 
     function makeTank(x, y, dir, color, isPlayer = false) {
       return { x, y, dir, color, isPlayer, cooldown: 0, moveTick: 0 };
@@ -273,8 +273,10 @@
       updateHud();
     }
 
-    function canMoveTo(x, y) {
-      return x >= 0 && y >= 0 && x < board && y < board;
+    function canMoveTo(x, y, self = null) {
+      if (!(x >= 0 && y >= 0 && x < board && y < board)) return false;
+      const occupied = [player, ...enemies].filter(Boolean).some(tank => tank !== self && tank.x === x && tank.y === y);
+      return !occupied;
     }
 
     function shoot(tank, collection, speed) {
@@ -308,14 +310,15 @@
           player.dir = dir;
           const nx = player.x + dx;
           const ny = player.y + dy;
-          if (canMoveTo(nx, ny)) {
+          if (canMoveTo(nx, ny, player)) {
             player.x = nx;
             player.y = ny;
           }
           break;
         }
       }
-      if (keys['Space']) shoot(player, bullets, 0.28);
+      if (player.cooldown > 0) player.cooldown -= 1;
+      if (keys['Space']) shoot(player, bullets, 0.32);
     }
 
     function updateEnemies() {
@@ -333,13 +336,13 @@
           }[enemy.dir];
           const nx = enemy.x + delta[0];
           const ny = enemy.y + delta[1];
-          if (canMoveTo(nx, ny)) {
+          if (canMoveTo(nx, ny, enemy)) {
             enemy.x = nx;
             enemy.y = ny;
           } else {
             enemy.dir = dirs[Math.floor(Math.random() * dirs.length)];
           }
-          if (Math.random() < 0.28) shoot(enemy, enemyBullets, 0.18);
+          if (Math.random() < 0.22) shoot(enemy, enemyBullets, 0.2);
         }
       });
     }
@@ -353,8 +356,13 @@
           list.splice(i, 1);
           continue;
         }
+
         if (targetType === 'enemy') {
-          const hitIndex = enemies.findIndex(e => Math.abs(e.x + 0.5 - b.x) < 0.45 && Math.abs(e.y + 0.5 - b.y) < 0.45);
+          const hitIndex = enemies.findIndex(e => {
+            const cx = e.x + 0.5;
+            const cy = e.y + 0.5;
+            return Math.hypot(cx - b.x, cy - b.y) < 0.42;
+          });
           if (hitIndex >= 0) {
             enemies.splice(hitIndex, 1);
             list.splice(i, 1);
@@ -362,8 +370,10 @@
             if (enemies.length === 0) state = 'won';
             updateHud();
           }
-        } else {
-          if (Math.abs(player.x + 0.5 - b.x) < 0.45 && Math.abs(player.y + 0.5 - b.y) < 0.45) {
+        } else if (player) {
+          const cx = player.x + 0.5;
+          const cy = player.y + 0.5;
+          if (Math.hypot(cx - b.x, cy - b.y) < 0.42) {
             list.splice(i, 1);
             state = 'lost';
             updateHud();
@@ -422,7 +432,6 @@
     }
 
     function loop() {
-      if (player.cooldown > 0) player.cooldown -= 1;
       if (state === 'running') {
         tick += 1;
         updatePlayer();
