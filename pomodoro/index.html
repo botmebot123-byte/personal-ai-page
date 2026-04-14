@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>番茄钟 Pomodoro Clock | Yichen Hub</title>
+  <link rel="icon" type="image/png" href="../assets/icon.png?v=2" />
+  <style>
+    :root {
+      --background-color: #f7f4ee;
+      --card-color: #fffaf3;
+      --panel-color: #ffffff;
+      --text-color: #2b2b2b;
+      --accent: #7c4f2d;
+      --border: #d8cdbd;
+      --perspective-value: 52rem;
+    }
+    body {
+      margin: 0;
+      font-family: "Book Antiqua", Palatino, "Palatino Linotype", serif;
+      background: var(--background-color);
+      color: #1f2937;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+      text-align: center;
+    }
+    .topbar {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 16px;
+    }
+    h1 {
+      font-size: 44px;
+      margin-bottom: 10px;
+    }
+    p {
+      line-height: 1.7;
+      color: #4b5563;
+    }
+    .card {
+      margin-top: 24px;
+      padding: 30px;
+      border-radius: 16px;
+      background: var(--panel-color);
+      border: 1px solid #ddd6c8;
+      box-shadow: 0 16px 40px rgba(0,0,0,.06);
+    }
+    .mode-label {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+    .clock-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .double-unit {
+      display: flex;
+      gap: 10px;
+    }
+    .flip-clock {
+      display: flex;
+      position: relative;
+      width: 110px;
+      height: 128px;
+      line-height: 128px;
+      color: var(--text-color);
+      font-size: 74px;
+      text-align: center;
+      border-radius: 20px;
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, .08);
+      background: transparent;
+    }
+    .flip-clock .digital::before,
+    .flip-clock .digital::after {
+      content: attr(data-number);
+      position: absolute;
+      left: 0;
+      right: 0;
+      background-color: var(--card-color);
+      overflow: hidden;
+      box-sizing: border-box;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .flip-clock .digital::before {
+      top: 0;
+      bottom: 50%;
+      border-radius: 20px 20px 0 0;
+      border-bottom: solid 0.5px #efe7da;
+    }
+    .flip-clock .digital::after {
+      top: 50%;
+      bottom: 0;
+      border-radius: 0 0 20px 20px;
+      line-height: 0;
+      border-top: solid 0.5px #efe7da;
+    }
+    .flip-clock.down .back::before,
+    .flip-clock.down .front::after {
+      z-index: 1;
+    }
+    .flip-clock.down .back::after {
+      z-index: 2;
+      transform-origin: 50% 0;
+      transform: perspective(var(--perspective-value)) rotateX(180deg);
+    }
+    .flip-clock.down .front::before {
+      z-index: 3;
+    }
+    .flip-clock.down.go .front::before,
+    .flip-clock.down.go .back::after {
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+    .flip-clock.down.go .front::before {
+      transform-origin: 50% 100%;
+      animation: frontFlipDown 0.6s ease-in-out both;
+    }
+    .flip-clock.down.go .back::after {
+      animation: backFlipDown 0.6s ease-in-out both;
+    }
+    .flip-clock:not(.go) .front::before,
+    .flip-clock:not(.go) .back::after {
+      will-change: auto;
+    }
+    .colon {
+      font-size: 54px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+    button {
+      font-family: inherit;
+      font-size: 16px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid #d4c4ae;
+      background: #fbf7f1;
+      color: var(--accent);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      font-weight: 700;
+    }
+    .sound-note {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .overlay-card {
+      width: min(420px, 100%);
+      background: #fffaf3;
+      border: 1px solid #d6c3aa;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,.18);
+    }
+    @keyframes frontFlipDown {
+      0% { transform: perspective(var(--perspective-value)) rotateX(0deg); }
+      100% { transform: perspective(var(--perspective-value)) rotateX(180deg); }
+    }
+    @keyframes backFlipDown {
+      0% { transform: perspective(var(--perspective-value)) rotateX(180deg); }
+      100% { transform: perspective(var(--perspective-value)) rotateX(0deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <a href="../">← 返回主页</a>
+    </div>
+
+    <h1>番茄钟 Pomodoro Clock</h1>
+    <p>一个更接近真实 flip clock 的 study timer，用于专注时段和短暂休息。</p>
+
+    <div class="card">
+      <div class="mode-label" id="mode">专注时间 Focus Session</div>
+      <div class="clock-row">
+        <div class="double-unit">
+          <div class="flip-clock down" id="minuteTens"><div class="digital front" data-number="2"></div><div class="digital back" data-number="2"></div></div>
+          <div class="flip-clock down" id="minuteOnes"><div class="digital front" data-number="5"></div><div class="digital back" data-number="5"></div></div>
+        </div>
+        <div class="colon">:</div>
+        <div class="double-unit">
+          <div class="flip-clock down" id="secondTens"><div class="digital front" data-number="0"></div><div class="digital back" data-number="0"></div></div>
+          <div class="flip-clock down" id="secondOnes"><div class="digital front" data-number="0"></div><div class="digital back" data-number="0"></div></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="start">开始 Start</button>
+        <button id="pause">暂停 Pause</button>
+        <button id="reset">重置 Reset</button>
+        <button id="switch">切换模式 Switch Mode</button>
+      </div>
+      <div class="stats">
+        <span id="focusCount">专注次数 Focus sessions: 0</span>
+        <span id="breakCount">休息次数 Breaks: 0</span>
+      </div>
+      <div class="sound-note">开始、暂停、切换和结束时会有轻微 sound effects。</div>
+    </div>
+  </div>
+
+  <div class="overlay" id="doneOverlay">
+    <div class="overlay-card">
+      <h2>计时完成 Session Complete</h2>
+      <p id="doneText">你的 timer 已经结束。</p>
+      <button id="closeOverlay">好的 OK</button>
+    </div>
+  </div>
+
+  <script>
+    const flipConfigs = [
+      { key: 'minuteTens', el: document.getElementById('minuteTens') },
+      { key: 'minuteOnes', el: document.getElementById('minuteOnes') },
+      { key: 'secondTens', el: document.getElementById('secondTens') },
+      { key: 'secondOnes', el: document.getElementById('secondOnes') }
+    ];
+
+    const modeEl = document.getElementById('mode');
+    const startBtn = document.getElementById('start');
+    const pauseBtn = document.getElementById('pause');
+    const resetBtn = document.getElementById('reset');
+    const switchBtn = document.getElementById('switch');
+    const doneOverlay = document.getElementById('doneOverlay');
+    const closeOverlay = document.getElementById('closeOverlay');
+    const doneText = document.getElementById('doneText');
+    const focusCountEl = document.getElementById('focusCount');
+    const breakCountEl = document.getElementById('breakCount');
+
+    let focusMode = true;
+    let totalSeconds = 25 * 60;
+    let timer = null;
+    let audioCtx;
+    const stats = JSON.parse(localStorage.getItem('yh-pomodoro-stats') || '{"focus":0,"breaks":0}');
+    const lastNumbers = { minuteTens: '2', minuteOnes: '5', secondTens: '0', secondOnes: '0' };
+
+    function playTone(type = 'tap') {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = type === 'done' ? 740 : type === 'switch' ? 520 : 360;
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.08, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + (type === 'done' ? 0.25 : 0.12));
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + (type === 'done' ? 0.25 : 0.12));
+      } catch (e) {}
+    }
+
+    function updateStats() {
+      focusCountEl.textContent = `专注次数 Focus sessions: ${stats.focus}`;
+      breakCountEl.textContent = `休息次数 Breaks: ${stats.breaks}`;
+      localStorage.setItem('yh-pomodoro-stats', JSON.stringify(stats));
+    }
+
+    function getDisplay() {
+      const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+      const secs = String(totalSeconds % 60).padStart(2, '0');
+      return { minuteTens: mins[0], minuteOnes: mins[1], secondTens: secs[0], secondOnes: secs[1] };
+    }
+
+    function setStaticNumber(config, value) {
+      const front = config.el.querySelector('.front');
+      const back = config.el.querySelector('.back');
+      front.dataset.number = value;
+      back.dataset.number = value;
+      lastNumbers[config.key] = value;
+    }
+
+    function flipTo(config, nextValue, force = false) {
+      const front = config.el.querySelector('.front');
+      const back = config.el.querySelector('.back');
+      const currentValue = lastNumbers[config.key];
+      if (!force && currentValue === nextValue) return;
+      if (force) {
+        front.dataset.number = nextValue;
+        back.dataset.number = nextValue;
+        lastNumbers[config.key] = nextValue;
+        config.el.classList.remove('go');
+        return;
+      }
+      back.dataset.number = nextValue;
+      config.el.classList.remove('go');
+      void config.el.offsetWidth;
+      config.el.classList.add('go');
+      setTimeout(() => {
+        config.el.classList.remove('go');
+        front.dataset.number = nextValue;
+        back.dataset.number = nextValue;
+        lastNumbers[config.key] = nextValue;
+      }, 600);
+    }
+
+    function renderTime(force = false) {
+      const display = getDisplay();
+      flipConfigs.forEach(config => flipTo(config, display[config.key], force));
+      modeEl.textContent = focusMode ? '专注时间 Focus Session' : '休息时间 Break Time';
+    }
+
+    function pauseTimer(silent = false) {
+      clearInterval(timer);
+      timer = null;
+      if (!silent) playTone('tap');
+    }
+
+    function finishSession() {
+      pauseTimer(true);
+      if (focusMode) {
+        stats.focus += 1;
+        doneText.textContent = '专注时间结束，time for a break.';
+      } else {
+        stats.breaks += 1;
+        doneText.textContent = '休息结束，back to work.';
+      }
+      updateStats();
+      playTone('done');
+      doneOverlay.style.display = 'flex';
+    }
+
+    function startTimer() {
+      if (timer) return;
+      playTone('tap');
+      timer = setInterval(() => {
+        if (totalSeconds > 0) {
+          totalSeconds -= 1;
+          renderTime();
+        } else {
+          finishSession();
+        }
+      }, 1000);
+    }
+
+    function resetTimer() {
+      pauseTimer(true);
+      totalSeconds = focusMode ? 25 * 60 : 5 * 60;
+      renderTime(true);
+    }
+
+    function switchMode() {
+      focusMode = !focusMode;
+      playTone('switch');
+      resetTimer();
+    }
+
+    startBtn.addEventListener('click', startTimer);
+    pauseBtn.addEventListener('click', () => pauseTimer(false));
+    resetBtn.addEventListener('click', resetTimer);
+    switchBtn.addEventListener('click', switchMode);
+    closeOverlay.addEventListener('click', () => doneOverlay.style.display = 'none');
+
+    updateStats();
+    renderTime(true);
+  </script>
+</body>
+</html>
