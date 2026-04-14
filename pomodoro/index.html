@@ -206,6 +206,7 @@
     }
     .checklist-card h3 { margin-top: 0; color: var(--accent); }
     .checklist-card label { display: flex; gap: 10px; align-items: flex-start; margin: 10px 0; color: #4b5563; }
+    .checklist-card input { margin-top: 4px; }
     .sound-note {
       margin-top: 12px;
       font-size: 14px;
@@ -297,10 +298,10 @@
 
     <div class="checklist-card">
       <h3>今日专注清单 Today Checklist</h3>
-      <label><input type="checkbox" /> 完成一轮 revision quiz</label>
-      <label><input type="checkbox" /> 做一次 maths graph practice</label>
-      <label><input type="checkbox" /> 复习一个 biology topic</label>
-      <label><input type="checkbox" /> 完成至少 1 次 focus session</label>
+      <label><input type="checkbox" data-check="quiz" /> 完成一轮 revision quiz</label>
+      <label><input type="checkbox" data-check="maths" /> 做一次 maths graph practice</label>
+      <label><input type="checkbox" data-check="biology" /> 复习一个 biology topic</label>
+      <label><input type="checkbox" data-check="focus" /> 完成至少 1 次 focus session</label>
     </div>
   </div>
 
@@ -339,7 +340,8 @@
     let totalSeconds = 25 * 60;
     let timer = null;
     let audioCtx;
-    const stats = JSON.parse(localStorage.getItem('yh-pomodoro-stats') || '{"focus":0,"breaks":0}');
+    const stats = JSON.parse(localStorage.getItem('yh-pomodoro-stats') || '{\"focus\":0,\"breaks\":0}');
+    const checklistState = JSON.parse(localStorage.getItem('yh-pomodoro-checklist') || '{}');
     const lastNumbers = { minuteTens: '2', minuteOnes: '5', secondTens: '0', secondOnes: '0' };
 
     function playTone(type = 'tap') {
@@ -477,6 +479,14 @@
     switchBtn.addEventListener('click', switchMode);
     addTimeBtn.addEventListener('click', addTime);
     closeOverlay.addEventListener('click', () => doneOverlay.style.display = 'none');
+
+    document.querySelectorAll('[data-check]').forEach(box => {
+      box.checked = !!checklistState[box.dataset.check];
+      box.addEventListener('change', () => {
+        checklistState[box.dataset.check] = box.checked;
+        localStorage.setItem('yh-pomodoro-checklist', JSON.stringify(checklistState));
+      });
+    });
 
     addTimeBtn.textContent = focusMode ? '加时 +25 min' : '加时 +5 min';
     updateStats();
