@@ -6,10 +6,19 @@
   <title>番茄钟 Pomodoro Clock | Yichen Hub</title>
   <link rel="icon" type="image/png" href="./assets/icon.png?v=2" />
   <style>
+    :root {
+      --background-color: #f7f4ee;
+      --card-color: #fffaf3;
+      --panel-color: #ffffff;
+      --text-color: #2b2b2b;
+      --accent: #7c4f2d;
+      --border: #d8cdbd;
+      --perspective-value: 52rem;
+    }
     body {
       margin: 0;
       font-family: "Book Antiqua", Palatino, "Palatino Linotype", serif;
-      background: #f7f4ee;
+      background: var(--background-color);
       color: #1f2937;
     }
     .wrap {
@@ -17,6 +26,17 @@
       margin: 0 auto;
       padding: 40px 20px 80px;
       text-align: center;
+    }
+    .topbar {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 16px;
     }
     h1 {
       font-size: 44px;
@@ -26,132 +46,109 @@
       line-height: 1.7;
       color: #4b5563;
     }
-    .topbar {
-      display: flex;
-      justify-content: flex-start;
-      margin-bottom: 16px;
-      text-align: left;
-    }
-    a {
-      color: #7c4f2d;
-      text-decoration: none;
-      font-size: 16px;
-    }
     .card {
       margin-top: 24px;
       padding: 30px;
       border-radius: 16px;
-      background: #ffffff;
+      background: var(--panel-color);
       border: 1px solid #ddd6c8;
       box-shadow: 0 16px 40px rgba(0,0,0,.06);
     }
     .mode-label {
       font-size: 20px;
       font-weight: 700;
-      color: #7c4f2d;
+      color: var(--accent);
       margin-bottom: 18px;
+    }
+    .clock-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .double-unit {
+      display: flex;
+      gap: 10px;
     }
     .flip-clock {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin: 28px 0 22px;
-      perspective: 1200px;
-    }
-    .digit {
       position: relative;
-      width: 94px;
-      height: 118px;
-      perspective: 1200px;
+      width: 110px;
+      height: 128px;
+      line-height: 128px;
+      color: var(--text-color);
+      font-size: 74px;
+      text-align: center;
+      border-radius: 20px;
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, .08);
+      background: transparent;
     }
-    .digit .card-face {
+    .flip-clock .digital::before,
+    .flip-clock .digital::after {
+      content: attr(data-number);
       position: absolute;
       left: 0;
-      width: 100%;
-      height: 50%;
+      right: 0;
+      background-color: var(--card-color);
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 62px;
-      font-weight: 700;
-      color: #7c4f2d;
-      background: linear-gradient(180deg, #fffaf3 0%, #efe7da 100%);
-      border: 1px solid #d8cdbd;
       box-sizing: border-box;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .flip-clock .digital::before {
+      top: 0;
+      bottom: 50%;
+      border-radius: 20px 20px 0 0;
+      border-bottom: solid 0.5px #efe7da;
+    }
+    .flip-clock .digital::after {
+      top: 50%;
+      bottom: 0;
+      border-radius: 0 0 20px 20px;
+      line-height: 0;
+      border-top: solid 0.5px #efe7da;
+    }
+    .flip-clock.down .back::before,
+    .flip-clock.down .front::after {
+      z-index: 1;
+    }
+    .flip-clock.down .back::after {
+      z-index: 2;
+      transform-origin: 50% 0;
+      transform: perspective(var(--perspective-value)) rotateX(180deg);
+    }
+    .flip-clock.down .front::before {
+      z-index: 3;
+    }
+    .flip-clock.down.go .front::before,
+    .flip-clock.down.go .back::after {
+      will-change: transform;
       backface-visibility: hidden;
     }
-    .digit .top, .digit .flip-top {
-      top: 0;
-      border-radius: 16px 16px 0 0;
-      transform-origin: bottom;
+    .flip-clock.down.go .front::before {
+      transform-origin: 50% 100%;
+      animation: frontFlipDown 0.6s ease-in-out both;
     }
-    .digit .bottom, .digit .flip-bottom {
-      bottom: 0;
-      border-radius: 0 0 16px 16px;
-      align-items: flex-start;
-      padding-top: 4px;
-      transform-origin: top;
+    .flip-clock.down.go .back::after {
+      animation: backFlipDown 0.6s ease-in-out both;
     }
-    .digit .bottom span,
-    .digit .flip-bottom span {
-      transform: translateY(-30px);
-    }
-    .digit .top::after,
-    .digit .flip-top::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 1px;
-      background: rgba(124,79,45,.18);
-    }
-    .digit .bottom::before,
-    .digit .flip-bottom::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      height: 1px;
-      background: rgba(124,79,45,.18);
-    }
-    .digit .flip-top,
-    .digit .flip-bottom {
-      z-index: 3;
-      display: none;
-      box-shadow: 0 8px 20px rgba(0,0,0,.08);
-    }
-    .digit.animate .flip-top {
-      display: flex;
-      animation: flipTop .34s ease-in forwards;
-    }
-    .digit.animate .flip-bottom {
-      display: flex;
-      animation: flipBottom .34s ease-out .34s forwards;
-      transform: rotateX(90deg);
-    }
-    .digit-shadow {
-      position: absolute;
-      inset: 0;
-      border-radius: 16px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 12px 30px rgba(124,79,45,.14);
-      pointer-events: none;
+    .flip-clock:not(.go) .front::before,
+    .flip-clock:not(.go) .back::after {
+      will-change: auto;
     }
     .colon {
       font-size: 54px;
-      color: #7c4f2d;
+      color: var(--accent);
       font-weight: 700;
-      margin: 0 2px;
     }
     .controls {
       display: flex;
       gap: 12px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 14px;
+      margin-top: 22px;
     }
     button {
       font-family: inherit;
@@ -160,7 +157,7 @@
       border-radius: 10px;
       border: 1px solid #d4c4ae;
       background: #fbf7f1;
-      color: #7c4f2d;
+      color: var(--accent);
       font-weight: 700;
       cursor: pointer;
     }
@@ -196,13 +193,13 @@
       text-align: center;
       box-shadow: 0 20px 50px rgba(0,0,0,.18);
     }
-    @keyframes flipTop {
-      0% { transform: rotateX(0deg); }
-      100% { transform: rotateX(-90deg); }
+    @keyframes frontFlipDown {
+      0% { transform: perspective(var(--perspective-value)) rotateX(0deg); }
+      100% { transform: perspective(var(--perspective-value)) rotateX(180deg); }
     }
-    @keyframes flipBottom {
-      0% { transform: rotateX(90deg); }
-      100% { transform: rotateX(0deg); }
+    @keyframes backFlipDown {
+      0% { transform: perspective(var(--perspective-value)) rotateX(180deg); }
+      100% { transform: perspective(var(--perspective-value)) rotateX(0deg); }
     }
   </style>
 </head>
@@ -213,39 +210,19 @@
     </div>
 
     <h1>番茄钟 Pomodoro Clock</h1>
-    <p>一个带明显 flip animation 的 study timer，用于专注时段和短暂休息。</p>
+    <p>一个更接近真实 flip clock 的 study timer，用于专注时段和短暂休息。</p>
 
     <div class="card">
       <div class="mode-label" id="mode">专注时间 Focus Session</div>
-      <div class="flip-clock">
-        <div class="digit" id="digit0">
-          <div class="card-face top"><span>2</span></div>
-          <div class="card-face bottom"><span>2</span></div>
-          <div class="card-face flip-top"><span>2</span></div>
-          <div class="card-face flip-bottom"><span>2</span></div>
-          <div class="digit-shadow"></div>
-        </div>
-        <div class="digit" id="digit1">
-          <div class="card-face top"><span>5</span></div>
-          <div class="card-face bottom"><span>5</span></div>
-          <div class="card-face flip-top"><span>5</span></div>
-          <div class="card-face flip-bottom"><span>5</span></div>
-          <div class="digit-shadow"></div>
+      <div class="clock-row">
+        <div class="double-unit">
+          <div class="flip-clock down" id="minuteTens"><div class="digital front" data-number="2"></div><div class="digital back" data-number="2"></div></div>
+          <div class="flip-clock down" id="minuteOnes"><div class="digital front" data-number="5"></div><div class="digital back" data-number="5"></div></div>
         </div>
         <div class="colon">:</div>
-        <div class="digit" id="digit2">
-          <div class="card-face top"><span>0</span></div>
-          <div class="card-face bottom"><span>0</span></div>
-          <div class="card-face flip-top"><span>0</span></div>
-          <div class="card-face flip-bottom"><span>0</span></div>
-          <div class="digit-shadow"></div>
-        </div>
-        <div class="digit" id="digit3">
-          <div class="card-face top"><span>0</span></div>
-          <div class="card-face bottom"><span>0</span></div>
-          <div class="card-face flip-top"><span>0</span></div>
-          <div class="card-face flip-bottom"><span>0</span></div>
-          <div class="digit-shadow"></div>
+        <div class="double-unit">
+          <div class="flip-clock down" id="secondTens"><div class="digital front" data-number="0"></div><div class="digital back" data-number="0"></div></div>
+          <div class="flip-clock down" id="secondOnes"><div class="digital front" data-number="0"></div><div class="digital back" data-number="0"></div></div>
         </div>
       </div>
 
@@ -265,14 +242,20 @@
 
   <div class="overlay" id="doneOverlay">
     <div class="overlay-card">
-      <h2 id="doneTitle">计时完成 Session Complete</h2>
+      <h2>计时完成 Session Complete</h2>
       <p id="doneText">你的 timer 已经结束。</p>
       <button id="closeOverlay">好的 OK</button>
     </div>
   </div>
 
   <script>
-    const digitEls = [...document.querySelectorAll('.digit')];
+    const flipConfigs = [
+      { key: 'minuteTens', el: document.getElementById('minuteTens') },
+      { key: 'minuteOnes', el: document.getElementById('minuteOnes') },
+      { key: 'secondTens', el: document.getElementById('secondTens') },
+      { key: 'secondOnes', el: document.getElementById('secondOnes') }
+    ];
+
     const modeEl = document.getElementById('mode');
     const startBtn = document.getElementById('start');
     const pauseBtn = document.getElementById('pause');
@@ -287,9 +270,9 @@
     let focusMode = true;
     let totalSeconds = 25 * 60;
     let timer = null;
-    let lastDisplay = '2500';
     let audioCtx;
     const stats = JSON.parse(localStorage.getItem('yh-pomodoro-stats') || '{"focus":0,"breaks":0}');
+    const lastNumbers = { minuteTens: '2', minuteOnes: '5', secondTens: '0', secondOnes: '0' };
 
     function playTone(type = 'tap') {
       try {
@@ -315,37 +298,47 @@
       localStorage.setItem('yh-pomodoro-stats', JSON.stringify(stats));
     }
 
-    function setDigitState(digitEl, char) {
-      digitEl.querySelector('.top span').textContent = char;
-      digitEl.querySelector('.bottom span').textContent = char;
-      digitEl.querySelector('.flip-top span').textContent = char;
-      digitEl.querySelector('.flip-bottom span').textContent = char;
+    function getDisplay() {
+      const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+      const secs = String(totalSeconds % 60).padStart(2, '0');
+      return { minuteTens: mins[0], minuteOnes: mins[1], secondTens: secs[0], secondOnes: secs[1] };
     }
 
-    function animateDigit(digitEl, oldChar, newChar) {
-      if (oldChar === newChar) return;
-      digitEl.classList.remove('animate');
-      digitEl.querySelector('.top span').textContent = oldChar;
-      digitEl.querySelector('.bottom span').textContent = newChar;
-      digitEl.querySelector('.flip-top span').textContent = oldChar;
-      digitEl.querySelector('.flip-bottom span').textContent = newChar;
-      void digitEl.offsetWidth;
-      digitEl.classList.add('animate');
+    function setStaticNumber(config, value) {
+      const front = config.el.querySelector('.front');
+      const back = config.el.querySelector('.back');
+      front.dataset.number = value;
+      back.dataset.number = value;
+      lastNumbers[config.key] = value;
+    }
+
+    function flipTo(config, nextValue, force = false) {
+      const front = config.el.querySelector('.front');
+      const back = config.el.querySelector('.back');
+      const currentValue = lastNumbers[config.key];
+      if (!force && currentValue === nextValue) return;
+      if (force) {
+        front.dataset.number = nextValue;
+        back.dataset.number = nextValue;
+        lastNumbers[config.key] = nextValue;
+        config.el.classList.remove('go');
+        return;
+      }
+      back.dataset.number = nextValue;
+      config.el.classList.remove('go');
+      void config.el.offsetWidth;
+      config.el.classList.add('go');
       setTimeout(() => {
-        setDigitState(digitEl, newChar);
-        digitEl.classList.remove('animate');
-      }, 720);
+        config.el.classList.remove('go');
+        front.dataset.number = nextValue;
+        back.dataset.number = nextValue;
+        lastNumbers[config.key] = nextValue;
+      }, 600);
     }
 
     function renderTime(force = false) {
-      const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-      const secs = String(totalSeconds % 60).padStart(2, '0');
-      const display = `${mins}${secs}`;
-      display.split('').forEach((char, i) => {
-        if (force) setDigitState(digitEls[i], char);
-        else animateDigit(digitEls[i], lastDisplay[i], char);
-      });
-      lastDisplay = display;
+      const display = getDisplay();
+      flipConfigs.forEach(config => flipTo(config, display[config.key], force));
       modeEl.textContent = focusMode ? '专注时间 Focus Session' : '休息时间 Break Time';
     }
 
