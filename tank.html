@@ -13,7 +13,7 @@
       color: #1f2937;
     }
     .wrap {
-      max-width: 980px;
+      max-width: 1040px;
       margin: 0 auto;
       padding: 40px 20px 80px;
     }
@@ -57,7 +57,7 @@
       justify-content: space-between;
       gap: 12px;
       margin: 12px auto 0;
-      width: 520px;
+      width: 640px;
       max-width: 95vw;
       font-weight: 700;
       flex-wrap: wrap;
@@ -118,14 +118,16 @@
 
     <section class="hero">
       <h1 id="title">Tank Battle</h1>
-      <p id="subtitle">A simple browser tank game. Move with the arrow keys, shoot with the space bar, and defeat all enemy tanks.</p>
+      <p id="subtitle">A fuller browser tank game with walls, lives, enemy fire, explosions, and level progression.</p>
     </section>
 
     <div class="game-shell">
-      <canvas id="game" width="544" height="544"></canvas>
+      <canvas id="game" width="576" height="576"></canvas>
       <div class="meta">
         <span id="scoreLabel">Score: <span id="score">0</span></span>
         <span id="enemyLabel">Enemies left: <span id="enemies">0</span></span>
+        <span id="lifeLabel">Lives: <span id="lives">3</span></span>
+        <span id="levelLabel">Level: <span id="level">1</span></span>
         <span id="mode">Running</span>
       </div>
       <button class="btn" id="restart">Restart</button>
@@ -137,7 +139,7 @@
         <ul>
           <li id="c1">Use arrow keys to move the tank.</li>
           <li id="c2">Press the space bar to fire.</li>
-          <li id="c3">Destroy all enemy tanks and avoid direct contact.</li>
+          <li id="c3">Bullets can destroy walls. Enemies can also fire back.</li>
         </ul>
       </div>
     </section>
@@ -145,7 +147,7 @@
     <section>
       <h2 id="descTitle">Project Description</h2>
       <div class="card">
-        <p id="descText">This is a rebuilt stable version of the tank game made with HTML, CSS, and JavaScript. It focuses on smooth movement, simple shooting, and clear win or lose states.</p>
+        <p id="descText">This version includes destructible walls, player lives, enemy bullets, explosion effects, and multiple levels. Clear each level to continue.</p>
       </div>
     </section>
 
@@ -164,70 +166,46 @@
   <script>
     const copy = {
       en: {
-        back: '← Back to games',
-        title: 'Tank Battle',
-        subtitle: 'A simple browser tank game. Move with the arrow keys, shoot with the space bar, and defeat all enemy tanks.',
-        score: 'Score:',
-        enemies: 'Enemies left:',
-        running: 'Running',
-        won: 'You win',
-        lost: 'Game Over',
-        restart: 'Restart',
-        controlsTitle: 'Controls',
+        back: '← Back to games', title: 'Tank Battle',
+        subtitle: 'A fuller browser tank game with walls, lives, enemy fire, explosions, and level progression.',
+        score: 'Score:', enemies: 'Enemies left:', lives: 'Lives:', level: 'Level:',
+        running: 'Running', won: 'Level Clear', lost: 'Game Over',
+        restart: 'Restart', controlsTitle: 'Controls',
         c1: 'Use arrow keys to move the tank.',
         c2: 'Press the space bar to fire.',
-        c3: 'Destroy all enemy tanks and avoid direct contact.',
+        c3: 'Bullets can destroy walls. Enemies can also fire back.',
         descTitle: 'Project Description',
-        descText: 'This is a rebuilt stable version of the tank game made with HTML, CSS, and JavaScript. It focuses on smooth movement, simple shooting, and clear win or lose states.',
-        openTitle: 'Open Source',
-        openText: 'This game project is open source. You can view the code or download the file directly.',
-        codeLink: 'View code',
-        downloadLink: 'Download file',
-        footer: 'Tank Battle project page on Yichen Hub.'
+        descText: 'This version includes destructible walls, player lives, enemy bullets, explosion effects, and multiple levels. Clear each level to continue.',
+        openTitle: 'Open Source', openText: 'This game project is open source. You can view the code or download the file directly.',
+        codeLink: 'View code', downloadLink: 'Download file', footer: 'Tank Battle project page on Yichen Hub.'
       },
       zh: {
-        back: '← 返回游戏页',
-        title: '坦克大战',
-        subtitle: '一个简单的浏览器坦克游戏。用方向键移动，用空格键开火，击败所有敌方坦克。',
-        score: '分数：',
-        enemies: '剩余敌人：',
-        running: '进行中',
-        won: '你赢了',
-        lost: '游戏结束',
-        restart: '重新开始',
-        controlsTitle: '操作方式',
+        back: '← 返回游戏页', title: '坦克大战',
+        subtitle: '一个更完整的浏览器坦克游戏，加入了墙体、生命值、敌人开火、爆炸特效和关卡推进。',
+        score: '分数：', enemies: '剩余敌人：', lives: '生命：', level: '关卡：',
+        running: '进行中', won: '本关通过', lost: '游戏结束',
+        restart: '重新开始', controlsTitle: '操作方式',
         c1: '使用方向键移动坦克。',
         c2: '按空格键发射子弹。',
-        c3: '消灭所有敌方坦克，并避免直接碰撞。',
+        c3: '子弹可以打掉墙，敌人也会反击。',
         descTitle: '项目介绍',
-        descText: '这是一个重做后的稳定版坦克游戏，使用 HTML、CSS 和 JavaScript 制作，重点是顺畅移动、基础射击和清晰的胜负状态。',
-        openTitle: '开源',
-        openText: '这个游戏项目是开源的。你可以查看代码，或直接下载文件。',
-        codeLink: '查看代码',
-        downloadLink: '下载文件',
-        footer: 'Yichen Hub 上的坦克大战项目页。'
+        descText: '这个版本加入了可破坏墙体、玩家生命值、敌方子弹、爆炸特效和多关卡设计。清空每一关后继续前进。',
+        openTitle: '开源', openText: '这个游戏项目是开源的。你可以查看代码，或直接下载文件。',
+        codeLink: '查看代码', downloadLink: '下载文件', footer: 'Yichen Hub 上的坦克大战项目页。'
       },
       mix: {
-        back: '← 返回游戏页 Back to games',
-        title: '坦克大战 Tank Battle',
-        subtitle: '一个简单的 browser tank game。用 arrow keys 移动，用 space bar 开火，击败所有 enemy tanks。',
-        score: '分数 Score:',
-        enemies: '剩余敌人 Enemies left:',
-        running: '进行中 Running',
-        won: '你赢了 You win',
-        lost: '游戏结束 Game Over',
-        restart: '重新开始 Restart',
-        controlsTitle: '操作方式 Controls',
+        back: '← 返回游戏页 Back to games', title: '坦克大战 Tank Battle',
+        subtitle: '一个更完整的 browser tank game，加入了 walls、lives、enemy fire、explosions 和 level progression。',
+        score: '分数 Score:', enemies: '剩余敌人 Enemies left:', lives: '生命 Lives:', level: '关卡 Level:',
+        running: '进行中 Running', won: '本关通过 Level Clear', lost: '游戏结束 Game Over',
+        restart: '重新开始 Restart', controlsTitle: '操作方式 Controls',
         c1: '使用 arrow keys 移动坦克。',
         c2: '按 space bar 发射子弹。',
-        c3: '消灭所有 enemy tanks，并避免直接碰撞。',
+        c3: '子弹可以打掉 walls，敌人也会 fire back。',
         descTitle: '项目介绍 Project Description',
-        descText: '这是一个 rebuilt stable version 的 tank game，使用 HTML、CSS 和 JavaScript 制作，重点是 smooth movement、simple shooting 和 clear win or lose states。',
-        openTitle: '开源 Open Source',
-        openText: '这个 game project 是 open source 的。你可以查看代码，或直接下载文件。',
-        codeLink: '查看代码 View code',
-        downloadLink: '下载文件 Download file',
-        footer: 'Yichen Hub 上的 Tank Battle project page。'
+        descText: '这个版本加入了 destructible walls、player lives、enemy bullets、explosion effects 和 multiple levels。',
+        openTitle: '开源 Open Source', openText: '这个 game project 是 open source 的。你可以查看代码，或直接下载文件。',
+        codeLink: '查看代码 View code', downloadLink: '下载文件 Download file', footer: 'Yichen Hub 上的 Tank Battle project page。'
       }
     };
 
@@ -235,8 +213,12 @@
     const ctx = canvas.getContext('2d');
     const scoreEl = document.getElementById('score');
     const enemiesEl = document.getElementById('enemies');
+    const livesEl = document.getElementById('lives');
+    const levelEl = document.getElementById('level');
     const scoreLabelEl = document.getElementById('scoreLabel');
     const enemyLabelEl = document.getElementById('enemyLabel');
+    const lifeLabelEl = document.getElementById('lifeLabel');
+    const levelLabelEl = document.getElementById('levelLabel');
     const modeEl = document.getElementById('mode');
     const restartBtn = document.getElementById('restart');
     const langSelect = document.getElementById('langSelect');
@@ -244,46 +226,72 @@
     let currentLang = localStorage.getItem('yh-lang') || 'en';
 
     const size = 32;
-    const board = 17;
-    let player, bullet, bulletTick, walls, enemies, score, state;
+    const board = 18;
+    let player, playerBullets, enemyBullets, enemies, walls, explosions, score, state, lives, level;
 
     function makeTank(x, y, dir, color, isPlayer = false) {
-      return { x, y, dir, color, isPlayer, moveCooldown: 0 };
+      return { x, y, dir, color, isPlayer, moveCooldown: 0, fireCooldown: 0 };
     }
 
-    function resetGame() {
-      player = makeTank(8, 15, 'up', '#22c55e', true);
-      bullet = null;
-      bulletTick = 0;
-      walls = [
+    function buildWalls(levelNum) {
+      const base = [
         { x: 4, y: 4 }, { x: 5, y: 4 }, { x: 6, y: 4 },
-        { x: 10, y: 4 }, { x: 11, y: 4 }, { x: 12, y: 4 },
+        { x: 11, y: 4 }, { x: 12, y: 4 }, { x: 13, y: 4 },
         { x: 3, y: 8 }, { x: 4, y: 8 }, { x: 5, y: 8 },
-        { x: 11, y: 8 }, { x: 12, y: 8 }, { x: 13, y: 8 },
-        { x: 7, y: 11 }, { x: 8, y: 11 }, { x: 9, y: 11 }
+        { x: 12, y: 8 }, { x: 13, y: 8 }, { x: 14, y: 8 },
+        { x: 7, y: 11 }, { x: 8, y: 11 }, { x: 9, y: 11 }, { x: 10, y: 11 },
+        { x: 2, y: 14 }, { x: 3, y: 14 }, { x: 14, y: 14 }, { x: 15, y: 14 }
       ];
-      enemies = [
+      if (levelNum >= 2) base.push({ x: 8, y: 6 }, { x: 9, y: 6 }, { x: 8, y: 7 }, { x: 9, y: 7 });
+      if (levelNum >= 3) base.push({ x: 1, y: 10 }, { x: 2, y: 10 }, { x: 15, y: 10 }, { x: 16, y: 10 });
+      return base;
+    }
+
+    function buildEnemies(levelNum) {
+      const list = [
         makeTank(1, 1, 'down', '#ef4444'),
         makeTank(4, 1, 'down', '#f97316'),
         makeTank(8, 1, 'down', '#eab308'),
         makeTank(12, 1, 'down', '#38bdf8'),
-        makeTank(15, 1, 'down', '#f43f5e'),
-        makeTank(2, 3, 'down', '#a855f7'),
-        makeTank(14, 3, 'down', '#14b8a6')
+        makeTank(16, 1, 'down', '#f43f5e')
       ];
-      score = 0;
+      if (levelNum >= 2) list.push(makeTank(2, 3, 'down', '#a855f7'), makeTank(15, 3, 'down', '#14b8a6'));
+      if (levelNum >= 3) list.push(makeTank(8, 3, 'down', '#fb7185'));
+      return list;
+    }
+
+    function startLevel(resetAll = false) {
+      if (resetAll) {
+        score = 0;
+        lives = 3;
+        level = 1;
+      }
+      player = makeTank(8, 16, 'up', '#22c55e', true);
+      playerBullets = [];
+      enemyBullets = [];
+      explosions = [];
+      walls = buildWalls(level);
+      enemies = buildEnemies(level);
       state = 'running';
       Object.keys(keys).forEach(key => { keys[key] = false; });
       updateHud();
       draw();
     }
 
+    function resetGame() {
+      startLevel(true);
+    }
+
     function updateHud() {
       const t = copy[currentLang];
       scoreEl.textContent = score;
       enemiesEl.textContent = enemies.length;
+      livesEl.textContent = lives;
+      levelEl.textContent = level;
       scoreLabelEl.childNodes[0].textContent = t.score + ' ';
       enemyLabelEl.childNodes[0].textContent = t.enemies + ' ';
+      lifeLabelEl.childNodes[0].textContent = t.lives + ' ';
+      levelLabelEl.childNodes[0].textContent = t.level + ' ';
       modeEl.textContent = state === 'running' ? t.running : state === 'won' ? t.won : t.lost;
     }
 
@@ -313,6 +321,15 @@
       return walls.some(wall => wall.x === x && wall.y === y);
     }
 
+    function removeWall(x, y) {
+      const index = walls.findIndex(wall => wall.x === x && wall.y === y);
+      if (index >= 0) walls.splice(index, 1);
+    }
+
+    function addExplosion(x, y, color = '#facc15') {
+      explosions.push({ x, y, life: 18, color });
+    }
+
     function tryMoveTank(tank, dx, dy, dir) {
       tank.dir = dir;
       if (tank.moveCooldown > 0) return;
@@ -325,29 +342,31 @@
         tank.x = nx;
         tank.y = ny;
       }
-      tank.moveCooldown = 10;
+      tank.moveCooldown = 9;
     }
 
-    function fireBullet() {
-      if (bullet || state !== 'running') return;
+    function spawnBullet(tank, list, speed) {
+      if (tank.fireCooldown > 0 || state !== 'running') return;
       const dirMap = {
-        up: { dx: 0, dy: -1 },
-        down: { dx: 0, dy: 1 },
-        left: { dx: -1, dy: 0 },
-        right: { dx: 1, dy: 0 }
+        up: { dx: 0, dy: -speed },
+        down: { dx: 0, dy: speed },
+        left: { dx: -speed, dy: 0 },
+        right: { dx: speed, dy: 0 }
       };
-      const dir = dirMap[player.dir];
-      bullet = {
-        x: player.x,
-        y: player.y,
+      const dir = dirMap[tank.dir];
+      list.push({
+        x: tank.x + 0.5,
+        y: tank.y + 0.5,
         dx: dir.dx,
-        dy: dir.dy
-      };
-      bulletTick = 0;
+        dy: dir.dy,
+        owner: tank.isPlayer ? 'player' : 'enemy'
+      });
+      tank.fireCooldown = tank.isPlayer ? 20 : 36;
     }
 
     function updatePlayer() {
       if (player.moveCooldown > 0) player.moveCooldown -= 1;
+      if (player.fireCooldown > 0) player.fireCooldown -= 1;
       if (keys.ArrowUp) tryMoveTank(player, 0, -1, 'up');
       else if (keys.ArrowDown) tryMoveTank(player, 0, 1, 'down');
       else if (keys.ArrowLeft) tryMoveTank(player, -1, 0, 'left');
@@ -355,78 +374,136 @@
     }
 
     function updateEnemies() {
-      const options = [
-        [0, 1, 'down'],
-        [0, -1, 'up'],
-        [-1, 0, 'left'],
-        [1, 0, 'right']
-      ];
+      const options = [[0, 1, 'down'], [0, -1, 'up'], [-1, 0, 'left'], [1, 0, 'right']];
       enemies.forEach(enemy => {
         if (enemy.moveCooldown > 0) enemy.moveCooldown -= 1;
-        if (Math.random() < 0.05) {
+        if (enemy.fireCooldown > 0) enemy.fireCooldown -= 1;
+        if (Math.random() < 0.05 + level * 0.01) {
           const [dx, dy, dir] = options[Math.floor(Math.random() * options.length)];
           tryMoveTank(enemy, dx, dy, dir);
         }
+        if (Math.random() < 0.015 + level * 0.005) {
+          spawnBullet(enemy, enemyBullets, 0.16);
+        }
         if (enemy.x === player.x && enemy.y === player.y) {
-          state = 'lost';
+          hitPlayer();
         }
       });
     }
 
-    function updateBullet() {
-      if (!bullet) return;
-      bulletTick += 1;
-      if (bulletTick % 2 !== 0) return;
-      bullet.x += bullet.dx;
-      bullet.y += bullet.dy;
-      if (isWall(bullet.x, bullet.y)) {
-        bullet = null;
-        return;
+    function hitPlayer() {
+      addExplosion(player.x + 0.5, player.y + 0.5, '#fb7185');
+      lives -= 1;
+      if (lives <= 0) {
+        state = 'lost';
+      } else {
+        player = makeTank(8, 16, 'up', '#22c55e', true);
+        playerBullets = [];
+        enemyBullets = [];
       }
-      if (bullet.x < 0 || bullet.y < 0 || bullet.x >= board || bullet.y >= board) {
-        bullet = null;
-        return;
+      updateHud();
+    }
+
+    function updateBulletList(list, targetType) {
+      for (let i = list.length - 1; i >= 0; i--) {
+        const bullet = list[i];
+        bullet.x += bullet.dx;
+        bullet.y += bullet.dy;
+        const cellX = Math.floor(bullet.x);
+        const cellY = Math.floor(bullet.y);
+
+        if (bullet.x < 0 || bullet.y < 0 || bullet.x >= board || bullet.y >= board) {
+          list.splice(i, 1);
+          continue;
+        }
+
+        if (isWall(cellX, cellY)) {
+          removeWall(cellX, cellY);
+          addExplosion(cellX + 0.5, cellY + 0.5, '#f59e0b');
+          list.splice(i, 1);
+          continue;
+        }
+
+        if (targetType === 'enemy') {
+          const hitIndex = enemies.findIndex(enemy => Math.abs(enemy.x + 0.5 - bullet.x) < 0.38 && Math.abs(enemy.y + 0.5 - bullet.y) < 0.38);
+          if (hitIndex >= 0) {
+            addExplosion(enemies[hitIndex].x + 0.5, enemies[hitIndex].y + 0.5);
+            enemies.splice(hitIndex, 1);
+            list.splice(i, 1);
+            score += 10;
+            if (enemies.length === 0) {
+              state = 'won';
+              setTimeout(() => {
+                if (state === 'won') {
+                  level += 1;
+                  startLevel(false);
+                }
+              }, 900);
+            }
+            updateHud();
+          }
+        } else {
+          if (Math.abs(player.x + 0.5 - bullet.x) < 0.38 && Math.abs(player.y + 0.5 - bullet.y) < 0.38) {
+            list.splice(i, 1);
+            hitPlayer();
+          }
+        }
       }
-      const hit = enemies.findIndex(enemy => enemy.x === bullet.x && enemy.y === bullet.y);
-      if (hit >= 0) {
-        enemies.splice(hit, 1);
-        bullet = null;
-        score += 10;
-        if (enemies.length === 0) state = 'won';
-        updateHud();
-      }
+    }
+
+    function updateExplosions() {
+      explosions = explosions.filter(explosion => {
+        explosion.life -= 1;
+        return explosion.life > 0;
+      });
     }
 
     function drawTank(tank) {
       const px = tank.x * size;
       const py = tank.y * size;
+      const body = size - 10;
+      const offset = 5;
       ctx.fillStyle = tank.color;
-      ctx.fillRect(px + 7, py + 7, size - 14, size - 14);
-      ctx.fillStyle = '#111827';
+      ctx.fillRect(px + offset, py + offset, body, body);
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(px + offset + 5, py + offset + 5, body - 10, body - 10);
+      ctx.fillStyle = tank.color;
+      ctx.fillRect(px + offset + 8, py + offset + 8, body - 16, body - 16);
       const barrel = {
-        up: [px + 17, py + 2, 6, 16],
-        down: [px + 17, py + 22, 6, 16],
-        left: [px + 2, py + 17, 16, 6],
-        right: [px + 22, py + 17, 16, 6]
+        up: [px + size / 2 - 3, py + 1, 6, 16],
+        down: [px + size / 2 - 3, py + size - 17, 6, 16],
+        left: [px + 1, py + size / 2 - 3, 16, 6],
+        right: [px + size - 17, py + size / 2 - 3, 16, 6]
       }[tank.dir];
+      ctx.fillStyle = '#111827';
       ctx.fillRect(...barrel);
-      ctx.strokeStyle = '#e5e7eb';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(px + 7, py + 7, size - 14, size - 14);
-    }
-
-    function drawBullet() {
-      if (!bullet) return;
-      ctx.fillStyle = '#f8fafc';
-      ctx.beginPath();
-      ctx.arc(bullet.x * size + size / 2, bullet.y * size + size / 2, 5, 0, Math.PI * 2);
-      ctx.fill();
     }
 
     function drawWalls() {
       ctx.fillStyle = '#8b5e3c';
       walls.forEach(wall => {
         ctx.fillRect(wall.x * size + 4, wall.y * size + 4, size - 8, size - 8);
+      });
+    }
+
+    function drawBullets() {
+      [...playerBullets, ...enemyBullets].forEach(bullet => {
+        ctx.fillStyle = bullet.owner === 'player' ? '#f8fafc' : '#fb7185';
+        ctx.beginPath();
+        ctx.arc(bullet.x * size, bullet.y * size, 4, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    function drawExplosions() {
+      explosions.forEach(explosion => {
+        const radius = (18 - explosion.life) * 1.4;
+        ctx.fillStyle = explosion.color;
+        ctx.globalAlpha = Math.max(explosion.life / 18, 0.2);
+        ctx.beginPath();
+        ctx.arc(explosion.x * size, explosion.y * size, radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
       });
     }
 
@@ -451,16 +528,19 @@
       drawWalls();
       if (player) drawTank(player);
       enemies.forEach(drawTank);
-      drawBullet();
+      drawBullets();
+      drawExplosions();
     }
 
     function loop() {
       if (state === 'running') {
         updatePlayer();
         updateEnemies();
-        updateBullet();
-        updateHud();
+        updateBulletList(playerBullets, 'enemy');
+        updateBulletList(enemyBullets, 'player');
       }
+      updateExplosions();
+      updateHud();
       draw();
       requestAnimationFrame(loop);
     }
@@ -468,7 +548,7 @@
     window.addEventListener('keydown', (e) => {
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) e.preventDefault();
       if (e.key === ' ') {
-        fireBullet();
+        spawnBullet(player, playerBullets, 0.2);
       } else {
         keys[e.key] = true;
       }
